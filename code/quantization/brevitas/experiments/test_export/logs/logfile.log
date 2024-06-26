@@ -1,0 +1,2171 @@
+BED Classifier XS Tiny.
+	One Head.
+	255 Normalization.
+	Weighted for Precision.
+	Modules.
+	Losses and Metrics Loggers.
+	Brevitas with all Quant Layers defined in the Model.
+	Change QuantIdentity to act_quant = Uint8ActPerTensorFloat, as input is in [0, 255].
+	300 epochs.
+
+
+TRAIN DFIRE dataset
+Train dataset len: 64
+
+TEST DFire dataset
+Test dataset len: 64
+Using BED Classifier
+Model shape is tensor([[ 0.0424, -0.0994],
+        [ 0.0424, -0.0994],
+        [ 0.0424, -0.0994],
+        [ 0.0424, -0.0994]], device='cuda:0', grad_fn=<AddmmBackward0>)
+BED Model Arquitecture
+BED_CLASSIFIER(
+  (model): Sequential(
+    (0): QuantIdentity(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): Identity()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (1): QuantConv2d(
+      3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (2): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (3): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (4): Dropout2d(p=0.3, inplace=False)
+    (5): QuantMaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (6): QuantConv2d(
+      32, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (7): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (8): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (9): Dropout2d(p=0.3, inplace=False)
+    (10): QuantMaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (11): QuantConv2d(
+      16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (12): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (13): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (14): QuantConv2d(
+      16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (15): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (16): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (17): QuantConv2d(
+      32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (18): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (19): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (20): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (21): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (22): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (23): QuantMaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (24): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (25): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (26): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (27): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (28): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (29): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (30): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (31): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (32): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (33): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (34): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (35): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (36): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (37): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (38): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (39): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (40): BatchNorm2dToQuantScaleBias(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+    )
+    (41): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (42): TruncAdaptiveAvgPool2d(
+      output_size=(1, 1)
+      (trunc_quant): TruncQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): TruncIntQuant(
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+          (float_to_int_impl): RoundSte()
+          (delay_wrapper): DelayWrapper(
+            (delay_impl): _NoDelay()
+          )
+        )
+      )
+    )
+    (43): Flatten(start_dim=1, end_dim=-1)
+    (44): QuantDropout(p=0.2, inplace=False)
+    (45): QuantLinear(
+      in_features=64, out_features=16, bias=True
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): PrescaledRestrictIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+          (zero_point): StatelessBuffer()
+        )
+      )
+    )
+    (46): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): Identity()
+              (restrict_preprocess): Identity()
+            )
+            (int_scaling_impl): IntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (47): QuantLinear(
+      in_features=16, out_features=2, bias=True
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): FloatRestrictValue()
+              )
+              (restrict_scaling_pre): Identity()
+            )
+          )
+          (int_scaling_impl): IntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): PrescaledRestrictIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+          (zero_point): StatelessBuffer()
+        )
+      )
+    )
+  )
+)
+
+Trainable parameters = 93280
+Total parameters = 93280
+
+========================================================================================================================
+Layer (type:depth-idx)                                                 Output Shape              Param #
+========================================================================================================================
+BED_CLASSIFIER                                                         [64, 2]                   --
+├─Sequential: 1-1                                                      [64, 2]                   --
+│    └─QuantIdentity: 2-1                                              [64, 3, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-1                             [64, 3, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-2                             [64, 3, 224, 224]         1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantIdentity: 2-3                                              --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-4                             --                        (recursive)
+│    └─QuantConv2d: 2-4                                                [64, 32, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-5                             [64, 3, 224, 224]         --
+│    │    └─WeightQuantProxyFromInjector: 3-6                          [32, 3, 3, 3]             864
+│    │    └─ActQuantProxyFromInjector: 3-7                             [64, 32, 224, 224]        --
+│    └─BatchNorm2dToQuantScaleBias: 2-5                                [64, 32, 224, 224]        32
+│    │    └─ActQuantProxyFromInjector: 3-8                             [64, 32, 224, 224]        --
+│    │    └─WeightQuantProxyFromInjector: 3-9                          [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-10                           [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-11                            [64, 32, 224, 224]        --
+│    └─QuantReLU: 2-6                                                  [64, 32, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-12                            [64, 32, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-13                            [64, 32, 224, 224]        1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-8                                                  --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-15                            --                        (recursive)
+│    └─Dropout2d: 2-9                                                  [64, 32, 224, 224]        --
+│    └─QuantMaxPool2d: 2-10                                            [64, 32, 112, 112]        --
+│    └─QuantConv2d: 2-11                                               [64, 16, 112, 112]        --
+│    │    └─ActQuantProxyFromInjector: 3-16                            [64, 32, 112, 112]        --
+│    │    └─WeightQuantProxyFromInjector: 3-17                         [16, 32, 3, 3]            4,608
+│    │    └─ActQuantProxyFromInjector: 3-18                            [64, 16, 112, 112]        --
+│    └─BatchNorm2dToQuantScaleBias: 2-12                               [64, 16, 112, 112]        16
+│    │    └─ActQuantProxyFromInjector: 3-19                            [64, 16, 112, 112]        --
+│    │    └─WeightQuantProxyFromInjector: 3-20                         [16]                      16
+│    │    └─BiasQuantProxyFromInjector: 3-21                           [16]                      --
+│    │    └─ActQuantProxyFromInjector: 3-22                            [64, 16, 112, 112]        --
+│    └─QuantReLU: 2-13                                                 [64, 16, 112, 112]        --
+│    │    └─ActQuantProxyFromInjector: 3-23                            [64, 16, 112, 112]        --
+│    │    └─ActQuantProxyFromInjector: 3-24                            [64, 16, 112, 112]        1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-15                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-26                            --                        (recursive)
+│    └─Dropout2d: 2-16                                                 [64, 16, 112, 112]        --
+│    └─QuantMaxPool2d: 2-17                                            [64, 16, 56, 56]          --
+│    └─QuantConv2d: 2-18                                               [64, 16, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-27                            [64, 16, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-28                         [16, 16, 1, 1]            256
+│    │    └─ActQuantProxyFromInjector: 3-29                            [64, 16, 56, 56]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-19                               [64, 16, 56, 56]          16
+│    │    └─ActQuantProxyFromInjector: 3-30                            [64, 16, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-31                         [16]                      16
+│    │    └─BiasQuantProxyFromInjector: 3-32                           [16]                      --
+│    │    └─ActQuantProxyFromInjector: 3-33                            [64, 16, 56, 56]          --
+│    └─QuantReLU: 2-20                                                 [64, 16, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-34                            [64, 16, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-35                            [64, 16, 56, 56]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-22                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-37                            --                        (recursive)
+│    └─QuantConv2d: 2-23                                               [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-38                            [64, 16, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-39                         [32, 16, 3, 3]            4,608
+│    │    └─ActQuantProxyFromInjector: 3-40                            [64, 32, 56, 56]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-24                               [64, 32, 56, 56]          32
+│    │    └─ActQuantProxyFromInjector: 3-41                            [64, 32, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-42                         [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-43                           [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-44                            [64, 32, 56, 56]          --
+│    └─QuantReLU: 2-25                                                 [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-45                            [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-46                            [64, 32, 56, 56]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-27                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-48                            --                        (recursive)
+│    └─QuantConv2d: 2-28                                               [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-49                            [64, 32, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-50                         [32, 32, 1, 1]            1,024
+│    │    └─ActQuantProxyFromInjector: 3-51                            [64, 32, 56, 56]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-29                               [64, 32, 56, 56]          32
+│    │    └─ActQuantProxyFromInjector: 3-52                            [64, 32, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-53                         [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-54                           [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-55                            [64, 32, 56, 56]          --
+│    └─QuantReLU: 2-30                                                 [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-56                            [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-57                            [64, 32, 56, 56]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-32                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-59                            --                        (recursive)
+│    └─QuantConv2d: 2-33                                               [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-60                            [64, 32, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-61                         [64, 32, 3, 3]            18,432
+│    │    └─ActQuantProxyFromInjector: 3-62                            [64, 64, 56, 56]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-34                               [64, 64, 56, 56]          64
+│    │    └─ActQuantProxyFromInjector: 3-63                            [64, 64, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-64                         [64]                      64
+│    │    └─BiasQuantProxyFromInjector: 3-65                           [64]                      --
+│    │    └─ActQuantProxyFromInjector: 3-66                            [64, 64, 56, 56]          --
+│    └─QuantReLU: 2-35                                                 [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-67                            [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-68                            [64, 64, 56, 56]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-37                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-70                            --                        (recursive)
+│    └─QuantMaxPool2d: 2-38                                            [64, 64, 28, 28]          --
+│    └─QuantConv2d: 2-39                                               [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-71                            [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-72                         [32, 64, 1, 1]            2,048
+│    │    └─ActQuantProxyFromInjector: 3-73                            [64, 32, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-40                               [64, 32, 28, 28]          32
+│    │    └─ActQuantProxyFromInjector: 3-74                            [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-75                         [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-76                           [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-77                            [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-41                                                 [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-78                            [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-79                            [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-43                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-81                            --                        (recursive)
+│    └─QuantConv2d: 2-44                                               [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-82                            [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-83                         [64, 32, 3, 3]            18,432
+│    │    └─ActQuantProxyFromInjector: 3-84                            [64, 64, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-45                               [64, 64, 28, 28]          64
+│    │    └─ActQuantProxyFromInjector: 3-85                            [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-86                         [64]                      64
+│    │    └─BiasQuantProxyFromInjector: 3-87                           [64]                      --
+│    │    └─ActQuantProxyFromInjector: 3-88                            [64, 64, 28, 28]          --
+│    └─QuantReLU: 2-46                                                 [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-89                            [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-90                            [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-48                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-92                            --                        (recursive)
+│    └─QuantConv2d: 2-49                                               [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-93                            [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-94                         [32, 64, 1, 1]            2,048
+│    │    └─ActQuantProxyFromInjector: 3-95                            [64, 32, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-50                               [64, 32, 28, 28]          32
+│    │    └─ActQuantProxyFromInjector: 3-96                            [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-97                         [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-98                           [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-99                            [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-51                                                 [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-100                           [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-101                           [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-53                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-103                           --                        (recursive)
+│    └─QuantConv2d: 2-54                                               [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-104                           [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-105                        [64, 32, 3, 3]            18,432
+│    │    └─ActQuantProxyFromInjector: 3-106                           [64, 64, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-55                               [64, 64, 28, 28]          64
+│    │    └─ActQuantProxyFromInjector: 3-107                           [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-108                        [64]                      64
+│    │    └─BiasQuantProxyFromInjector: 3-109                          [64]                      --
+│    │    └─ActQuantProxyFromInjector: 3-110                           [64, 64, 28, 28]          --
+│    └─QuantReLU: 2-56                                                 [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-111                           [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-112                           [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-58                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-114                           --                        (recursive)
+│    └─QuantConv2d: 2-59                                               [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-115                           [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-116                        [32, 64, 1, 1]            2,048
+│    │    └─ActQuantProxyFromInjector: 3-117                           [64, 32, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-60                               [64, 32, 28, 28]          32
+│    │    └─ActQuantProxyFromInjector: 3-118                           [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-119                        [32]                      32
+│    │    └─BiasQuantProxyFromInjector: 3-120                          [32]                      --
+│    │    └─ActQuantProxyFromInjector: 3-121                           [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-61                                                 [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-122                           [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-123                           [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-63                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-125                           --                        (recursive)
+│    └─QuantConv2d: 2-64                                               [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-126                           [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-127                        [64, 32, 3, 3]            18,432
+│    │    └─ActQuantProxyFromInjector: 3-128                           [64, 64, 28, 28]          --
+│    └─BatchNorm2dToQuantScaleBias: 2-65                               [64, 64, 28, 28]          64
+│    │    └─ActQuantProxyFromInjector: 3-129                           [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-130                        [64]                      64
+│    │    └─BiasQuantProxyFromInjector: 3-131                          [64]                      --
+│    │    └─ActQuantProxyFromInjector: 3-132                           [64, 64, 28, 28]          --
+│    └─QuantReLU: 2-66                                                 [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-133                           [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-134                           [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-67                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-135                           --                        (recursive)
+│    └─QuantReLU: 2-68                                                 --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-136                           --                        (recursive)
+│    └─TruncAdaptiveAvgPool2d: 2-69                                    [64, 64, 1, 1]            --
+│    │    └─TruncQuantProxyFromInjector: 3-137                         [64, 64, 1, 1]            --
+│    └─Flatten: 2-70                                                   [64, 64]                  --
+│    └─QuantDropout: 2-71                                              [64, 64]                  --
+│    └─QuantLinear: 2-72                                               [64, 16]                  16
+│    │    └─ActQuantProxyFromInjector: 3-138                           [64, 64]                  --
+│    │    └─WeightQuantProxyFromInjector: 3-139                        [16, 64]                  1,024
+│    │    └─BiasQuantProxyFromInjector: 3-140                          [16]                      --
+│    │    └─ActQuantProxyFromInjector: 3-141                           [64, 16]                  --
+│    └─QuantReLU: 2-73                                                 [64, 16]                  --
+│    │    └─ActQuantProxyFromInjector: 3-142                           [64, 16]                  --
+│    │    └─ActQuantProxyFromInjector: 3-143                           [64, 16]                  1
+│    └─QuantLinear: 2-74                                               [64, 2]                   2
+│    │    └─ActQuantProxyFromInjector: 3-144                           [64, 16]                  --
+│    │    └─WeightQuantProxyFromInjector: 3-145                        [2, 16]                   32
+│    │    └─BiasQuantProxyFromInjector: 3-146                          [2]                       --
+│    │    └─ActQuantProxyFromInjector: 3-147                           [64, 2]                   --
+========================================================================================================================
+Total params: 93,280
+Trainable params: 93,280
+Non-trainable params: 0
+Total mult-adds (M): 0
+========================================================================================================================
+Input size (MB): 38.54
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 38.54
+========================================================================================================================
+
+Device: cuda
+Learning Rate: 0.001
+Weight Decay: 0.001
+Batch Size: 64
+W: 224
+H: 224
+Loss Function: BCE
+Smoke Precision Weight: 0.7
+Starting script
+
+
+***Start Training: 08:15:00
+
+Initializing Weights
+Saving last model
+
+***Script finished: 08:15:00
+
+Time elapsed: 0:00:00.011694
