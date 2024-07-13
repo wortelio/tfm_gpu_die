@@ -1,0 +1,738 @@
+BED Classifier XS Tiny.
+	One Head.
+	Adding best mean F1 save.
+	256 Normalization.
+	Weighted for Precision.
+	Modules.
+	Losses and Metrics Loggers.
+	Channel Pruning Compression Ratio = 0.85
+	20 epochs.
+
+
+TRAIN DFIRE dataset
+Train dataset len: 17221
+
+TEST DFire dataset
+Test dataset len: 4306
+
+Using BED Classifier
+
+Trainable parameters = 73922
+Total parameters = 73922
+
+Model shape is tensor([[-0.0418,  0.1960],
+        [-0.0540,  0.2115],
+        [-0.0332,  0.2131],
+        [-0.0344,  0.2089]], device='cuda:0', grad_fn=<AddmmBackward0>)
+BED Model Arquitecture
+SVD_080_BED_CLASSIFIER(
+  (model): Sequential(
+    (conv1): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu1): ReLU()
+    (dropout1): Dropout2d(p=0.3, inplace=False)
+    (maxpool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv2): Sequential(
+      (0): Conv2d(32, 9, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(9, 16, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu2): ReLU()
+    (dropout2): Dropout2d(p=0.3, inplace=False)
+    (maxpool3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv31): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1))
+    (relu31): ReLU()
+    (conv32): Sequential(
+      (0): Conv2d(16, 28, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(28, 32, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu32): ReLU()
+    (conv33): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu33): ReLU()
+    (conv34): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu34): ReLU()
+    (maxpool4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv41): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu41): ReLU()
+    (conv42): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu42): ReLU()
+    (conv43): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu43): ReLU()
+    (conv44): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu44): ReLU()
+    (conv45): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu45): ReLU()
+    (conv46): Sequential(
+      (0): Conv2d(32, 12, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(12, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu46): ReLU()
+    (avgpool5): AdaptiveAvgPool2d(output_size=(1, 1))
+    (flatten5): Flatten(start_dim=1, end_dim=-1)
+    (dropout5): Dropout(p=0.2, inplace=False)
+    (linear51): Linear(in_features=64, out_features=16, bias=True)
+    (relu5): ReLU()
+    (linear52): Linear(in_features=16, out_features=2, bias=True)
+  )
+)
+Loading Model. Trained during 26 epochs
+Original FP32 Model Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+SVD_080_BED_CLASSIFIER                   [64, 2]                   --
+├─Sequential: 1-1                        [64, 2]                   --
+│    └─Conv2d: 2-1                       [64, 32, 224, 224]        896
+│    └─ReLU: 2-2                         [64, 32, 224, 224]        --
+│    └─Dropout2d: 2-3                    [64, 32, 224, 224]        --
+│    └─MaxPool2d: 2-4                    [64, 32, 112, 112]        --
+│    └─Sequential: 2-5                   [64, 16, 112, 112]        --
+│    │    └─Conv2d: 3-1                  [64, 9, 112, 112]         864
+│    │    └─Conv2d: 3-2                  [64, 16, 112, 112]        448
+│    └─ReLU: 2-6                         [64, 16, 112, 112]        --
+│    └─Dropout2d: 2-7                    [64, 16, 112, 112]        --
+│    └─MaxPool2d: 2-8                    [64, 16, 56, 56]          --
+│    └─Conv2d: 2-9                       [64, 16, 56, 56]          272
+│    └─ReLU: 2-10                        [64, 16, 56, 56]          --
+│    └─Sequential: 2-11                  [64, 32, 56, 56]          --
+│    │    └─Conv2d: 3-3                  [64, 28, 56, 56]          1,344
+│    │    └─Conv2d: 3-4                  [64, 32, 56, 56]          2,720
+│    └─ReLU: 2-12                        [64, 32, 56, 56]          --
+│    └─Conv2d: 2-13                      [64, 32, 56, 56]          1,056
+│    └─ReLU: 2-14                        [64, 32, 56, 56]          --
+│    └─Conv2d: 2-15                      [64, 64, 56, 56]          18,496
+│    └─ReLU: 2-16                        [64, 64, 56, 56]          --
+│    └─MaxPool2d: 2-17                   [64, 64, 28, 28]          --
+│    └─Conv2d: 2-18                      [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-19                        [64, 32, 28, 28]          --
+│    └─Conv2d: 2-20                      [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-21                        [64, 64, 28, 28]          --
+│    └─Conv2d: 2-22                      [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-23                        [64, 32, 28, 28]          --
+│    └─Conv2d: 2-24                      [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-25                        [64, 64, 28, 28]          --
+│    └─Conv2d: 2-26                      [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-27                        [64, 32, 28, 28]          --
+│    └─Sequential: 2-28                  [64, 64, 28, 28]          --
+│    │    └─Conv2d: 3-5                  [64, 12, 28, 28]          1,152
+│    │    └─Conv2d: 3-6                  [64, 64, 28, 28]          2,368
+│    └─ReLU: 2-29                        [64, 64, 28, 28]          --
+│    └─AdaptiveAvgPool2d: 2-30           [64, 64, 1, 1]            --
+│    └─Flatten: 2-31                     [64, 64]                  --
+│    └─Dropout: 2-32                     [64, 64]                  --
+│    └─Linear: 2-33                      [64, 16]                  1,040
+│    └─ReLU: 2-34                        [64, 16]                  --
+│    └─Linear: 2-35                      [64, 2]                   34
+==========================================================================================
+Total params: 73,922
+Trainable params: 73,922
+Non-trainable params: 0
+Total mult-adds (G): 11.07
+==========================================================================================
+Input size (MB): 38.54
+Forward/backward pass size (MB): 1379.25
+Params size (MB): 0.30
+Estimated Total Size (MB): 1418.08
+==========================================================================================
+SVD_080_BED_CLASSIFIER(
+  (model): Sequential(
+    (conv1): Conv2d(3, 19, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu1): ReLU()
+    (dropout1): Dropout2d(p=0.3, inplace=False)
+    (maxpool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv2): Sequential(
+      (0): Conv2d(19, 6, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(6, 11, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu2): ReLU()
+    (dropout2): Dropout2d(p=0.3, inplace=False)
+    (maxpool3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv31): Conv2d(11, 8, kernel_size=(1, 1), stride=(1, 1))
+    (relu31): ReLU()
+    (conv32): Sequential(
+      (0): Conv2d(8, 11, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(11, 25, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu32): ReLU()
+    (conv33): Conv2d(25, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu33): ReLU()
+    (conv34): Conv2d(32, 51, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu34): ReLU()
+    (maxpool4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv41): Conv2d(51, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu41): ReLU()
+    (conv42): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu42): ReLU()
+    (conv43): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1))
+    (relu43): ReLU()
+    (conv44): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu44): ReLU()
+    (conv45): Conv2d(64, 28, kernel_size=(1, 1), stride=(1, 1))
+    (relu45): ReLU()
+    (conv46): Sequential(
+      (0): Conv2d(28, 4, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False)
+      (1): Conv2d(4, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+    )
+    (relu46): ReLU()
+    (avgpool5): AdaptiveAvgPool2d(output_size=(1, 1))
+    (flatten5): Flatten(start_dim=1, end_dim=-1)
+    (dropout5): Dropout(p=0.2, inplace=False)
+    (linear51): Linear(in_features=64, out_features=16, bias=True)
+    (relu5): ReLU()
+    (linear52): Linear(in_features=16, out_features=2, bias=True)
+  )
+)
+**********************************************************************************************
+Compressed Model Statistics
+Baseline model accuracy: 0.920738, Compressed model accuracy: 0.853280
+Compression ratio for memory=0.847325, mac=0.696974
+
+**********************************************************************************************
+
+Per-layer Stats
+    Name:model.conv2.0, compression-ratio: 0.6
+    Name:model.conv2.1, compression-ratio: 0.7
+    Name:model.conv31, compression-ratio: 0.7
+    Name:model.conv32.0, compression-ratio: 0.5
+    Name:model.conv32.1, compression-ratio: 0.4
+    Name:model.conv33, compression-ratio: 0.8
+    Name:model.conv34, compression-ratio: None
+    Name:model.conv41, compression-ratio: 0.8
+    Name:model.conv42, compression-ratio: None
+    Name:model.conv43, compression-ratio: None
+    Name:model.conv44, compression-ratio: None
+    Name:model.conv45, compression-ratio: None
+    Name:model.conv46.0, compression-ratio: 0.9
+    Name:model.conv46.1, compression-ratio: 0.4
+
+**********************************************************************************************
+
+Greedy Eval Dict
+    Layer: model.conv2.0
+        Ratio=0.1, Eval score=0.7779825329780579
+        Ratio=0.2, Eval score=0.777046799659729
+        Ratio=0.3, Eval score=0.8665699362754822
+        Ratio=0.4, Eval score=0.9008973836898804
+        Ratio=0.5, Eval score=0.9141585826873779
+        Ratio=0.6, Eval score=0.9151826500892639
+        Ratio=0.7, Eval score=0.9180718064308167
+        Ratio=0.8, Eval score=0.9204715490341187
+        Ratio=0.9, Eval score=0.9185990691184998
+    Layer: model.conv2.1
+        Ratio=0.1, Eval score=0.6975840330123901
+        Ratio=0.2, Eval score=0.6801835298538208
+        Ratio=0.3, Eval score=0.8433178067207336
+        Ratio=0.4, Eval score=0.8519514799118042
+        Ratio=0.5, Eval score=0.906104564666748
+        Ratio=0.6, Eval score=0.9104342460632324
+        Ratio=0.7, Eval score=0.9185613393783569
+        Ratio=0.8, Eval score=0.9193905591964722
+        Ratio=0.9, Eval score=0.9209428429603577
+    Layer: model.conv31
+        Ratio=0.1, Eval score=0.5879664421081543
+        Ratio=0.2, Eval score=0.6292394995689392
+        Ratio=0.3, Eval score=0.6184998154640198
+        Ratio=0.4, Eval score=0.8686211109161377
+        Ratio=0.5, Eval score=0.912397563457489
+        Ratio=0.6, Eval score=0.908595860004425
+        Ratio=0.7, Eval score=0.9151065349578857
+        Ratio=0.8, Eval score=0.915465235710144
+        Ratio=0.9, Eval score=0.918202817440033
+    Layer: model.conv32.0
+        Ratio=0.1, Eval score=0.21662987768650055
+        Ratio=0.2, Eval score=0.571558952331543
+        Ratio=0.3, Eval score=0.6462120413780212
+        Ratio=0.4, Eval score=0.9132367372512817
+        Ratio=0.5, Eval score=0.9167476892471313
+        Ratio=0.6, Eval score=0.9164718389511108
+        Ratio=0.7, Eval score=0.917813777923584
+        Ratio=0.8, Eval score=0.9188921451568604
+        Ratio=0.9, Eval score=0.9201493859291077
+    Layer: model.conv32.1
+        Ratio=0.1, Eval score=0.3586456775665283
+        Ratio=0.2, Eval score=0.842168927192688
+        Ratio=0.3, Eval score=0.9119234085083008
+        Ratio=0.4, Eval score=0.918685257434845
+        Ratio=0.5, Eval score=0.9191908836364746
+        Ratio=0.6, Eval score=0.918944776058197
+        Ratio=0.7, Eval score=0.9197145700454712
+        Ratio=0.8, Eval score=0.9201241731643677
+        Ratio=0.9, Eval score=0.9202277660369873
+    Layer: model.conv33
+        Ratio=0.1, Eval score=0.49318450689315796
+        Ratio=0.2, Eval score=0.6693201661109924
+        Ratio=0.3, Eval score=0.782080888748169
+        Ratio=0.4, Eval score=0.8179694414138794
+        Ratio=0.5, Eval score=0.9008297920227051
+        Ratio=0.6, Eval score=0.9078435897827148
+        Ratio=0.7, Eval score=0.9126793742179871
+        Ratio=0.8, Eval score=0.9184619784355164
+        Ratio=0.9, Eval score=0.9192361831665039
+    Layer: model.conv34
+        Ratio=0.1, Eval score=0.6763746738433838
+        Ratio=0.2, Eval score=0.8122632503509521
+        Ratio=0.3, Eval score=0.8645147085189819
+        Ratio=0.4, Eval score=0.8807353973388672
+        Ratio=0.5, Eval score=0.8867418766021729
+        Ratio=0.6, Eval score=0.9023175239562988
+        Ratio=0.7, Eval score=0.9125096797943115
+        Ratio=0.8, Eval score=0.9190117120742798
+        Ratio=0.9, Eval score=0.9123526811599731
+    Layer: model.conv41
+        Ratio=0.1, Eval score=0.33595776557922363
+        Ratio=0.2, Eval score=0.6260301470756531
+        Ratio=0.3, Eval score=0.7706395387649536
+        Ratio=0.4, Eval score=0.8222612738609314
+        Ratio=0.5, Eval score=0.8979905247688293
+        Ratio=0.6, Eval score=0.9016278982162476
+        Ratio=0.7, Eval score=0.9113152623176575
+        Ratio=0.8, Eval score=0.9154281616210938
+        Ratio=0.9, Eval score=0.9161636233329773
+    Layer: model.conv42
+        Ratio=0.1, Eval score=0.20359623432159424
+        Ratio=0.2, Eval score=0.11538680642843246
+        Ratio=0.3, Eval score=0.4609799087047577
+        Ratio=0.4, Eval score=0.711990475654602
+        Ratio=0.5, Eval score=0.8338135480880737
+        Ratio=0.6, Eval score=0.8839174509048462
+        Ratio=0.7, Eval score=0.8924302458763123
+        Ratio=0.8, Eval score=0.9057748317718506
+        Ratio=0.9, Eval score=0.9137877225875854
+    Layer: model.conv43
+        Ratio=0.1, Eval score=0.016952557489275932
+        Ratio=0.2, Eval score=0.18640753626823425
+        Ratio=0.3, Eval score=0.4040341377258301
+        Ratio=0.4, Eval score=0.5241190195083618
+        Ratio=0.5, Eval score=0.7425104379653931
+        Ratio=0.6, Eval score=0.7498083710670471
+        Ratio=0.7, Eval score=0.8556402921676636
+        Ratio=0.8, Eval score=0.8911870718002319
+        Ratio=0.9, Eval score=0.9123208522796631
+    Layer: model.conv44
+        Ratio=0.1, Eval score=0.3654223084449768
+        Ratio=0.2, Eval score=0.6938040256500244
+        Ratio=0.3, Eval score=0.6948663592338562
+        Ratio=0.4, Eval score=0.7793697714805603
+        Ratio=0.5, Eval score=0.8096139430999756
+        Ratio=0.6, Eval score=0.86329185962677
+        Ratio=0.7, Eval score=0.8672899007797241
+        Ratio=0.8, Eval score=0.887707531452179
+        Ratio=0.9, Eval score=0.9018412232398987
+    Layer: model.conv45
+        Ratio=0.1, Eval score=0.0
+        Ratio=0.2, Eval score=0.008641382679343224
+        Ratio=0.3, Eval score=0.5001504421234131
+        Ratio=0.4, Eval score=0.12595582008361816
+        Ratio=0.5, Eval score=0.4900989532470703
+        Ratio=0.6, Eval score=0.777954638004303
+        Ratio=0.7, Eval score=0.8758327960968018
+        Ratio=0.8, Eval score=0.9007142782211304
+        Ratio=0.9, Eval score=0.9095410108566284
+    Layer: model.conv46.0
+        Ratio=0.1, Eval score=0.7973231077194214
+        Ratio=0.2, Eval score=0.588796854019165
+        Ratio=0.3, Eval score=0.40484678745269775
+        Ratio=0.4, Eval score=0.7443578243255615
+        Ratio=0.5, Eval score=0.8502634763717651
+        Ratio=0.6, Eval score=0.8971242308616638
+        Ratio=0.7, Eval score=0.9009636044502258
+        Ratio=0.8, Eval score=0.9058548212051392
+        Ratio=0.9, Eval score=0.9187948703765869
+    Layer: model.conv46.1
+        Ratio=0.1, Eval score=0.39267462491989136
+        Ratio=0.2, Eval score=0.7922786474227905
+        Ratio=0.3, Eval score=0.8913745284080505
+        Ratio=0.4, Eval score=0.9142711162567139
+        Ratio=0.5, Eval score=0.9181380867958069
+        Ratio=0.6, Eval score=0.9201139211654663
+        Ratio=0.7, Eval score=0.9204404354095459
+        Ratio=0.8, Eval score=0.9200540781021118
+        Ratio=0.9, Eval score=0.9210878610610962
+
+**********************************************************************************************
+
+Compressed Model Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+SVD_080_BED_CLASSIFIER                   [64, 2]                   --
+├─Sequential: 1-1                        [64, 2]                   --
+│    └─Conv2d: 2-1                       [64, 19, 224, 224]        532
+│    └─ReLU: 2-2                         [64, 19, 224, 224]        --
+│    └─Dropout2d: 2-3                    [64, 19, 224, 224]        --
+│    └─MaxPool2d: 2-4                    [64, 19, 112, 112]        --
+│    └─Sequential: 2-5                   [64, 11, 112, 112]        --
+│    │    └─Conv2d: 3-1                  [64, 6, 112, 112]         342
+│    │    └─Conv2d: 3-2                  [64, 11, 112, 112]        209
+│    └─ReLU: 2-6                         [64, 11, 112, 112]        --
+│    └─Dropout2d: 2-7                    [64, 11, 112, 112]        --
+│    └─MaxPool2d: 2-8                    [64, 11, 56, 56]          --
+│    └─Conv2d: 2-9                       [64, 8, 56, 56]           96
+│    └─ReLU: 2-10                        [64, 8, 56, 56]           --
+│    └─Sequential: 2-11                  [64, 25, 56, 56]          --
+│    │    └─Conv2d: 3-3                  [64, 11, 56, 56]          264
+│    │    └─Conv2d: 3-4                  [64, 25, 56, 56]          850
+│    └─ReLU: 2-12                        [64, 25, 56, 56]          --
+│    └─Conv2d: 2-13                      [64, 32, 56, 56]          832
+│    └─ReLU: 2-14                        [64, 32, 56, 56]          --
+│    └─Conv2d: 2-15                      [64, 51, 56, 56]          14,739
+│    └─ReLU: 2-16                        [64, 51, 56, 56]          --
+│    └─MaxPool2d: 2-17                   [64, 51, 28, 28]          --
+│    └─Conv2d: 2-18                      [64, 32, 28, 28]          1,664
+│    └─ReLU: 2-19                        [64, 32, 28, 28]          --
+│    └─Conv2d: 2-20                      [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-21                        [64, 64, 28, 28]          --
+│    └─Conv2d: 2-22                      [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-23                        [64, 32, 28, 28]          --
+│    └─Conv2d: 2-24                      [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-25                        [64, 64, 28, 28]          --
+│    └─Conv2d: 2-26                      [64, 28, 28, 28]          1,820
+│    └─ReLU: 2-27                        [64, 28, 28, 28]          --
+│    └─Sequential: 2-28                  [64, 64, 28, 28]          --
+│    │    └─Conv2d: 3-5                  [64, 4, 28, 28]           336
+│    │    └─Conv2d: 3-6                  [64, 64, 28, 28]          832
+│    └─ReLU: 2-29                        [64, 64, 28, 28]          --
+│    └─AdaptiveAvgPool2d: 2-30           [64, 64, 1, 1]            --
+│    └─Flatten: 2-31                     [64, 64]                  --
+│    └─Dropout: 2-32                     [64, 64]                  --
+│    └─Linear: 2-33                      [64, 16]                  1,040
+│    └─ReLU: 2-34                        [64, 16]                  --
+│    └─Linear: 2-35                      [64, 2]                   34
+==========================================================================================
+Total params: 62,662
+Trainable params: 62,662
+Non-trainable params: 0
+Total mult-adds (G): 7.71
+==========================================================================================
+Input size (MB): 38.54
+Forward/backward pass size (MB): 916.83
+Params size (MB): 0.25
+Estimated Total Size (MB): 955.61
+==========================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+
+Device: cuda
+Learning Rate: 0.0001
+Weight Decay: 0.0001
+Scheduler factor: 0.8
+Scheduler patience: 2
+Scheduler threshold: 0.001
+Scheduler min learning rate: 1e-06
+Batch Size: 64
+W: 224
+H: 224
+Batch Size: 64
+W: 224
+H: 224
+Start Training
+
+
+***Start Training: 11:13:16
+
+
+=== EPOCH 0/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7652   |0.7952   |0.7020   |0.7457   |
+42.99      |27.31     |15.67     |    Fire   |0.9029   |0.8558   |0.7756   |0.8137   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8860   |0.9090   |0.8478   |0.8774   |
+24.87      |16.49     |8.38      |    Fire   |0.9534   |0.9055   |0.9153   |0.9104   |
+
+Saving model with new best validation loss: 24.872
+Saving model with best Mean F1: 0.8939
+
+=== EPOCH 1/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7987   |0.8235   |0.7504   |0.7852   |
+37.09      |24.39     |12.70     |    Fire   |0.9227   |0.8768   |0.8346   |0.8552   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8934   |0.9003   |0.8754   |0.8877   |
+23.88      |15.77     |8.11      |    Fire   |0.9571   |0.9335   |0.8982   |0.9155   |
+
+Saving model with new best validation loss: 23.882
+Saving model with best Mean F1: 0.9016
+
+=== EPOCH 2/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8080   |0.8291   |0.7662   |0.7964   |
+36.02      |23.55     |12.47     |    Fire   |0.9240   |0.8797   |0.8363   |0.8575   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8976   |0.8930   |0.8943   |0.8937   |
+23.66      |15.57     |8.09      |    Fire   |0.9562   |0.9237   |0.9054   |0.9145   |
+
+Saving model with new best validation loss: 23.655
+Saving model with best Mean F1: 0.9041
+
+=== EPOCH 3/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8148   |0.8328   |0.7785   |0.8048   |
+34.46      |22.75     |11.71     |    Fire   |0.9280   |0.8809   |0.8516   |0.8660   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8841   |0.9196   |0.8318   |0.8735   |
+23.97      |15.90     |8.08      |    Fire   |0.9566   |0.9417   |0.8874   |0.9137   |
+
+
+=== EPOCH 4/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8227   |0.8439   |0.7833   |0.8124   |
+33.30      |22.08     |11.22     |    Fire   |0.9319   |0.8894   |0.8576   |0.8732   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8897   |0.9064   |0.8594   |0.8823   |
+23.40      |15.67     |7.73      |    Fire   |0.9590   |0.9300   |0.9099   |0.9199   |
+
+Saving model with new best validation loss: 23.397
+
+=== EPOCH 5/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8267   |0.8420   |0.7959   |0.8183   |
+33.05      |21.83     |11.22     |    Fire   |0.9323   |0.8858   |0.8636   |0.8745   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8750   |0.9068   |0.8250   |0.8640   |
+24.82      |16.59     |8.23      |    Fire   |0.9501   |0.8746   |0.9423   |0.9072   |
+
+
+=== EPOCH 6/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8263   |0.8433   |0.7930   |0.8174   |
+32.28      |21.45     |10.83     |    Fire   |0.9352   |0.8908   |0.8696   |0.8800   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8825   |0.9140   |0.8342   |0.8723   |
+23.71      |15.98     |7.73      |    Fire   |0.9562   |0.9161   |0.9144   |0.9152   |
+
+
+=== EPOCH 7/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8287   |0.8503   |0.7896   |0.8188   |
+31.98      |21.34     |10.64     |    Fire   |0.9363   |0.8937   |0.8706   |0.8820   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8997   |0.9016   |0.8885   |0.8950   |
+22.72      |15.16     |7.56      |    Fire   |0.9585   |0.9299   |0.9081   |0.9189   |
+
+Saving model with new best validation loss: 22.717
+Saving model with best Mean F1: 0.9069
+
+=== EPOCH 8/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8356   |0.8497   |0.8076   |0.8281   |
+31.76      |21.18     |10.58     |    Fire   |0.9368   |0.8961   |0.8694   |0.8826   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9035   |0.8830   |0.9215   |0.9018   |
+22.54      |14.97     |7.57      |    Fire   |0.9566   |0.9170   |0.9153   |0.9161   |
+
+Saving model with new best validation loss: 22.544
+Saving model with new best smoke precision: 0.883
+Saving model with best Mean F1: 0.9090
+
+=== EPOCH 9/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8361   |0.8504   |0.8077   |0.8285   |
+30.96      |20.75     |10.22     |    Fire   |0.9397   |0.8995   |0.8773   |0.8883   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8913   |0.9105   |0.8585   |0.8837   |
+23.01      |15.21     |7.79      |    Fire   |0.9548   |0.9018   |0.9261   |0.9138   |
+
+
+=== EPOCH 10/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8373   |0.8534   |0.8068   |0.8294   |
+30.48      |20.63     |9.85      |    Fire   |0.9421   |0.9057   |0.8797   |0.8925   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9032   |0.8909   |0.9103   |0.9005   |
+22.21      |14.55     |7.66      |    Fire   |0.9583   |0.9259   |0.9117   |0.9187   |
+
+Saving model with new best validation loss: 22.213
+Saving model with new best smoke precision: 0.891
+Saving model with best Mean F1: 0.9096
+
+=== EPOCH 11/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8325   |0.8479   |0.8024   |0.8246   |
+31.10      |20.73     |10.37     |    Fire   |0.9395   |0.9014   |0.8742   |0.8876   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8997   |0.8835   |0.9118   |0.8974   |
+22.74      |14.85     |7.89      |    Fire   |0.9545   |0.9045   |0.9216   |0.9130   |
+
+
+=== EPOCH 12/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8402   |0.8554   |0.8112   |0.8327   |
+30.44      |20.38     |10.06     |    Fire   |0.9399   |0.9005   |0.8772   |0.8887   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8939   |0.9044   |0.8715   |0.8877   |
+22.81      |15.09     |7.73      |    Fire   |0.9580   |0.9370   |0.8982   |0.9172   |
+
+
+=== EPOCH 13/19 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8398   |0.8570   |0.8082   |0.8319   |
+30.29      |20.36     |9.94      |    Fire   |0.9405   |0.9030   |0.8764   |0.8895   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9023   |0.8870   |0.9132   |0.8999   |
+22.46      |14.91     |7.55      |    Fire   |0.9613   |0.9444   |0.9036   |0.9236   |
+
+Saving model with best Mean F1: 0.9118
+
+=== EPOCH 14/19 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8416   |0.8608   |0.8075   |0.8333   |
+30.03      |20.14     |9.88      |    Fire   |0.9408   |0.8996   |0.8816   |0.8905   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9030   |0.8992   |0.8992   |0.8992   |
+21.75      |14.38     |7.37      |    Fire   |0.9583   |0.9145   |0.9252   |0.9198   |
+
+Saving model with new best validation loss: 21.749
+
+=== EPOCH 15/19 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8469   |0.8622   |0.8187   |0.8399   |
+29.24      |19.55     |9.69      |    Fire   |0.9420   |0.9049   |0.8801   |0.8924   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9000   |0.8947   |0.8977   |0.8962   |
+22.29      |14.63     |7.66      |    Fire   |0.9580   |0.9243   |0.9126   |0.9184   |
+
+
+=== EPOCH 16/19 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8459   |0.8610   |0.8177   |0.8388   |
+29.28      |19.83     |9.45      |    Fire   |0.9452   |0.9088   |0.8889   |0.8987   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9014   |0.8779   |0.9234   |0.9001   |
+22.89      |15.15     |7.75      |    Fire   |0.9552   |0.9048   |0.9243   |0.9144   |
+
+
+=== EPOCH 17/19 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8436   |0.8578   |0.8165   |0.8366   |
+29.37      |19.62     |9.74      |    Fire   |0.9429   |0.9049   |0.8840   |0.8943   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9028   |0.8991   |0.8987   |0.8989   |
+22.18      |14.44     |7.73      |    Fire   |0.9585   |0.9109   |0.9306   |0.9207   |
+
+
+=== EPOCH 18/19 ===
+Learning Rate = 6.400000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8480   |0.8611   |0.8229   |0.8416   |
+29.14      |19.65     |9.50      |    Fire   |0.9433   |0.9061   |0.8840   |0.8949   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9042   |0.9018   |0.8987   |0.9002   |
+21.96      |14.44     |7.52      |    Fire   |0.9604   |0.9336   |0.9117   |0.9225   |
+
+Saving model with new best smoke precision: 0.902
+
+=== EPOCH 19/19 ===
+Learning Rate = 6.400000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8454   |0.8597   |0.8183   |0.8385   |
+29.33      |19.84     |9.49      |    Fire   |0.9437   |0.9058   |0.8863   |0.8959   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9018   |0.9060   |0.8880   |0.8969   |
+22.18      |14.46     |7.72      |    Fire   |0.9601   |0.9467   |0.8964   |0.9209   |
+
+Saving last model
+
+***Script finished: 11:22:23
+
+Time elapsed: 0:09:07.360281
+
+Trainable parameters = 62662
+Total parameters = 62662
+

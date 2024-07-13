@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_v9_load&qat_4W8AB32_LR1e-5_20Epochs/'
+RUN_FOLDER = 'experiments_fuseBN_256_fasdd/' + 'test_v00_NoCOMP_w4W2a8b4_FxdPnt_MSE_PerChnlW_IntBiasIntScl/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -43,17 +43,25 @@ TRAIN_LABEL_DIR = train_labels
 VAL_IMG_DIR = val_imgs
 VAL_LABEL_DIR = val_labels
 
-DS_LEN = None
+FASDD_UAV_IMGS_DIR = '../../../datasets/fasdd/fasdd_uav/images/'
+FASDD_UAV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/train.txt'
+FASDD_UAV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/test.txt'
 
+FASDD_CV_IMGS_DIR = '../../../datasets/fasdd/fasdd_cv/images/'
+FASDD_CV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/train.txt'
+FASDD_CV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
+
+DS_LEN = None
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 MODEL = "BED"
 
-#LEARNING_RATE = 0.001
-LEARNING_RATE = 1e-5
+#LEARNING_RATE = 1e-3
+LEARNING_RATE = 1e-4
 # Optimizer
-WEIGHT_DECAY = 1e-5
+WEIGHT_DECAY = 1e-4
+#WEIGHT_DECAY = 1e-3
 FACTOR = 0.8
 PATIENCE = 2
 THRES = 0.001
@@ -64,11 +72,12 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 20
+EPOCHS = 100
 
 LOAD_MODEL = True
+LOAD_MODEL_DIR = './models/'
 if MODEL == "BED":
-    LOAD_MODEL_FILE = "BED_classifier__smoke__precision=0.9123__recall=0.9127__epoch=133.pt"
+    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_classifier__fused__dfire_fasdd.pt"
 
 
 LOSS_FN = "BCE"
@@ -77,6 +86,10 @@ SMOKE_PRECISION_WEIGHT = 0.8
 # ______________________________________________________________________ #
 #                             Quantization                               #
 # ______________________________________________________________________ #
+FIXED_POINT = True
+FUSE_BN = True
+
 WEIGHTS_BIT_WIDTH = 4
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
 ACTIVATIONS_BIT_WIDTH = 8
-BIAS_BIT_WIDTH = 32
+BIAS_BIT_WIDTH = 4

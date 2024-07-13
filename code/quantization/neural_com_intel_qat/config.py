@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'v1_Tuning/'
+RUN_FOLDER = 'experiments/' + 'v11_Tuning_fasdd/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -43,15 +43,23 @@ TRAIN_LABEL_DIR = train_labels
 VAL_IMG_DIR = val_imgs
 VAL_LABEL_DIR = val_labels
 
+FASDD_UAV_IMGS_DIR = '../../../datasets/fasdd/fasdd_uav/images/'
+FASDD_UAV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/train.txt'
+FASDD_UAV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/test.txt'
+
+FASDD_CV_IMGS_DIR = '../../../datasets/fasdd/fasdd_cv/images/'
+FASDD_CV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/train.txt'
+FASDD_CV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
+
 DS_LEN = None
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 MODEL = "BED"
 
-LEARNING_RATE = 1e-5
+LEARNING_RATE = 1e-4
 # Optimizer
-WEIGHT_DECAY = 1e-5
+WEIGHT_DECAY = 1e-4
 FACTOR = 0.8
 PATIENCE = 2
 THRES = 0.001
@@ -62,11 +70,11 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 5
+EPOCHS = 40
 
 LOAD_MODEL = True
 if MODEL == "BED":
-    LOAD_MODEL_FILE = "best_smoke_BED_classifier.pt"
+    LOAD_MODEL_FILE = "BED_classifier__best_smoke__precision=0.935__epoch=87.pt"
 
 
 LOSS_FN = "BCE"

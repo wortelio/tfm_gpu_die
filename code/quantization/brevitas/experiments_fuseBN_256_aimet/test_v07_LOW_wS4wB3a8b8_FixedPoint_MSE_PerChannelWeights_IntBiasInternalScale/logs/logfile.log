@@ -1,0 +1,3183 @@
+BED Classifier XS Tiny.
+	One Head.
+	Adding best mean F1 save.
+	256 Normalization.
+	Weighted for Precision.
+	Modules.
+	Losses and Metrics Loggers.
+	Models imported after AIMET processing.
+		Pruning after SVD.
+		SVD after Pruning.
+	Brevitas with All Layers defined in the Model, but Dropout and Flatten.
+	Bit width of Big Layers separated.
+	QuantIdentity with Uint8Act added and constant scale factor.
+	Weights with Per Channel Quant.
+	IntBias, Internal Scale with FixedPoint.
+	Fixed Point: True.
+	Weights bit width = 4.
+	Big Layers Weights bit width = 3.
+	Activations bit width = 8.
+	Bias bit width = 8.
+	50 epochs.
+
+
+TRAIN DFIRE dataset
+Train dataset len: 17221
+
+TEST DFire dataset
+Test dataset len: 4306
+
+Using BED Classifier
+Using Fixed Point Quantizers without BN
+
+Trainable parameters = 70735
+Total parameters = 70735
+
+Model shape is tensor([[-0.0138, -0.0754],
+        [-0.0128, -0.0808],
+        [-0.0070, -0.0840],
+        [-0.0199, -0.0795]], device='cuda:0', grad_fn=<AddmmBackward0>)
+BED Model Arquitecture
+QUANT_SOFT_PRUNING_AFTER_SVD_CLASSIFIER(
+  (model): Sequential(
+    (input0): QuantIdentity(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): Identity()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ConstScaling(
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (value): StatelessBuffer()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv1): QuantConv2d(
+      3, 22, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu1): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (dropout1): Dropout2d(p=0.3, inplace=False)
+    (maxpool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv2): Sequential(
+      (0): QuantConv2d(
+        22, 7, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+      )
+      (1): QuantConv2d(
+        7, 14, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1)
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClampSte()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): StatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): OverTensorView()
+                )
+                (stats): _Stats(
+                  (stats_impl): AbsMax()
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (relu2): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (dropout2): Dropout2d(p=0.3, inplace=False)
+    (maxpool3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv31): QuantConv2d(
+      14, 14, kernel_size=(1, 1), stride=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu31): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv32): Sequential(
+      (0): QuantConv2d(
+        14, 22, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+      )
+      (1): QuantConv2d(
+        22, 28, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1)
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClampSte()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): StatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): OverTensorView()
+                )
+                (stats): _Stats(
+                  (stats_impl): AbsMax()
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (relu32): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv33): QuantConv2d(
+      28, 32, kernel_size=(1, 1), stride=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu33): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv34): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu34): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (maxpool4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv41): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu41): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv42): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu42): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv43): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu43): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv44): QuantConv2d(
+      32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu44): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv45): QuantConv2d(
+      64, 32, kernel_size=(1, 1), stride=(1, 1)
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu45): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (conv46): Sequential(
+      (0): QuantConv2d(
+        32, 7, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0), bias=False
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+      )
+      (1): QuantConv2d(
+        7, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1)
+        (input_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (output_quant): ActQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+        )
+        (weight_quant): WeightQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromStatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): Identity()
+                )
+                (stats): _Stats(
+                  (stats_impl): MSE(
+                    (mse_init_op): AbsMax()
+                    (input_view_shape_impl): OverOutputChannelView(
+                      (permute_impl): Identity()
+                    )
+                  )
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+        (bias_quant): BiasQuantProxyFromInjector(
+          (_zero_hw_sentinel): StatelessBuffer()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClampSte()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): StatsFromParameterScaling(
+              (parameter_list_stats): _ParameterListStats(
+                (first_tracked_param): _ViewParameterWrapper(
+                  (view_shape_impl): OverTensorView()
+                )
+                (stats): _Stats(
+                  (stats_impl): AbsMax()
+                )
+              )
+              (stats_scaling_impl): _StatsScaling(
+                (affine_rescaling): Identity()
+                (restrict_clamp_scaling): _RestrictClampValue(
+                  (clamp_min_ste): ScalarClampMinSte()
+                  (restrict_value_impl): PowerOfTwoRestrictValue(
+                    (float_to_int_impl): CeilSte()
+                    (power_of_two): PowerOfTwo()
+                  )
+                )
+                (restrict_scaling_pre): LogTwo()
+              )
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (relu46): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (avgpool5): TruncAvgPool2d(
+      kernel_size=(28, 28), stride=1, padding=0
+      (trunc_quant): TruncQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): TruncIntQuant(
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+          (float_to_int_impl): RoundSte()
+          (delay_wrapper): DelayWrapper(
+            (delay_impl): _NoDelay()
+          )
+        )
+      )
+    )
+    (flatten5): Flatten(start_dim=1, end_dim=-1)
+    (dropout5): Dropout(p=0.2, inplace=False)
+    (linear51): QuantLinear(
+      in_features=64, out_features=16, bias=True
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+    (relu5): QuantReLU(
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (act_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (fused_activation_quant_proxy): FusedActivationQuantProxy(
+          (activation_impl): ReLU()
+          (tensor_quant): RescalingIntQuant(
+            (int_quant): IntQuant(
+              (float_to_int_impl): RoundSte()
+              (tensor_clamp_impl): TensorClamp()
+              (delay_wrapper): DelayWrapper(
+                (delay_impl): _NoDelay()
+              )
+            )
+            (scaling_impl): ParameterFromRuntimeStatsScaling(
+              (stats_input_view_shape_impl): OverTensorView()
+              (stats): _Stats(
+                (stats_impl): AbsPercentile()
+              )
+              (restrict_scaling): _RestrictValue(
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (clamp_scaling): _ClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+              )
+              (restrict_inplace_preprocess): InplaceLogTwo()
+              (restrict_preprocess): LogTwo()
+            )
+            (int_scaling_impl): PowerOfTwoIntScaling()
+            (zero_point_impl): ZeroZeroPoint(
+              (zero_point): StatelessBuffer()
+            )
+            (msb_clamp_bit_width_impl): BitWidthConst(
+              (bit_width): StatelessBuffer()
+            )
+          )
+        )
+      )
+    )
+    (linear52): QuantLinear(
+      in_features=16, out_features=2, bias=True
+      (input_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (output_quant): ActQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+      )
+      (weight_quant): WeightQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClamp()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): ParameterFromStatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): Identity()
+              )
+              (stats): _Stats(
+                (stats_impl): MSE(
+                  (mse_init_op): AbsMax()
+                  (input_view_shape_impl): OverOutputChannelView(
+                    (permute_impl): Identity()
+                  )
+                )
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+            (restrict_inplace_preprocess): InplaceLogTwo()
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+      (bias_quant): BiasQuantProxyFromInjector(
+        (_zero_hw_sentinel): StatelessBuffer()
+        (tensor_quant): RescalingIntQuant(
+          (int_quant): IntQuant(
+            (float_to_int_impl): RoundSte()
+            (tensor_clamp_impl): TensorClampSte()
+            (delay_wrapper): DelayWrapper(
+              (delay_impl): _NoDelay()
+            )
+          )
+          (scaling_impl): StatsFromParameterScaling(
+            (parameter_list_stats): _ParameterListStats(
+              (first_tracked_param): _ViewParameterWrapper(
+                (view_shape_impl): OverTensorView()
+              )
+              (stats): _Stats(
+                (stats_impl): AbsMax()
+              )
+            )
+            (stats_scaling_impl): _StatsScaling(
+              (affine_rescaling): Identity()
+              (restrict_clamp_scaling): _RestrictClampValue(
+                (clamp_min_ste): ScalarClampMinSte()
+                (restrict_value_impl): PowerOfTwoRestrictValue(
+                  (float_to_int_impl): CeilSte()
+                  (power_of_two): PowerOfTwo()
+                )
+              )
+              (restrict_scaling_pre): LogTwo()
+            )
+          )
+          (int_scaling_impl): PowerOfTwoIntScaling()
+          (zero_point_impl): ZeroZeroPoint(
+            (zero_point): StatelessBuffer()
+          )
+          (msb_clamp_bit_width_impl): BitWidthConst(
+            (bit_width): StatelessBuffer()
+          )
+        )
+      )
+    )
+  )
+)
+Loading Model. Trained during 29 epochs
+Quant Model Summary
+==================================================================================================================================
+Layer (type:depth-idx)                                                           Output Shape              Param #
+==================================================================================================================================
+QUANT_SOFT_PRUNING_AFTER_SVD_CLASSIFIER                                          [64, 2]                   --
+├─Sequential: 1-1                                                                [64, 2]                   --
+│    └─QuantIdentity: 2-1                                                        [64, 3, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-1                                       [64, 3, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-2                                       [64, 3, 224, 224]         --
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantIdentity: 2-3                                                        --                        --
+│    │    └─ActQuantProxyFromInjector: 3-4                                       --                        --
+│    └─QuantConv2d: 2-4                                                          [64, 22, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-5                                       [64, 3, 224, 224]         --
+│    │    └─WeightQuantProxyFromInjector: 3-6                                    [22, 3, 3, 3]             616
+│    │    └─BiasQuantProxyFromInjector: 3-7                                      [22]                      22
+│    │    └─ActQuantProxyFromInjector: 3-8                                       [64, 22, 224, 224]        --
+│    └─QuantReLU: 2-5                                                            [64, 22, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-9                                       [64, 22, 224, 224]        --
+│    │    └─ActQuantProxyFromInjector: 3-10                                      [64, 22, 224, 224]        1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-7                                                            --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-12                                      --                        (recursive)
+│    └─Dropout2d: 2-8                                                            [64, 22, 224, 224]        --
+│    └─MaxPool2d: 2-9                                                            [64, 22, 112, 112]        --
+│    └─Sequential: 2-10                                                          [64, 14, 112, 112]        --
+│    │    └─QuantConv2d: 3-13                                                    [64, 7, 112, 112]         469
+│    │    └─QuantConv2d: 3-14                                                    [64, 14, 112, 112]        322
+│    └─QuantReLU: 2-11                                                           [64, 14, 112, 112]        --
+│    │    └─ActQuantProxyFromInjector: 3-15                                      [64, 14, 112, 112]        --
+│    │    └─ActQuantProxyFromInjector: 3-16                                      [64, 14, 112, 112]        1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-13                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-18                                      --                        (recursive)
+│    └─Dropout2d: 2-14                                                           [64, 14, 112, 112]        --
+│    └─MaxPool2d: 2-15                                                           [64, 14, 56, 56]          --
+│    └─QuantConv2d: 2-16                                                         [64, 14, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-19                                      [64, 14, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-20                                   [14, 14, 1, 1]            210
+│    │    └─BiasQuantProxyFromInjector: 3-21                                     [14]                      14
+│    │    └─ActQuantProxyFromInjector: 3-22                                      [64, 14, 56, 56]          --
+│    └─QuantReLU: 2-17                                                           [64, 14, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-23                                      [64, 14, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-24                                      [64, 14, 56, 56]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-19                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-26                                      --                        (recursive)
+│    └─Sequential: 2-20                                                          [64, 28, 56, 56]          --
+│    │    └─QuantConv2d: 3-27                                                    [64, 22, 56, 56]          946
+│    │    └─QuantConv2d: 3-28                                                    [64, 28, 56, 56]          1,904
+│    └─QuantReLU: 2-21                                                           [64, 28, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-29                                      [64, 28, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-30                                      [64, 28, 56, 56]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-23                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-32                                      --                        (recursive)
+│    └─QuantConv2d: 2-24                                                         [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-33                                      [64, 28, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-34                                   [32, 28, 1, 1]            928
+│    │    └─BiasQuantProxyFromInjector: 3-35                                     [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-36                                      [64, 32, 56, 56]          --
+│    └─QuantReLU: 2-25                                                           [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-37                                      [64, 32, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-38                                      [64, 32, 56, 56]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-27                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-40                                      --                        (recursive)
+│    └─QuantConv2d: 2-28                                                         [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-41                                      [64, 32, 56, 56]          --
+│    │    └─WeightQuantProxyFromInjector: 3-42                                   [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-43                                     [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-44                                      [64, 64, 56, 56]          --
+│    └─QuantReLU: 2-29                                                           [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-45                                      [64, 64, 56, 56]          --
+│    │    └─ActQuantProxyFromInjector: 3-46                                      [64, 64, 56, 56]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-31                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-48                                      --                        (recursive)
+│    └─MaxPool2d: 2-32                                                           [64, 64, 28, 28]          --
+│    └─QuantConv2d: 2-33                                                         [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-49                                      [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-50                                   [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-51                                     [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-52                                      [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-34                                                           [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-53                                      [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-54                                      [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-36                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-56                                      --                        (recursive)
+│    └─QuantConv2d: 2-37                                                         [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-57                                      [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-58                                   [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-59                                     [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-60                                      [64, 64, 28, 28]          --
+│    └─QuantReLU: 2-38                                                           [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-61                                      [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-62                                      [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-40                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-64                                      --                        (recursive)
+│    └─QuantConv2d: 2-41                                                         [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-65                                      [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-66                                   [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-67                                     [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-68                                      [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-42                                                           [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-69                                      [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-70                                      [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-44                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-72                                      --                        (recursive)
+│    └─QuantConv2d: 2-45                                                         [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-73                                      [64, 32, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-74                                   [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-75                                     [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-76                                      [64, 64, 28, 28]          --
+│    └─QuantReLU: 2-46                                                           [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-77                                      [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-78                                      [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-48                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-80                                      --                        (recursive)
+│    └─QuantConv2d: 2-49                                                         [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-81                                      [64, 64, 28, 28]          --
+│    │    └─WeightQuantProxyFromInjector: 3-82                                   [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-83                                     [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-84                                      [64, 32, 28, 28]          --
+│    └─QuantReLU: 2-50                                                           [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-85                                      [64, 32, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-86                                      [64, 32, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-52                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-88                                      --                        (recursive)
+│    └─Sequential: 2-53                                                          [64, 64, 28, 28]          --
+│    │    └─QuantConv2d: 3-89                                                    [64, 7, 28, 28]           679
+│    │    └─QuantConv2d: 3-90                                                    [64, 64, 28, 28]          1,472
+│    └─QuantReLU: 2-54                                                           [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-91                                      [64, 64, 28, 28]          --
+│    │    └─ActQuantProxyFromInjector: 3-92                                      [64, 64, 28, 28]          1
+│    └─QuantReLU: 2-55                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-93                                      --                        (recursive)
+│    └─QuantReLU: 2-56                                                           --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-94                                      --                        (recursive)
+│    └─TruncAvgPool2d: 2-57                                                      [64, 64, 1, 1]            --
+│    │    └─TruncQuantProxyFromInjector: 3-95                                    [64, 64, 1, 1]            --
+│    └─Flatten: 2-58                                                             [64, 64]                  --
+│    └─Dropout: 2-59                                                             [64, 64]                  --
+│    └─QuantLinear: 2-60                                                         [64, 16]                  --
+│    │    └─ActQuantProxyFromInjector: 3-96                                      [64, 64]                  --
+│    │    └─WeightQuantProxyFromInjector: 3-97                                   [16, 64]                  1,040
+│    │    └─BiasQuantProxyFromInjector: 3-98                                     [16]                      16
+│    │    └─ActQuantProxyFromInjector: 3-99                                      [64, 16]                  --
+│    └─QuantReLU: 2-61                                                           [64, 16]                  --
+│    │    └─ActQuantProxyFromInjector: 3-100                                     [64, 16]                  --
+│    │    └─ActQuantProxyFromInjector: 3-101                                     [64, 16]                  1
+│    └─QuantLinear: 2-62                                                         [64, 2]                   --
+│    │    └─ActQuantProxyFromInjector: 3-102                                     [64, 16]                  --
+│    │    └─WeightQuantProxyFromInjector: 3-103                                  [2, 16]                   34
+│    │    └─BiasQuantProxyFromInjector: 3-104                                    [2]                       2
+│    │    └─ActQuantProxyFromInjector: 3-105                                     [64, 2]                   --
+==================================================================================================================================
+Total params: 70,735
+Trainable params: 70,735
+Non-trainable params: 0
+Total mult-adds (M): 0
+==================================================================================================================================
+Input size (MB): 38.54
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 38.54
+==================================================================================================================================
+Original FP32 Model Summary
+===============================================================================================
+Layer (type:depth-idx)                        Output Shape              Param #
+===============================================================================================
+ORIGINAL_SOFT_PRUNING_AFTER_SVD_CLASSIFIER    [64, 2]                   --
+├─Sequential: 1-1                             [64, 2]                   --
+│    └─Conv2d: 2-1                            [64, 22, 224, 224]        616
+│    └─ReLU: 2-2                              [64, 22, 224, 224]        --
+│    └─Dropout2d: 2-3                         [64, 22, 224, 224]        --
+│    └─MaxPool2d: 2-4                         [64, 22, 112, 112]        --
+│    └─Sequential: 2-5                        [64, 14, 112, 112]        --
+│    │    └─Conv2d: 3-1                       [64, 7, 112, 112]         462
+│    │    └─Conv2d: 3-2                       [64, 14, 112, 112]        308
+│    └─ReLU: 2-6                              [64, 14, 112, 112]        --
+│    └─Dropout2d: 2-7                         [64, 14, 112, 112]        --
+│    └─MaxPool2d: 2-8                         [64, 14, 56, 56]          --
+│    └─Conv2d: 2-9                            [64, 14, 56, 56]          210
+│    └─ReLU: 2-10                             [64, 14, 56, 56]          --
+│    └─Sequential: 2-11                       [64, 28, 56, 56]          --
+│    │    └─Conv2d: 3-3                       [64, 22, 56, 56]          924
+│    │    └─Conv2d: 3-4                       [64, 28, 56, 56]          1,876
+│    └─ReLU: 2-12                             [64, 28, 56, 56]          --
+│    └─Conv2d: 2-13                           [64, 32, 56, 56]          928
+│    └─ReLU: 2-14                             [64, 32, 56, 56]          --
+│    └─Conv2d: 2-15                           [64, 64, 56, 56]          18,496
+│    └─ReLU: 2-16                             [64, 64, 56, 56]          --
+│    └─MaxPool2d: 2-17                        [64, 64, 28, 28]          --
+│    └─Conv2d: 2-18                           [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-19                             [64, 32, 28, 28]          --
+│    └─Conv2d: 2-20                           [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-21                             [64, 64, 28, 28]          --
+│    └─Conv2d: 2-22                           [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-23                             [64, 32, 28, 28]          --
+│    └─Conv2d: 2-24                           [64, 64, 28, 28]          18,496
+│    └─ReLU: 2-25                             [64, 64, 28, 28]          --
+│    └─Conv2d: 2-26                           [64, 32, 28, 28]          2,080
+│    └─ReLU: 2-27                             [64, 32, 28, 28]          --
+│    └─Sequential: 2-28                       [64, 64, 28, 28]          --
+│    │    └─Conv2d: 3-5                       [64, 7, 28, 28]           672
+│    │    └─Conv2d: 3-6                       [64, 64, 28, 28]          1,408
+│    └─ReLU: 2-29                             [64, 64, 28, 28]          --
+│    └─AdaptiveAvgPool2d: 2-30                [64, 64, 1, 1]            --
+│    └─Flatten: 2-31                          [64, 64]                  --
+│    └─Dropout: 2-32                          [64, 64]                  --
+│    └─Linear: 2-33                           [64, 16]                  1,040
+│    └─ReLU: 2-34                             [64, 16]                  --
+│    └─Linear: 2-35                           [64, 2]                   34
+===============================================================================================
+Total params: 70,206
+Trainable params: 70,206
+Non-trainable params: 0
+Total mult-adds (G): 9.37
+===============================================================================================
+Input size (MB): 38.54
+Forward/backward pass size (MB): 1075.38
+Params size (MB): 0.28
+Estimated Total Size (MB): 1114.20
+===============================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+
+Device: cuda
+Learning Rate: 0.0001
+Weight Decay: 0.0001
+Scheduler factor: 0.8
+Scheduler patience: 2
+Scheduler threshold: 0.001
+Scheduler min learning rate: 1e-06
+Batch Size: 64
+W: 224
+H: 224
+Batch Size: 64
+W: 224
+H: 224
+Starting script
+
+
+***Start Training: 12:33:08
+
+
+=== EPOCH 0/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7733   |0.8137   |0.6973   |0.7510   |
+40.53      |26.42     |14.11     |    Fire   |0.9158   |0.8825   |0.7981   |0.8382   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8622   |0.9098   |0.7921   |0.8469   |
+25.77      |17.68     |8.09      |    Fire   |0.9566   |0.9310   |0.8991   |0.9148   |
+
+Saving model with new best validation loss: 25.765
+Saving model with best Mean F1: 0.8808
+
+=== EPOCH 1/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8267   |0.8475   |0.7886   |0.8170   |
+31.70      |21.72     |9.98      |    Fire   |0.9414   |0.9111   |0.8708   |0.8905   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8801   |0.9126   |0.8303   |0.8695   |
+23.91      |16.41     |7.50      |    Fire   |0.9618   |0.9388   |0.9117   |0.9250   |
+
+Saving model with new best validation loss: 23.910
+Saving model with best Mean F1: 0.8973
+
+=== EPOCH 2/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8357   |0.8530   |0.8032   |0.8274   |
+30.41      |20.77     |9.64      |    Fire   |0.9444   |0.9168   |0.8759   |0.8959   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8981   |0.8716   |0.9244   |0.8972   |
+23.47      |15.80     |7.67      |    Fire   |0.9597   |0.9135   |0.9324   |0.9229   |
+
+Saving model with new best validation loss: 23.466
+Saving model with best Mean F1: 0.9100
+
+=== EPOCH 3/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8414   |0.8585   |0.8100   |0.8335   |
+29.66      |20.21     |9.45      |    Fire   |0.9438   |0.9113   |0.8800   |0.8954   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8941   |0.8747   |0.9103   |0.8922   |
+23.10      |15.53     |7.57      |    Fire   |0.9597   |0.9255   |0.9180   |0.9218   |
+
+Saving model with new best validation loss: 23.096
+
+=== EPOCH 4/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8446   |0.8605   |0.8154   |0.8373   |
+28.80      |19.65     |9.14      |    Fire   |0.9475   |0.9162   |0.8893   |0.9025   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8976   |0.9024   |0.8827   |0.8924   |
+22.48      |15.12     |7.36      |    Fire   |0.9587   |0.9237   |0.9162   |0.9199   |
+
+Saving model with new best validation loss: 22.476
+
+=== EPOCH 5/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8489   |0.8670   |0.8174   |0.8414   |
+28.54      |19.46     |9.08      |    Fire   |0.9466   |0.9142   |0.8880   |0.9009   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8969   |0.8620   |0.9355   |0.8973   |
+23.24      |15.79     |7.45      |    Fire   |0.9606   |0.9369   |0.9090   |0.9227   |
+
+
+=== EPOCH 6/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8501   |0.8663   |0.8209   |0.8430   |
+28.36      |19.26     |9.10      |    Fire   |0.9467   |0.9163   |0.8861   |0.9009   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8913   |0.8804   |0.8958   |0.8880   |
+22.94      |15.47     |7.47      |    Fire   |0.9578   |0.9158   |0.9216   |0.9187   |
+
+
+=== EPOCH 7/49 ===
+Learning Rate = 0.0001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8485   |0.8642   |0.8198   |0.8414   |
+28.53      |19.31     |9.22      |    Fire   |0.9463   |0.9151   |0.8859   |0.9002   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9007   |0.8830   |0.9147   |0.8986   |
+23.08      |14.92     |8.17      |    Fire   |0.9559   |0.9713   |0.8550   |0.9094   |
+
+
+=== EPOCH 8/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8504   |0.8628   |0.8262   |0.8441   |
+28.27      |19.29     |8.98      |    Fire   |0.9495   |0.9170   |0.8965   |0.9066   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9030   |0.8920   |0.9084   |0.9001   |
+21.95      |14.68     |7.26      |    Fire   |0.9634   |0.9604   |0.8955   |0.9268   |
+
+Saving model with new best validation loss: 21.946
+Saving model with new best smoke precision: 0.892
+Saving model with best Mean F1: 0.9135
+
+=== EPOCH 9/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8512   |0.8658   |0.8244   |0.8446   |
+28.12      |19.19     |8.93      |    Fire   |0.9497   |0.9220   |0.8914   |0.9065   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8993   |0.8774   |0.9190   |0.8977   |
+22.22      |15.01     |7.21      |    Fire   |0.9634   |0.9400   |0.9171   |0.9284   |
+
+
+=== EPOCH 10/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8507   |0.8658   |0.8231   |0.8439   |
+28.14      |19.21     |8.92      |    Fire   |0.9482   |0.9183   |0.8895   |0.9037   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8820   |0.9233   |0.8231   |0.8703   |
+23.31      |15.93     |7.38      |    Fire   |0.9620   |0.9364   |0.9153   |0.9257   |
+
+
+=== EPOCH 11/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8522   |0.8682   |0.8236   |0.8453   |
+28.29      |19.03     |9.27      |    Fire   |0.9446   |0.9139   |0.8802   |0.8967   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9021   |0.8884   |0.9108   |0.8995   |
+21.43      |14.34     |7.10      |    Fire   |0.9627   |0.9423   |0.9117   |0.9267   |
+
+Saving model with new best validation loss: 21.431
+
+=== EPOCH 12/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8545   |0.8666   |0.8312   |0.8485   |
+27.90      |19.09     |8.80      |    Fire   |0.9495   |0.9206   |0.8921   |0.9061   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8937   |0.9131   |0.8609   |0.8862   |
+22.88      |14.96     |7.92      |    Fire   |0.9601   |0.9709   |0.8721   |0.9188   |
+
+
+=== EPOCH 13/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8531   |0.8674   |0.8268   |0.8466   |
+27.97      |19.16     |8.81      |    Fire   |0.9493   |0.9191   |0.8931   |0.9059   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8850   |0.9093   |0.8454   |0.8762   |
+23.58      |15.57     |8.01      |    Fire   |0.9604   |0.9738   |0.8703   |0.9191   |
+
+
+=== EPOCH 14/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8549   |0.8693   |0.8286   |0.8485   |
+28.05      |19.07     |8.98      |    Fire   |0.9484   |0.9179   |0.8908   |0.9041   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8986   |0.9086   |0.8774   |0.8927   |
+21.40      |14.33     |7.07      |    Fire   |0.9639   |0.9526   |0.9054   |0.9284   |
+
+Saving model with new best validation loss: 21.402
+
+=== EPOCH 15/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8598   |0.8753   |0.8328   |0.8535   |
+27.39      |18.55     |8.84      |    Fire   |0.9488   |0.9193   |0.8908   |0.9048   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9028   |0.8727   |0.9341   |0.9024   |
+22.26      |14.98     |7.29      |    Fire   |0.9587   |0.9199   |0.9207   |0.9203   |
+
+
+=== EPOCH 16/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8569   |0.8700   |0.8328   |0.8510   |
+27.68      |18.76     |8.93      |    Fire   |0.9475   |0.9138   |0.8923   |0.9029   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9021   |0.8940   |0.9035   |0.8987   |
+21.71      |14.68     |7.03      |    Fire   |0.9641   |0.9501   |0.9090   |0.9291   |
+
+Saving model with best Mean F1: 0.9139
+
+=== EPOCH 17/49 ===
+Learning Rate = 8e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8547   |0.8722   |0.8244   |0.8476   |
+27.87      |18.97     |8.90      |    Fire   |0.9492   |0.9199   |0.8916   |0.9055   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8965   |0.8770   |0.9127   |0.8945   |
+22.56      |15.17     |7.39      |    Fire   |0.9622   |0.9638   |0.8874   |0.9240   |
+
+
+=== EPOCH 18/49 ===
+Learning Rate = 6.400000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8541   |0.8670   |0.8299   |0.8480   |
+27.84      |18.89     |8.95      |    Fire   |0.9473   |0.9159   |0.8888   |0.9022   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8965   |0.9021   |0.8803   |0.8911   |
+21.61      |14.62     |6.99      |    Fire   |0.9643   |0.9468   |0.9135   |0.9298   |
+
+
+=== EPOCH 19/49 ===
+Learning Rate = 6.400000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8575   |0.8715   |0.8321   |0.8513   |
+27.23      |18.69     |8.54      |    Fire   |0.9506   |0.9213   |0.8957   |0.9083   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9023   |0.8764   |0.9278   |0.9013   |
+22.50      |15.40     |7.10      |    Fire   |0.9620   |0.9421   |0.9090   |0.9253   |
+
+
+=== EPOCH 20/49 ===
+Learning Rate = 6.400000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8544   |0.8698   |0.8268   |0.8478   |
+27.42      |18.68     |8.75      |    Fire   |0.9485   |0.9177   |0.8914   |0.9044   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9056   |0.8921   |0.9142   |0.9030   |
+21.78      |14.42     |7.36      |    Fire   |0.9606   |0.9385   |0.9072   |0.9226   |
+
+Saving model with new best smoke precision: 0.892
+
+=== EPOCH 21/49 ===
+Learning Rate = 5.120000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8623   |0.8753   |0.8385   |0.8565   |
+26.97      |18.24     |8.73      |    Fire   |0.9496   |0.9225   |0.8906   |0.9063   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8930   |0.9067   |0.8667   |0.8862   |
+21.94      |14.72     |7.22      |    Fire   |0.9611   |0.9306   |0.9180   |0.9243   |
+
+
+=== EPOCH 22/49 ===
+Learning Rate = 5.120000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8632   |0.8753   |0.8406   |0.8576   |
+26.57      |18.05     |8.51      |    Fire   |0.9505   |0.9185   |0.8984   |0.9083   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8951   |0.9172   |0.8594   |0.8874   |
+22.00      |14.78     |7.22      |    Fire   |0.9646   |0.9696   |0.8910   |0.9286   |
+
+
+=== EPOCH 23/49 ===
+Learning Rate = 5.120000000000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8573   |0.8717   |0.8314   |0.8511   |
+26.90      |18.54     |8.36      |    Fire   |0.9518   |0.9263   |0.8948   |0.9103   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8953   |0.9084   |0.8701   |0.8888   |
+22.08      |14.75     |7.33      |    Fire   |0.9629   |0.9440   |0.9108   |0.9271   |
+
+
+=== EPOCH 24/49 ===
+Learning Rate = 4.0960000000000014e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8628   |0.8757   |0.8394   |0.8571   |
+26.36      |17.88     |8.48      |    Fire   |0.9505   |0.9183   |0.8988   |0.9085   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8857   |0.9263   |0.8284   |0.8746   |
+23.08      |15.74     |7.34      |    Fire   |0.9641   |0.9605   |0.8982   |0.9283   |
+
+
+=== EPOCH 25/49 ===
+Learning Rate = 4.0960000000000014e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8626   |0.8762   |0.8383   |0.8568   |
+26.48      |18.04     |8.44      |    Fire   |0.9513   |0.9203   |0.8999   |0.9100   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8979   |0.8908   |0.8977   |0.8943   |
+21.83      |14.70     |7.13      |    Fire   |0.9597   |0.9424   |0.8991   |0.9202   |
+
+
+=== EPOCH 26/49 ===
+Learning Rate = 4.0960000000000014e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8618   |0.8736   |0.8397   |0.8563   |
+26.85      |18.06     |8.79      |    Fire   |0.9489   |0.9179   |0.8931   |0.9053   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8860   |0.9168   |0.8391   |0.8762   |
+22.85      |15.60     |7.25      |    Fire   |0.9611   |0.9370   |0.9108   |0.9237   |
+
+
+=== EPOCH 27/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8607   |0.8734   |0.8371   |0.8549   |
+26.42      |18.02     |8.41      |    Fire   |0.9505   |0.9224   |0.8940   |0.9080   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8899   |0.9094   |0.8565   |0.8822   |
+22.58      |15.09     |7.49      |    Fire   |0.9590   |0.9253   |0.9153   |0.9203   |
+
+
+=== EPOCH 28/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8616   |0.8750   |0.8375   |0.8558   |
+26.63      |18.25     |8.39      |    Fire   |0.9498   |0.9187   |0.8957   |0.9071   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9072   |0.8974   |0.9113   |0.9043   |
+21.15      |14.14     |7.00      |    Fire   |0.9622   |0.9422   |0.9099   |0.9258   |
+
+Saving model with new best validation loss: 21.145
+Saving model with new best smoke precision: 0.897
+Saving model with best Mean F1: 0.9150
+
+=== EPOCH 29/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8631   |0.8740   |0.8422   |0.8578   |
+26.42      |18.09     |8.33      |    Fire   |0.9531   |0.9254   |0.9012   |0.9131   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9049   |0.9131   |0.8866   |0.8997   |
+21.08      |14.07     |7.01      |    Fire   |0.9650   |0.9520   |0.9108   |0.9309   |
+
+Saving model with new best validation loss: 21.077
+Saving model with best Mean F1: 0.9153
+
+=== EPOCH 30/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8636   |0.8768   |0.8397   |0.8579   |
+26.24      |17.90     |8.35      |    Fire   |0.9513   |0.9224   |0.8971   |0.9096   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9051   |0.8757   |0.9355   |0.9046   |
+21.99      |14.98     |7.01      |    Fire   |0.9641   |0.9467   |0.9126   |0.9294   |
+
+Saving model with best Mean F1: 0.9170
+
+=== EPOCH 31/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8598   |0.8741   |0.8342   |0.8537   |
+26.44      |18.19     |8.25      |    Fire   |0.9515   |0.9245   |0.8957   |0.9099   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9069   |0.8951   |0.9137   |0.9043   |
+21.19      |14.18     |7.00      |    Fire   |0.9655   |0.9445   |0.9207   |0.9325   |
+
+Saving model with best Mean F1: 0.9184
+
+=== EPOCH 32/49 ===
+Learning Rate = 3.2768000000000016e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8619   |0.8744   |0.8389   |0.8563   |
+26.36      |18.03     |8.33      |    Fire   |0.9516   |0.9229   |0.8980   |0.9102   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9039   |0.9061   |0.8929   |0.8994   |
+21.31      |14.23     |7.08      |    Fire   |0.9613   |0.9461   |0.9018   |0.9234   |
+
+
+=== EPOCH 33/49 ===
+Learning Rate = 2.6214400000000015e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8605   |0.8740   |0.8360   |0.8546   |
+26.44      |17.92     |8.52      |    Fire   |0.9496   |0.9194   |0.8942   |0.9066   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9056   |0.9036   |0.8997   |0.9016   |
+21.32      |14.06     |7.26      |    Fire   |0.9613   |0.9556   |0.8919   |0.9226   |
+
+Saving model with new best smoke precision: 0.904
+
+=== EPOCH 34/49 ===
+Learning Rate = 2.6214400000000015e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8634   |0.8760   |0.8403   |0.8578   |
+26.18      |17.82     |8.36      |    Fire   |0.9514   |0.9213   |0.8990   |0.9100   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9016   |0.9060   |0.8875   |0.8967   |
+21.38      |14.35     |7.03      |    Fire   |0.9625   |0.9389   |0.9144   |0.9265   |
+
+
+=== EPOCH 35/49 ===
+Learning Rate = 2.6214400000000015e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8672   |0.8797   |0.8447   |0.8619   |
+26.11      |17.63     |8.48      |    Fire   |0.9518   |0.9241   |0.8973   |0.9105   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9053   |0.8884   |0.9186   |0.9032   |
+22.01      |14.48     |7.53      |    Fire   |0.9564   |0.9059   |0.9279   |0.9168   |
+
+
+=== EPOCH 36/49 ===
+Learning Rate = 2.0971520000000012e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8644   |0.8778   |0.8404   |0.8587   |
+26.23      |17.80     |8.44      |    Fire   |0.9512   |0.9231   |0.8961   |0.9094   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9032   |0.9091   |0.8875   |0.8982   |
+21.41      |14.18     |7.23      |    Fire   |0.9618   |0.9437   |0.9063   |0.9246   |
+
+
+=== EPOCH 37/49 ===
+Learning Rate = 2.0971520000000012e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8656   |0.8765   |0.8449   |0.8604   |
+26.12      |17.92     |8.20      |    Fire   |0.9521   |0.9221   |0.9007   |0.9113   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9074   |0.9059   |0.9011   |0.9035   |
+20.99      |14.11     |6.88      |    Fire   |0.9611   |0.9252   |0.9243   |0.9247   |
+
+Saving model with new best validation loss: 20.992
+Saving model with new best smoke precision: 0.906
+Saving model with precision > 0.9 and recall > 0.9
+
+=== EPOCH 38/49 ===
+Learning Rate = 2.0971520000000012e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8662   |0.8782   |0.8442   |0.8609   |
+26.13      |17.58     |8.55      |    Fire   |0.9514   |0.9212   |0.8990   |0.9100   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9062   |0.9126   |0.8905   |0.9014   |
+21.28      |13.88     |7.40      |    Fire   |0.9622   |0.9549   |0.8964   |0.9247   |
+
+Saving model with new best smoke precision: 0.913
+
+=== EPOCH 39/49 ===
+Learning Rate = 2.0971520000000012e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8669   |0.8781   |0.8460   |0.8618   |
+25.85      |17.44     |8.41      |    Fire   |0.9514   |0.9220   |0.8984   |0.9100   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9032   |0.8943   |0.9060   |0.9001   |
+21.95      |14.47     |7.48      |    Fire   |0.9601   |0.9311   |0.9135   |0.9222   |
+
+
+=== EPOCH 40/49 ===
+Learning Rate = 2.0971520000000012e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8643   |0.8762   |0.8422   |0.8589   |
+25.78      |17.70     |8.08      |    Fire   |0.9541   |0.9262   |0.9042   |0.9151   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9086   |0.8969   |0.9152   |0.9060   |
+21.25      |14.08     |7.17      |    Fire   |0.9629   |0.9465   |0.9081   |0.9269   |
+
+
+=== EPOCH 41/49 ===
+Learning Rate = 1.677721600000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8645   |0.8778   |0.8408   |0.8589   |
+25.91      |17.75     |8.16      |    Fire   |0.9521   |0.9262   |0.8963   |0.9110   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9037   |0.9032   |0.8958   |0.8995   |
+21.34      |14.21     |7.13      |    Fire   |0.9620   |0.9364   |0.9153   |0.9257   |
+
+
+=== EPOCH 42/49 ===
+Learning Rate = 1.677721600000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8689   |0.8805   |0.8476   |0.8638   |
+26.04      |17.37     |8.67      |    Fire   |0.9503   |0.9218   |0.8942   |0.9078   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9035   |0.9024   |0.8963   |0.8993   |
+20.80      |13.99     |6.80      |    Fire   |0.9646   |0.9403   |0.9216   |0.9308   |
+
+Saving model with new best validation loss: 20.799
+
+=== EPOCH 43/49 ===
+Learning Rate = 1.677721600000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8672   |0.8786   |0.8460   |0.8620   |
+25.74      |17.43     |8.31      |    Fire   |0.9515   |0.9234   |0.8969   |0.9100   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9044   |0.9030   |0.8977   |0.9003   |
+20.91      |13.99     |6.93      |    Fire   |0.9622   |0.9389   |0.9135   |0.9260   |
+
+
+=== EPOCH 44/49 ===
+Learning Rate = 1.677721600000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8705   |0.8824   |0.8491   |0.8654   |
+25.81      |17.62     |8.19      |    Fire   |0.9520   |0.9265   |0.8952   |0.9106   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9023   |0.9069   |0.8880   |0.8974   |
+20.82      |13.92     |6.90      |    Fire   |0.9650   |0.9396   |0.9243   |0.9319   |
+
+
+=== EPOCH 45/49 ===
+Learning Rate = 1.677721600000001e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8706   |0.8841   |0.8471   |0.8652   |
+25.68      |17.35     |8.33      |    Fire   |0.9524   |0.9202   |0.9042   |0.9121   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8976   |0.9040   |0.8808   |0.8922   |
+21.40      |14.25     |7.16      |    Fire   |0.9604   |0.9304   |0.9153   |0.9228   |
+
+
+=== EPOCH 46/49 ===
+Learning Rate = 1.3421772800000009e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8695   |0.8796   |0.8503   |0.8647   |
+25.83      |17.33     |8.50      |    Fire   |0.9502   |0.9195   |0.8961   |0.9076   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8986   |0.8963   |0.8924   |0.8943   |
+21.55      |14.29     |7.25      |    Fire   |0.9625   |0.9489   |0.9036   |0.9257   |
+
+
+=== EPOCH 47/49 ===
+Learning Rate = 1.3421772800000009e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8636   |0.8756   |0.8413   |0.8581   |
+25.85      |17.69     |8.16      |    Fire   |0.9517   |0.9222   |0.8993   |0.9106   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9037   |0.8929   |0.9089   |0.9008   |
+21.69      |14.14     |7.56      |    Fire   |0.9564   |0.9088   |0.9243   |0.9165   |
+
+
+=== EPOCH 48/49 ===
+Learning Rate = 1.3421772800000009e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8643   |0.8759   |0.8427   |0.8590   |
+25.88      |17.52     |8.36      |    Fire   |0.9520   |0.9217   |0.9010   |0.9112   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9072   |0.8863   |0.9258   |0.9056   |
+21.24      |14.12     |7.12      |    Fire   |0.9601   |0.9288   |0.9162   |0.9224   |
+
+
+=== EPOCH 49/49 ===
+Learning Rate = 1.0737418240000008e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8696   |0.8831   |0.8460   |0.8642   |
+25.71      |17.37     |8.35      |    Fire   |0.9520   |0.9237   |0.8984   |0.9109   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8993   |0.9112   |0.8759   |0.8932   |
+22.21      |14.50     |7.71      |    Fire   |0.9578   |0.9386   |0.8955   |0.9166   |
+
+Saving last model
+
+***Script finished: 12:59:28
+
+Time elapsed: 0:26:19.672422

@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'v3_checkpoints_&_moreSaves_&_affineFixed/'
+RUN_FOLDER = 'experiments_256_add_fasdd/' + 'test_00/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -43,6 +43,14 @@ TRAIN_LABEL_DIR = train_labels
 VAL_IMG_DIR = val_imgs
 VAL_LABEL_DIR = val_labels
 
+FASDD_UAV_IMGS_DIR = '../../datasets/fasdd/fasdd_uav/images/'
+FASDD_UAV_TRAIN_LABELS_FILE = '../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/train.txt'
+FASDD_UAV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/test.txt'
+
+FASDD_CV_IMGS_DIR = '../../datasets/fasdd/fasdd_cv/images/'
+FASDD_CV_TRAIN_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/train.txt'
+FASDD_CV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
+
 DS_LEN = None
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
@@ -62,9 +70,9 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 140
+EPOCHS = 100
 
-LOAD_MODEL = True
+LOAD_MODEL = False
 if MODEL == "BED":
     LOAD_MODEL_FILE = "best_smoke_BED_classifier.pt"
 
