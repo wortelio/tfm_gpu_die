@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_36_intel_nc_ptq_simple_model_svd_pruned/'
+RUN_FOLDER = 'experiments/' + 'test_452_aimet_brevitas_fixed_point_w5W4H8a8b5_more_train/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -77,12 +77,12 @@ VAL_DS_LEN = None
 # ______________________________________________________________________ #
 MODEL = "BED"
 
-LEARNING_RATE = 5e-4
+LEARNING_RATE = 1e-3
 GRADIENTS_CLIP_NORM = 500
 # Optimizer
-WEIGHT_DECAY = 5e-4
+WEIGHT_DECAY = 1e-3
 FACTOR = 0.8
-PATIENCE = 1
+PATIENCE = 3
 THRES = 0.01
 MIN_LR = 1e-6
 
@@ -91,13 +91,22 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 20
+EPOCHS = 50
 
 LOAD_MODEL = True
-LOAD_MODEL_DIR = './experiments/test_35_pruning_090_after_svd_080_simple_model_more_train/weights/'
+# Aimet Model
+# LOAD_MODEL_DIR = './experiments/test_35_pruning_090_after_svd_080_simple_model_more_train/weights/'
+# No Compression Model
+# LOAD_MODEL_DIR = './experiments/test_20_no_sigmoid_softmax_permute_out/weights/'
+# Retrain
+LOAD_MODEL_DIR = './experiments/test_451_aimet_brevitas_fixed_point_w5W4H8a8b5_more_train/weights/'
 if MODEL == "BED":
-    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6289__epoch=14.pt"
-
+    # Aimet Model
+    # LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6289__epoch=14.pt"
+    # No Compression Model
+    # LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6405__epoch=144.pt"
+    # Retrain
+    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6167__epoch=49.pt" 
 
 LOSS_FN = "YOLOV1_LOSS"
 LAMBDA_L1_LOSS = 0
@@ -110,3 +119,14 @@ SVD_DIC_FILE = './data/greedy_selection_eval_scores_dict.pkl' if USE_PREVIOUS_DI
 PRUNING_DIC_FILE = './data/greedy_selection_eval_scores_dict.pkl' if USE_PREVIOUS_DIC else None
 SVD_COMPRESSION_RATIO = 0.80
 PRUNING_COMPRESSION_RATIO = 0.90
+
+# ______________________________________________________________________ #
+#                             Quantization                               #
+# ______________________________________________________________________ #
+FIXED_POINT = True
+
+WEIGHTS_BIT_WIDTH = 4
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
+HEAD_WEIGHTS_BIT_WIDTH = 8
+BIAS_BIT_WIDTH = 4
+ACTIVATIONS_BIT_WIDTH = 8

@@ -1,0 +1,3307 @@
+BED Detector.
+	No Sigmoid, No Softmax. Permute as a Layer.
+	DFire and FASDD UAV and CV.
+	FASDD: train and val datasets to train and test dataset to validate.
+	FASDD RS not included, as it only has smoke and it is too different to current pictures.
+	Brevitas Quantization.
+
+
+Datasets Length
+	Train: Full
+	Val: Full
+
+Load Model: True
+	Model: ./experiments/test_20_no_sigmoid_softmax_permute_out/weights/BED_detector__best_mAP=0.6405__epoch=144.pt
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Gradients Clip Norm: 500
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 3
+	Scheduler threshold: 0.01
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 175
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Grid, Bounding Boxes, Classes and Thresholds:
+	Grid: 7
+	Number of Bounding Boxes per Cell: 2
+	Number of Classes: 2
+	Maximum Number of Objects per Image: 10
+	IOU Threshold: 0.5
+	Score Threshold: 0.2
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 2
+	Head Weights Bit Width: 8
+	Bias Bit Width: 4
+	Activations Bit Width: 8
+
+Loss Function: YOLOV1_LOSS
+Lambda for L1 regularization: 0
+
+Using BED Detector
+
+Trainable parameters = 287276
+Total parameters = 287276
+Loading Model. Trained during 144 epochs
+
+Input shape is torch.Size([4, 3, 224, 224])
+Model shape is torch.Size([4, 12, 7, 7])
+
+BED Model Arquitecture
+SIMPLE_BED_DETECTOR(
+  (model): Sequential(
+    (conv1): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu1): ReLU()
+    (dropout1): Dropout2d(p=0.3, inplace=False)
+    (maxpool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv2): Conv2d(32, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn2): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu2): ReLU()
+    (dropout2): Dropout2d(p=0.3, inplace=False)
+    (maxpool3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv31): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn31): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu31): ReLU()
+    (conv32): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn32): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu32): ReLU()
+    (conv33): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn33): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu33): ReLU()
+    (conv34): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn34): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu34): ReLU()
+    (maxpool4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv41): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn41): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu41): ReLU()
+    (conv42): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn42): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu42): ReLU()
+    (conv43): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn43): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu43): ReLU()
+    (conv44): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn44): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu44): ReLU()
+    (conv45): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn45): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu45): ReLU()
+    (conv46): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn46): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu46): ReLU()
+    (maxpool5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv51): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn51): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu51): ReLU()
+    (conv52): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn52): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu52): ReLU()
+    (conv53): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn53): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu53): ReLU()
+    (conv54): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn54): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu54): ReLU()
+    (conv55): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn55): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu55): ReLU()
+    (conv56): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn56): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu56): ReLU()
+    (maxpool6): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv61): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn61): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu61): ReLU()
+    (conv62): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn62): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu62): ReLU()
+    (conv71): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn71): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu71): ReLU()
+    (conv72): Conv2d(64, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn72): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu72): ReLU()
+    (conv73): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn73): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu73): ReLU()
+    (conv74): Conv2d(16, 12, kernel_size=(1, 1), stride=(1, 1))
+  )
+)
+
+ORIGINAL Model Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+SIMPLE_BED_DETECTOR                      [1, 12, 7, 7]             --
+├─Sequential: 1-1                        [1, 12, 7, 7]             --
+│    └─Conv2d: 2-1                       [1, 32, 224, 224]         864
+│    └─BatchNorm2d: 2-2                  [1, 32, 224, 224]         64
+│    └─ReLU: 2-3                         [1, 32, 224, 224]         --
+│    └─Dropout2d: 2-4                    [1, 32, 224, 224]         --
+│    └─MaxPool2d: 2-5                    [1, 32, 112, 112]         --
+│    └─Conv2d: 2-6                       [1, 16, 112, 112]         4,608
+│    └─BatchNorm2d: 2-7                  [1, 16, 112, 112]         32
+│    └─ReLU: 2-8                         [1, 16, 112, 112]         --
+│    └─Dropout2d: 2-9                    [1, 16, 112, 112]         --
+│    └─MaxPool2d: 2-10                   [1, 16, 56, 56]           --
+│    └─Conv2d: 2-11                      [1, 16, 56, 56]           256
+│    └─BatchNorm2d: 2-12                 [1, 16, 56, 56]           32
+│    └─ReLU: 2-13                        [1, 16, 56, 56]           --
+│    └─Conv2d: 2-14                      [1, 32, 56, 56]           4,608
+│    └─BatchNorm2d: 2-15                 [1, 32, 56, 56]           64
+│    └─ReLU: 2-16                        [1, 32, 56, 56]           --
+│    └─Conv2d: 2-17                      [1, 32, 56, 56]           1,024
+│    └─BatchNorm2d: 2-18                 [1, 32, 56, 56]           64
+│    └─ReLU: 2-19                        [1, 32, 56, 56]           --
+│    └─Conv2d: 2-20                      [1, 64, 56, 56]           18,432
+│    └─BatchNorm2d: 2-21                 [1, 64, 56, 56]           128
+│    └─ReLU: 2-22                        [1, 64, 56, 56]           --
+│    └─MaxPool2d: 2-23                   [1, 64, 28, 28]           --
+│    └─Conv2d: 2-24                      [1, 32, 28, 28]           2,048
+│    └─BatchNorm2d: 2-25                 [1, 32, 28, 28]           64
+│    └─ReLU: 2-26                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-27                      [1, 64, 28, 28]           18,432
+│    └─BatchNorm2d: 2-28                 [1, 64, 28, 28]           128
+│    └─ReLU: 2-29                        [1, 64, 28, 28]           --
+│    └─Conv2d: 2-30                      [1, 32, 28, 28]           2,048
+│    └─BatchNorm2d: 2-31                 [1, 32, 28, 28]           64
+│    └─ReLU: 2-32                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-33                      [1, 64, 28, 28]           18,432
+│    └─BatchNorm2d: 2-34                 [1, 64, 28, 28]           128
+│    └─ReLU: 2-35                        [1, 64, 28, 28]           --
+│    └─Conv2d: 2-36                      [1, 32, 28, 28]           2,048
+│    └─BatchNorm2d: 2-37                 [1, 32, 28, 28]           64
+│    └─ReLU: 2-38                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-39                      [1, 64, 28, 28]           18,432
+│    └─BatchNorm2d: 2-40                 [1, 64, 28, 28]           128
+│    └─ReLU: 2-41                        [1, 64, 28, 28]           --
+│    └─MaxPool2d: 2-42                   [1, 64, 14, 14]           --
+│    └─Conv2d: 2-43                      [1, 32, 14, 14]           2,048
+│    └─BatchNorm2d: 2-44                 [1, 32, 14, 14]           64
+│    └─ReLU: 2-45                        [1, 32, 14, 14]           --
+│    └─Conv2d: 2-46                      [1, 64, 14, 14]           18,432
+│    └─BatchNorm2d: 2-47                 [1, 64, 14, 14]           128
+│    └─ReLU: 2-48                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-49                      [1, 32, 14, 14]           2,048
+│    └─BatchNorm2d: 2-50                 [1, 32, 14, 14]           64
+│    └─ReLU: 2-51                        [1, 32, 14, 14]           --
+│    └─Conv2d: 2-52                      [1, 64, 14, 14]           18,432
+│    └─BatchNorm2d: 2-53                 [1, 64, 14, 14]           128
+│    └─ReLU: 2-54                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-55                      [1, 64, 14, 14]           36,864
+│    └─BatchNorm2d: 2-56                 [1, 64, 14, 14]           128
+│    └─ReLU: 2-57                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-58                      [1, 64, 14, 14]           36,864
+│    └─BatchNorm2d: 2-59                 [1, 64, 14, 14]           128
+│    └─ReLU: 2-60                        [1, 64, 14, 14]           --
+│    └─MaxPool2d: 2-61                   [1, 64, 7, 7]             --
+│    └─Conv2d: 2-62                      [1, 64, 7, 7]             36,864
+│    └─BatchNorm2d: 2-63                 [1, 64, 7, 7]             128
+│    └─ReLU: 2-64                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-65                      [1, 64, 7, 7]             36,864
+│    └─BatchNorm2d: 2-66                 [1, 64, 7, 7]             128
+│    └─ReLU: 2-67                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-68                      [1, 64, 7, 7]             4,096
+│    └─BatchNorm2d: 2-69                 [1, 64, 7, 7]             128
+│    └─ReLU: 2-70                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-71                      [1, 16, 7, 7]             1,024
+│    └─BatchNorm2d: 2-72                 [1, 16, 7, 7]             32
+│    └─ReLU: 2-73                        [1, 16, 7, 7]             --
+│    └─Conv2d: 2-74                      [1, 16, 7, 7]             256
+│    └─BatchNorm2d: 2-75                 [1, 16, 7, 7]             32
+│    └─ReLU: 2-76                        [1, 16, 7, 7]             --
+│    └─Conv2d: 2-77                      [1, 12, 7, 7]             204
+==========================================================================================
+Total params: 287,276
+Trainable params: 287,276
+Non-trainable params: 0
+Total mult-adds (M): 251.96
+==========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 40.92
+Params size (MB): 1.15
+Estimated Total Size (MB): 42.67
+==========================================================================================
+
+*********************** Baseline mAP evaluation of Fused and Original Models ***********************
+
+Non Fused Model mAP metrics:
+{'mAP': tensor(0.6404), 'AP': [0.654179573059082, 0.6265760064125061], 'AR': [0.7168480157852173, 0.675156831741333]}
+
+Fused Model mAP metrics:
+{'mAP': tensor(0.6404), 'AP': [0.6541324257850647, 0.6265767216682434], 'AR': [0.7167630195617676, 0.675156831741333]}
+
+FUSED Model Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+SIMPLE_BED_DETECTOR                      [1, 12, 7, 7]             --
+├─Sequential: 1-1                        [1, 12, 7, 7]             --
+│    └─Conv2d: 2-1                       [1, 32, 224, 224]         896
+│    └─Identity: 2-2                     [1, 32, 224, 224]         --
+│    └─ReLU: 2-3                         [1, 32, 224, 224]         --
+│    └─Dropout2d: 2-4                    [1, 32, 224, 224]         --
+│    └─MaxPool2d: 2-5                    [1, 32, 112, 112]         --
+│    └─Conv2d: 2-6                       [1, 16, 112, 112]         4,624
+│    └─Identity: 2-7                     [1, 16, 112, 112]         --
+│    └─ReLU: 2-8                         [1, 16, 112, 112]         --
+│    └─Dropout2d: 2-9                    [1, 16, 112, 112]         --
+│    └─MaxPool2d: 2-10                   [1, 16, 56, 56]           --
+│    └─Conv2d: 2-11                      [1, 16, 56, 56]           272
+│    └─Identity: 2-12                    [1, 16, 56, 56]           --
+│    └─ReLU: 2-13                        [1, 16, 56, 56]           --
+│    └─Conv2d: 2-14                      [1, 32, 56, 56]           4,640
+│    └─Identity: 2-15                    [1, 32, 56, 56]           --
+│    └─ReLU: 2-16                        [1, 32, 56, 56]           --
+│    └─Conv2d: 2-17                      [1, 32, 56, 56]           1,056
+│    └─Identity: 2-18                    [1, 32, 56, 56]           --
+│    └─ReLU: 2-19                        [1, 32, 56, 56]           --
+│    └─Conv2d: 2-20                      [1, 64, 56, 56]           18,496
+│    └─Identity: 2-21                    [1, 64, 56, 56]           --
+│    └─ReLU: 2-22                        [1, 64, 56, 56]           --
+│    └─MaxPool2d: 2-23                   [1, 64, 28, 28]           --
+│    └─Conv2d: 2-24                      [1, 32, 28, 28]           2,080
+│    └─Identity: 2-25                    [1, 32, 28, 28]           --
+│    └─ReLU: 2-26                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-27                      [1, 64, 28, 28]           18,496
+│    └─Identity: 2-28                    [1, 64, 28, 28]           --
+│    └─ReLU: 2-29                        [1, 64, 28, 28]           --
+│    └─Conv2d: 2-30                      [1, 32, 28, 28]           2,080
+│    └─Identity: 2-31                    [1, 32, 28, 28]           --
+│    └─ReLU: 2-32                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-33                      [1, 64, 28, 28]           18,496
+│    └─Identity: 2-34                    [1, 64, 28, 28]           --
+│    └─ReLU: 2-35                        [1, 64, 28, 28]           --
+│    └─Conv2d: 2-36                      [1, 32, 28, 28]           2,080
+│    └─Identity: 2-37                    [1, 32, 28, 28]           --
+│    └─ReLU: 2-38                        [1, 32, 28, 28]           --
+│    └─Conv2d: 2-39                      [1, 64, 28, 28]           18,496
+│    └─Identity: 2-40                    [1, 64, 28, 28]           --
+│    └─ReLU: 2-41                        [1, 64, 28, 28]           --
+│    └─MaxPool2d: 2-42                   [1, 64, 14, 14]           --
+│    └─Conv2d: 2-43                      [1, 32, 14, 14]           2,080
+│    └─Identity: 2-44                    [1, 32, 14, 14]           --
+│    └─ReLU: 2-45                        [1, 32, 14, 14]           --
+│    └─Conv2d: 2-46                      [1, 64, 14, 14]           18,496
+│    └─Identity: 2-47                    [1, 64, 14, 14]           --
+│    └─ReLU: 2-48                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-49                      [1, 32, 14, 14]           2,080
+│    └─Identity: 2-50                    [1, 32, 14, 14]           --
+│    └─ReLU: 2-51                        [1, 32, 14, 14]           --
+│    └─Conv2d: 2-52                      [1, 64, 14, 14]           18,496
+│    └─Identity: 2-53                    [1, 64, 14, 14]           --
+│    └─ReLU: 2-54                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-55                      [1, 64, 14, 14]           36,928
+│    └─Identity: 2-56                    [1, 64, 14, 14]           --
+│    └─ReLU: 2-57                        [1, 64, 14, 14]           --
+│    └─Conv2d: 2-58                      [1, 64, 14, 14]           36,928
+│    └─Identity: 2-59                    [1, 64, 14, 14]           --
+│    └─ReLU: 2-60                        [1, 64, 14, 14]           --
+│    └─MaxPool2d: 2-61                   [1, 64, 7, 7]             --
+│    └─Conv2d: 2-62                      [1, 64, 7, 7]             36,928
+│    └─Identity: 2-63                    [1, 64, 7, 7]             --
+│    └─ReLU: 2-64                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-65                      [1, 64, 7, 7]             36,928
+│    └─Identity: 2-66                    [1, 64, 7, 7]             --
+│    └─ReLU: 2-67                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-68                      [1, 64, 7, 7]             4,160
+│    └─Identity: 2-69                    [1, 64, 7, 7]             --
+│    └─ReLU: 2-70                        [1, 64, 7, 7]             --
+│    └─Conv2d: 2-71                      [1, 16, 7, 7]             1,040
+│    └─Identity: 2-72                    [1, 16, 7, 7]             --
+│    └─ReLU: 2-73                        [1, 16, 7, 7]             --
+│    └─Conv2d: 2-74                      [1, 16, 7, 7]             272
+│    └─Identity: 2-75                    [1, 16, 7, 7]             --
+│    └─ReLU: 2-76                        [1, 16, 7, 7]             --
+│    └─Conv2d: 2-77                      [1, 12, 7, 7]             204
+==========================================================================================
+Total params: 286,252
+Trainable params: 285,228
+Non-trainable params: 1,024
+Total mult-adds (M): 254.51
+==========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 20.46
+Params size (MB): 1.15
+Estimated Total Size (MB): 22.21
+==========================================================================================
+
+Using Brevitas BED Detector
+
+Trainable parameters = 287311
+Total parameters = 287311
+
+Brevitas QUANT Model Summary
+=============================================================================================================================
+Layer (type:depth-idx)                                                      Output Shape              Param #
+=============================================================================================================================
+FIXED_POINT_QUANT_SIMPLE_BED_DETECTOR                                       [1, 12, 7, 7]             --
+├─Sequential: 1-1                                                           [1, 12, 7, 7]             --
+│    └─QuantIdentity: 2-1                                                   [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-1                                  [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-2                                  [1, 3, 224, 224]          --
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantIdentity: 2-3                                                   --                        --
+│    │    └─ActQuantProxyFromInjector: 3-4                                  --                        --
+│    └─QuantConv2d: 2-4                                                     [1, 32, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-5                                  [1, 3, 224, 224]          --
+│    │    └─WeightQuantProxyFromInjector: 3-6                               [32, 3, 3, 3]             896
+│    │    └─BiasQuantProxyFromInjector: 3-7                                 [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-8                                  [1, 32, 224, 224]         --
+│    └─QuantReLU: 2-5                                                       [1, 32, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-9                                  [1, 32, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-10                                 [1, 32, 224, 224]         1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-7                                                       --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-12                                 --                        (recursive)
+│    └─Dropout2d: 2-8                                                       [1, 32, 224, 224]         --
+│    └─QuantMaxPool2d: 2-9                                                  [1, 32, 112, 112]         --
+│    └─QuantConv2d: 2-10                                                    [1, 16, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-13                                 [1, 32, 112, 112]         --
+│    │    └─WeightQuantProxyFromInjector: 3-14                              [16, 32, 3, 3]            4,624
+│    │    └─BiasQuantProxyFromInjector: 3-15                                [16]                      16
+│    │    └─ActQuantProxyFromInjector: 3-16                                 [1, 16, 112, 112]         --
+│    └─QuantReLU: 2-11                                                      [1, 16, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-17                                 [1, 16, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-18                                 [1, 16, 112, 112]         1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-13                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-20                                 --                        (recursive)
+│    └─Dropout2d: 2-14                                                      [1, 16, 112, 112]         --
+│    └─QuantMaxPool2d: 2-15                                                 [1, 16, 56, 56]           --
+│    └─QuantConv2d: 2-16                                                    [1, 16, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-21                                 [1, 16, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-22                              [16, 16, 1, 1]            272
+│    │    └─BiasQuantProxyFromInjector: 3-23                                [16]                      16
+│    │    └─ActQuantProxyFromInjector: 3-24                                 [1, 16, 56, 56]           --
+│    └─QuantReLU: 2-17                                                      [1, 16, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-25                                 [1, 16, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-26                                 [1, 16, 56, 56]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-19                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-28                                 --                        (recursive)
+│    └─QuantConv2d: 2-20                                                    [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-29                                 [1, 16, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-30                              [32, 16, 3, 3]            4,640
+│    │    └─BiasQuantProxyFromInjector: 3-31                                [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-32                                 [1, 32, 56, 56]           --
+│    └─QuantReLU: 2-21                                                      [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-33                                 [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-34                                 [1, 32, 56, 56]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-23                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-36                                 --                        (recursive)
+│    └─QuantConv2d: 2-24                                                    [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-37                                 [1, 32, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-38                              [32, 32, 1, 1]            1,056
+│    │    └─BiasQuantProxyFromInjector: 3-39                                [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-40                                 [1, 32, 56, 56]           --
+│    └─QuantReLU: 2-25                                                      [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-41                                 [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-42                                 [1, 32, 56, 56]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-27                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-44                                 --                        (recursive)
+│    └─QuantConv2d: 2-28                                                    [1, 64, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-45                                 [1, 32, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-46                              [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-47                                [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-48                                 [1, 64, 56, 56]           --
+│    └─QuantReLU: 2-29                                                      [1, 64, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-49                                 [1, 64, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-50                                 [1, 64, 56, 56]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-31                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-52                                 --                        (recursive)
+│    └─QuantMaxPool2d: 2-32                                                 [1, 64, 28, 28]           --
+│    └─QuantConv2d: 2-33                                                    [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-53                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-54                              [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-55                                [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-56                                 [1, 32, 28, 28]           --
+│    └─QuantReLU: 2-34                                                      [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-57                                 [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-58                                 [1, 32, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-36                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-60                                 --                        (recursive)
+│    └─QuantConv2d: 2-37                                                    [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-61                                 [1, 32, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-62                              [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-63                                [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-64                                 [1, 64, 28, 28]           --
+│    └─QuantReLU: 2-38                                                      [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-65                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-66                                 [1, 64, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-40                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-68                                 --                        (recursive)
+│    └─QuantConv2d: 2-41                                                    [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-69                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-70                              [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-71                                [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-72                                 [1, 32, 28, 28]           --
+│    └─QuantReLU: 2-42                                                      [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-73                                 [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-74                                 [1, 32, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-44                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-76                                 --                        (recursive)
+│    └─QuantConv2d: 2-45                                                    [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-77                                 [1, 32, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-78                              [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-79                                [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-80                                 [1, 64, 28, 28]           --
+│    └─QuantReLU: 2-46                                                      [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-81                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-82                                 [1, 64, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-48                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-84                                 --                        (recursive)
+│    └─QuantConv2d: 2-49                                                    [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-85                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-86                              [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-87                                [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-88                                 [1, 32, 28, 28]           --
+│    └─QuantReLU: 2-50                                                      [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-89                                 [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-90                                 [1, 32, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-52                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-92                                 --                        (recursive)
+│    └─QuantConv2d: 2-53                                                    [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-93                                 [1, 32, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-94                              [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-95                                [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-96                                 [1, 64, 28, 28]           --
+│    └─QuantReLU: 2-54                                                      [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-97                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-98                                 [1, 64, 28, 28]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-56                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-100                                --                        (recursive)
+│    └─QuantMaxPool2d: 2-57                                                 [1, 64, 14, 14]           --
+│    └─QuantConv2d: 2-58                                                    [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-101                                [1, 64, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-102                             [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-103                               [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-104                                [1, 32, 14, 14]           --
+│    └─QuantReLU: 2-59                                                      [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-105                                [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-106                                [1, 32, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-61                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-108                                --                        (recursive)
+│    └─QuantConv2d: 2-62                                                    [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-109                                [1, 32, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-110                             [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-111                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-112                                [1, 64, 14, 14]           --
+│    └─QuantReLU: 2-63                                                      [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-113                                [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-114                                [1, 64, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-65                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-116                                --                        (recursive)
+│    └─QuantConv2d: 2-66                                                    [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-117                                [1, 64, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-118                             [32, 64, 1, 1]            2,080
+│    │    └─BiasQuantProxyFromInjector: 3-119                               [32]                      32
+│    │    └─ActQuantProxyFromInjector: 3-120                                [1, 32, 14, 14]           --
+│    └─QuantReLU: 2-67                                                      [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-121                                [1, 32, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-122                                [1, 32, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-69                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-124                                --                        (recursive)
+│    └─QuantConv2d: 2-70                                                    [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-125                                [1, 32, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-126                             [64, 32, 3, 3]            18,496
+│    │    └─BiasQuantProxyFromInjector: 3-127                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-128                                [1, 64, 14, 14]           --
+│    └─QuantReLU: 2-71                                                      [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-129                                [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-130                                [1, 64, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-73                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-132                                --                        (recursive)
+│    └─QuantConv2d: 2-74                                                    [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-133                                [1, 64, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-134                             [64, 64, 3, 3]            36,928
+│    │    └─BiasQuantProxyFromInjector: 3-135                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-136                                [1, 64, 14, 14]           --
+│    └─QuantReLU: 2-75                                                      [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-137                                [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-138                                [1, 64, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-77                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-140                                --                        (recursive)
+│    └─QuantConv2d: 2-78                                                    [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-141                                [1, 64, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-142                             [64, 64, 3, 3]            36,928
+│    │    └─BiasQuantProxyFromInjector: 3-143                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-144                                [1, 64, 14, 14]           --
+│    └─QuantReLU: 2-79                                                      [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-145                                [1, 64, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-146                                [1, 64, 14, 14]           1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-81                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-148                                --                        (recursive)
+│    └─QuantMaxPool2d: 2-82                                                 [1, 64, 7, 7]             --
+│    └─QuantConv2d: 2-83                                                    [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-149                                [1, 64, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-150                             [64, 64, 3, 3]            36,928
+│    │    └─BiasQuantProxyFromInjector: 3-151                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-152                                [1, 64, 7, 7]             --
+│    └─QuantReLU: 2-84                                                      [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-153                                [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-154                                [1, 64, 7, 7]             1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-86                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-156                                --                        (recursive)
+│    └─QuantConv2d: 2-87                                                    [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-157                                [1, 64, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-158                             [64, 64, 3, 3]            36,928
+│    │    └─BiasQuantProxyFromInjector: 3-159                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-160                                [1, 64, 7, 7]             --
+│    └─QuantReLU: 2-88                                                      [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-161                                [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-162                                [1, 64, 7, 7]             1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-90                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-164                                --                        (recursive)
+│    └─QuantConv2d: 2-91                                                    [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-165                                [1, 64, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-166                             [64, 64, 1, 1]            4,160
+│    │    └─BiasQuantProxyFromInjector: 3-167                               [64]                      64
+│    │    └─ActQuantProxyFromInjector: 3-168                                [1, 64, 7, 7]             --
+│    └─QuantReLU: 2-92                                                      [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-169                                [1, 64, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-170                                [1, 64, 7, 7]             1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-94                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-172                                --                        (recursive)
+│    └─QuantConv2d: 2-95                                                    [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-173                                [1, 64, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-174                             [16, 64, 1, 1]            1,040
+│    │    └─BiasQuantProxyFromInjector: 3-175                               [16]                      16
+│    │    └─ActQuantProxyFromInjector: 3-176                                [1, 16, 7, 7]             --
+│    └─QuantReLU: 2-96                                                      [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-177                                [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-178                                [1, 16, 7, 7]             1
+│    └─QuantReLU: 2-97                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+│    └─QuantReLU: 2-98                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-180                                --                        (recursive)
+│    └─QuantConv2d: 2-99                                                    [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-181                                [1, 16, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-182                             [16, 16, 1, 1]            272
+│    │    └─BiasQuantProxyFromInjector: 3-183                               [16]                      16
+│    │    └─ActQuantProxyFromInjector: 3-184                                [1, 16, 7, 7]             --
+│    └─QuantReLU: 2-100                                                     [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-185                                [1, 16, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-186                                [1, 16, 7, 7]             1
+│    └─QuantConv2d: 2-101                                                   [1, 12, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-187                                [1, 16, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-188                             [12, 16, 1, 1]            204
+│    │    └─BiasQuantProxyFromInjector: 3-189                               [12]                      12
+│    │    └─ActQuantProxyFromInjector: 3-190                                [1, 12, 7, 7]             --
+=============================================================================================================================
+Total params: 287,311
+Trainable params: 287,311
+Non-trainable params: 0
+Total mult-adds (M): 0
+=============================================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.60
+=============================================================================================================================
+
+Loading Pretrained Weights from Fused Model to Quant Model
+original model name:  - QNN model name: 
+Module type: <class 'modules.models.SIMPLE_BED_DETECTOR'>
+	______ Ignore weights or params of layer fused  and QNN 
+original model name: model - QNN model name: model
+Module type: <class 'torch.nn.modules.container.Sequential'>
+	______ Ignore weights or params of layer fused model and QNN model
+original model name: model.conv1 - QNN model name: model.conv1
+	****** Loading weights of Conv2d layer fused model.conv1 into QNN model.conv1
+original model name: model.relu1 - QNN model name: model.relu1
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu1 and QNN model.relu1
+original model name: model.dropout1 - QNN model name: model.dropout1
+Module type: <class 'torch.nn.modules.dropout.Dropout2d'>
+	______ Ignore weights or params of layer fused model.dropout1 and QNN model.dropout1
+original model name: model.maxpool2 - QNN model name: model.maxpool2
+Module type: <class 'torch.nn.modules.pooling.MaxPool2d'>
+	______ Ignore weights or params of layer fused model.maxpool2 and QNN model.maxpool2
+original model name: model.conv2 - QNN model name: model.conv2
+	****** Loading weights of Conv2d layer fused model.conv2 into QNN model.conv2
+original model name: model.relu2 - QNN model name: model.relu2
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu2 and QNN model.relu2
+original model name: model.dropout2 - QNN model name: model.dropout2
+Module type: <class 'torch.nn.modules.dropout.Dropout2d'>
+	______ Ignore weights or params of layer fused model.dropout2 and QNN model.dropout2
+original model name: model.maxpool3 - QNN model name: model.maxpool3
+Module type: <class 'torch.nn.modules.pooling.MaxPool2d'>
+	______ Ignore weights or params of layer fused model.maxpool3 and QNN model.maxpool3
+original model name: model.conv31 - QNN model name: model.conv31
+	****** Loading weights of Conv2d layer fused model.conv31 into QNN model.conv31
+original model name: model.relu31 - QNN model name: model.relu31
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu31 and QNN model.relu31
+original model name: model.conv32 - QNN model name: model.conv32
+	****** Loading weights of Conv2d layer fused model.conv32 into QNN model.conv32
+original model name: model.relu32 - QNN model name: model.relu32
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu32 and QNN model.relu32
+original model name: model.conv33 - QNN model name: model.conv33
+	****** Loading weights of Conv2d layer fused model.conv33 into QNN model.conv33
+original model name: model.relu33 - QNN model name: model.relu33
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu33 and QNN model.relu33
+original model name: model.conv34 - QNN model name: model.conv34
+	****** Loading weights of Conv2d layer fused model.conv34 into QNN model.conv34
+original model name: model.relu34 - QNN model name: model.relu34
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu34 and QNN model.relu34
+original model name: model.maxpool4 - QNN model name: model.maxpool4
+Module type: <class 'torch.nn.modules.pooling.MaxPool2d'>
+	______ Ignore weights or params of layer fused model.maxpool4 and QNN model.maxpool4
+original model name: model.conv41 - QNN model name: model.conv41
+	****** Loading weights of Conv2d layer fused model.conv41 into QNN model.conv41
+original model name: model.relu41 - QNN model name: model.relu41
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu41 and QNN model.relu41
+original model name: model.conv42 - QNN model name: model.conv42
+	****** Loading weights of Conv2d layer fused model.conv42 into QNN model.conv42
+original model name: model.relu42 - QNN model name: model.relu42
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu42 and QNN model.relu42
+original model name: model.conv43 - QNN model name: model.conv43
+	****** Loading weights of Conv2d layer fused model.conv43 into QNN model.conv43
+original model name: model.relu43 - QNN model name: model.relu43
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu43 and QNN model.relu43
+original model name: model.conv44 - QNN model name: model.conv44
+	****** Loading weights of Conv2d layer fused model.conv44 into QNN model.conv44
+original model name: model.relu44 - QNN model name: model.relu44
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu44 and QNN model.relu44
+original model name: model.conv45 - QNN model name: model.conv45
+	****** Loading weights of Conv2d layer fused model.conv45 into QNN model.conv45
+original model name: model.relu45 - QNN model name: model.relu45
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu45 and QNN model.relu45
+original model name: model.conv46 - QNN model name: model.conv46
+	****** Loading weights of Conv2d layer fused model.conv46 into QNN model.conv46
+original model name: model.relu46 - QNN model name: model.relu46
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu46 and QNN model.relu46
+original model name: model.maxpool5 - QNN model name: model.maxpool5
+Module type: <class 'torch.nn.modules.pooling.MaxPool2d'>
+	______ Ignore weights or params of layer fused model.maxpool5 and QNN model.maxpool5
+original model name: model.conv51 - QNN model name: model.conv51
+	****** Loading weights of Conv2d layer fused model.conv51 into QNN model.conv51
+original model name: model.relu51 - QNN model name: model.relu51
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu51 and QNN model.relu51
+original model name: model.conv52 - QNN model name: model.conv52
+	****** Loading weights of Conv2d layer fused model.conv52 into QNN model.conv52
+original model name: model.relu52 - QNN model name: model.relu52
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu52 and QNN model.relu52
+original model name: model.conv53 - QNN model name: model.conv53
+	****** Loading weights of Conv2d layer fused model.conv53 into QNN model.conv53
+original model name: model.relu53 - QNN model name: model.relu53
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu53 and QNN model.relu53
+original model name: model.conv54 - QNN model name: model.conv54
+	****** Loading weights of Conv2d layer fused model.conv54 into QNN model.conv54
+original model name: model.relu54 - QNN model name: model.relu54
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu54 and QNN model.relu54
+original model name: model.conv55 - QNN model name: model.conv55
+	****** Loading weights of Conv2d layer fused model.conv55 into QNN model.conv55
+original model name: model.relu55 - QNN model name: model.relu55
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu55 and QNN model.relu55
+original model name: model.conv56 - QNN model name: model.conv56
+	****** Loading weights of Conv2d layer fused model.conv56 into QNN model.conv56
+original model name: model.relu56 - QNN model name: model.relu56
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu56 and QNN model.relu56
+original model name: model.maxpool6 - QNN model name: model.maxpool6
+Module type: <class 'torch.nn.modules.pooling.MaxPool2d'>
+	______ Ignore weights or params of layer fused model.maxpool6 and QNN model.maxpool6
+original model name: model.conv61 - QNN model name: model.conv61
+	****** Loading weights of Conv2d layer fused model.conv61 into QNN model.conv61
+original model name: model.relu61 - QNN model name: model.relu61
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu61 and QNN model.relu61
+original model name: model.conv62 - QNN model name: model.conv62
+	****** Loading weights of Conv2d layer fused model.conv62 into QNN model.conv62
+original model name: model.relu62 - QNN model name: model.relu62
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu62 and QNN model.relu62
+original model name: model.conv71 - QNN model name: model.conv71
+	****** Loading weights of Conv2d layer fused model.conv71 into QNN model.conv71
+original model name: model.relu71 - QNN model name: model.relu71
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu71 and QNN model.relu71
+original model name: model.conv72 - QNN model name: model.conv72
+	****** Loading weights of Conv2d layer fused model.conv72 into QNN model.conv72
+original model name: model.relu72 - QNN model name: model.relu72
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu72 and QNN model.relu72
+original model name: model.conv73 - QNN model name: model.conv73
+	****** Loading weights of Conv2d layer fused model.conv73 into QNN model.conv73
+original model name: model.relu73 - QNN model name: model.relu73
+Module type: <class 'torch.nn.modules.activation.ReLU'>
+	______ Ignore weights or params of layer fused model.relu73 and QNN model.relu73
+original model name: model.conv74 - QNN model name: model.conv74
+	****** Loading weights of Conv2d layer fused model.conv74 into QNN model.conv74
+Starting script
+
+
+***Start Training: 10:37:04
+
+
+=== EPOCH 0/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+73.45      |26.69     |33.99     |7.29      |5.48      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+66.31      |25.48     |29.30     |6.56      |4.97      |
+
+Saving model with new best validation loss: 66.314
+
+=== EPOCH 1/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+67.97      |24.53     |31.41     |7.55      |4.49      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+68.05      |26.41     |28.17     |8.74      |4.73      |
+
+
+=== EPOCH 2/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+66.79      |24.13     |30.66     |7.58      |4.42      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+67.19      |26.99     |28.52     |5.83      |5.86      |
+
+
+=== EPOCH 3/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+66.43      |23.74     |30.54     |7.88      |4.28      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.64      |24.45     |27.26     |7.37      |5.57      |
+
+Saving model with new best validation loss: 64.642
+
+=== EPOCH 4/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+65.34      |23.48     |30.17     |7.56      |4.13      |    |0.3608     |0.4850    |0.3439    |0.5271    |0.3523    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+64.64      |25.02     |26.10     |8.12      |5.40      |    |0.4149     |0.5350    |0.4789    |0.5837    |0.4469    |
+
+Saving model with new best validation loss: 64.636
+Saving model with new best mAP: 0.4469
+
+=== EPOCH 5/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.83      |23.27     |29.92     |7.58      |4.07      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.62      |24.54     |26.40     |8.01      |4.67      |
+
+Saving model with new best validation loss: 63.615
+
+=== EPOCH 6/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.44      |23.17     |29.67     |7.62      |3.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.33      |25.52     |28.59     |5.63      |5.59      |
+
+
+=== EPOCH 7/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.27      |23.13     |29.61     |7.59      |3.94      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.47      |25.29     |27.18     |6.39      |5.60      |
+
+
+=== EPOCH 8/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.72      |22.77     |29.36     |7.58      |4.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.72      |23.96     |28.61     |5.45      |5.70      |
+
+
+=== EPOCH 9/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+63.89      |22.83     |29.47     |7.61      |3.97      |    |0.3742     |0.4986    |0.3545    |0.5380    |0.3643    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+63.04      |23.49     |26.82     |7.30      |5.42      |    |0.4395     |0.5574    |0.5138    |0.5996    |0.4767    |
+
+Saving model with new best validation loss: 63.044
+Saving model with new best mAP: 0.4767
+
+=== EPOCH 10/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.61      |22.75     |29.36     |7.65      |3.85      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+66.30      |26.01     |24.13     |10.74     |5.43      |
+
+
+=== EPOCH 11/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.58      |22.74     |29.28     |7.61      |3.96      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.93      |24.95     |26.37     |7.03      |4.58      |
+
+Saving model with new best validation loss: 62.931
+
+=== EPOCH 12/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.83      |23.28     |29.09     |7.62      |3.84      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.03      |24.06     |27.97     |6.41      |4.58      |
+
+
+=== EPOCH 13/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.11      |22.90     |28.85     |7.59      |3.77      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+70.12      |27.26     |30.39     |5.33      |7.15      |
+
+
+=== EPOCH 14/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+62.90      |22.60     |28.93     |7.52      |3.85      |    |0.3807     |0.5068    |0.3669    |0.5489    |0.3738    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+66.44      |25.72     |26.96     |7.71      |6.05      |    |0.4115     |0.5400    |0.4342    |0.5633    |0.4229    |
+
+
+=== EPOCH 15/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.75      |22.59     |28.80     |7.56      |3.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.01      |23.24     |28.13     |5.39      |5.25      |
+
+Saving model with new best validation loss: 62.010
+
+=== EPOCH 16/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.33      |22.40     |28.61     |7.55      |3.76      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.04      |23.49     |27.50     |5.32      |4.73      |
+
+Saving model with new best validation loss: 61.036
+
+=== EPOCH 17/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.60      |22.59     |28.62     |7.59      |3.80      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.29      |24.78     |25.12     |8.89      |6.51      |
+
+
+=== EPOCH 18/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.29      |22.24     |28.74     |7.51      |3.80      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.84      |24.78     |26.15     |7.08      |4.83      |
+
+
+=== EPOCH 19/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+62.49      |22.44     |28.70     |7.55      |3.81      |    |0.3885     |0.5030    |0.3668    |0.5430    |0.3776    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+66.46      |26.13     |31.04     |4.44      |4.85      |    |0.3452     |0.4580    |0.4964    |0.5757    |0.4208    |
+
+
+=== EPOCH 20/174 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.27      |22.25     |28.68     |7.53      |3.82      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.68      |24.45     |26.19     |7.56      |6.48      |
+
+
+=== EPOCH 21/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.43      |21.30     |28.01     |7.51      |3.60      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.68      |23.37     |25.49     |7.05      |4.77      |
+
+Saving model with new best validation loss: 60.676
+
+=== EPOCH 22/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.24      |21.42     |27.78     |7.51      |3.54      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.50      |25.18     |24.30     |7.66      |4.35      |
+
+
+=== EPOCH 23/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.15      |21.29     |27.78     |7.54      |3.54      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.51      |22.53     |25.17     |7.89      |4.92      |
+
+Saving model with new best validation loss: 60.512
+
+=== EPOCH 24/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+59.87      |21.14     |27.77     |7.54      |3.42      |    |0.4237     |0.5332    |0.4040    |0.5716    |0.4138    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+61.78      |23.08     |27.61     |6.04      |5.05      |    |0.4893     |0.5855    |0.5298    |0.6002    |0.5095    |
+
+Saving model with new best mAP: 0.5095
+
+=== EPOCH 25/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.70      |21.10     |27.68     |7.46      |3.46      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.43      |24.45     |25.80     |6.59      |5.59      |
+
+
+=== EPOCH 26/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.98      |21.29     |27.74     |7.46      |3.48      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.31      |22.38     |26.40     |6.26      |4.26      |
+
+Saving model with new best validation loss: 59.309
+
+=== EPOCH 27/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.83      |21.07     |27.70     |7.55      |3.51      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.70      |22.68     |24.88     |7.76      |4.38      |
+
+
+=== EPOCH 28/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.95      |21.17     |27.79     |7.52      |3.47      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.24      |23.41     |26.11     |6.47      |5.24      |
+
+
+=== EPOCH 29/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+59.68      |21.02     |27.64     |7.54      |3.48      |    |0.4234     |0.5363    |0.4067    |0.5753    |0.4150    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.93      |22.63     |24.50     |7.31      |4.49      |    |0.4775     |0.5921    |0.4952    |0.5960    |0.4863    |
+
+Saving model with new best validation loss: 58.934
+
+=== EPOCH 30/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.75      |21.00     |27.74     |7.53      |3.47      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.30      |22.71     |22.49     |10.21     |4.89      |
+
+
+=== EPOCH 31/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.45      |20.91     |27.62     |7.52      |3.40      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.34      |22.46     |25.74     |6.58      |4.56      |
+
+
+=== EPOCH 32/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.50      |21.01     |27.49     |7.53      |3.46      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.90      |23.45     |24.32     |8.33      |4.80      |
+
+
+=== EPOCH 33/174 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.75      |21.07     |27.62     |7.53      |3.53      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.39      |23.69     |25.32     |8.13      |5.25      |
+
+
+=== EPOCH 34/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.25      |20.35     |27.05     |7.51      |3.34      |    |0.4379     |0.5489    |0.4208    |0.5895    |0.4293    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+59.18      |22.79     |24.26     |7.01      |5.12      |    |0.5114     |0.6116    |0.5263    |0.6060    |0.5189    |
+
+Saving model with new best mAP: 0.5189
+
+=== EPOCH 35/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.91      |20.26     |26.92     |7.49      |3.24      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.05      |21.69     |25.46     |6.18      |4.71      |
+
+Saving model with new best validation loss: 58.047
+
+=== EPOCH 36/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.81      |20.13     |26.91     |7.48      |3.29      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.24      |21.83     |24.18     |7.42      |6.81      |
+
+
+=== EPOCH 37/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.80      |20.21     |26.77     |7.49      |3.33      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.38      |22.40     |23.39     |7.94      |4.65      |
+
+
+=== EPOCH 38/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.85      |20.27     |26.80     |7.48      |3.29      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.57      |22.12     |24.12     |7.22      |4.11      |
+
+Saving model with new best validation loss: 57.574
+
+=== EPOCH 39/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.82      |20.22     |26.79     |7.54      |3.27      |    |0.4485     |0.5551    |0.4255    |0.5909    |0.4370    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+63.23      |24.46     |27.42     |5.63      |5.72      |    |0.4544     |0.5528    |0.5314    |0.5972    |0.4929    |
+
+
+=== EPOCH 40/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.83      |20.15     |26.88     |7.48      |3.33      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.00      |22.36     |22.32     |9.89      |4.43      |
+
+
+=== EPOCH 41/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.64      |20.18     |26.72     |7.53      |3.21      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.64      |22.41     |23.15     |7.99      |5.09      |
+
+
+=== EPOCH 42/174 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.88      |20.20     |26.82     |7.55      |3.32      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.48      |22.17     |25.50     |6.04      |4.77      |
+
+
+=== EPOCH 43/174 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.52      |19.44     |26.41     |7.50      |3.17      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.72      |20.85     |22.34     |8.70      |3.83      |
+
+Saving model with new best validation loss: 55.717
+
+=== EPOCH 44/174 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+56.29      |19.48     |26.24     |7.50      |3.07      |    |0.4654     |0.5666    |0.4466    |0.6062    |0.4560    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.22      |21.36     |23.83     |7.15      |4.88      |    |0.5425     |0.6261    |0.5430    |0.6209    |0.5427    |
+
+Saving model with new best mAP: 0.5427
+
+=== EPOCH 45/174 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.07      |19.43     |26.09     |7.46      |3.09      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.63      |22.65     |24.11     |7.15      |4.72      |
+
+
+=== EPOCH 46/174 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.00      |19.44     |26.06     |7.47      |3.03      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.91      |21.81     |22.59     |7.82      |4.68      |
+
+
+=== EPOCH 47/174 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.73      |19.27     |25.98     |7.42      |3.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.47      |21.12     |26.18     |5.21      |4.95      |
+
+
+=== EPOCH 48/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.75      |18.81     |25.57     |7.46      |2.92      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.04      |20.53     |24.20     |6.53      |4.78      |
+
+
+=== EPOCH 49/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+54.71      |18.81     |25.56     |7.46      |2.88      |    |0.4888     |0.5832    |0.4734    |0.6232    |0.4811    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+54.70      |20.00     |23.44     |6.99      |4.26      |    |0.5269     |0.6281    |0.5606    |0.6239    |0.5438    |
+
+Saving model with new best validation loss: 54.697
+Saving model with new best mAP: 0.5438
+
+=== EPOCH 50/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.70      |18.67     |25.63     |7.46      |2.93      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.69      |20.33     |21.92     |8.42      |4.01      |
+
+Saving model with new best validation loss: 54.693
+
+=== EPOCH 51/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.50      |18.69     |25.48     |7.41      |2.92      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.93      |20.93     |23.16     |7.31      |4.53      |
+
+
+=== EPOCH 52/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.70      |18.87     |25.47     |7.45      |2.92      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.26      |21.07     |23.75     |6.49      |4.95      |
+
+
+=== EPOCH 53/174 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.44      |18.70     |25.44     |7.44      |2.88      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.55      |21.42     |22.96     |8.30      |4.87      |
+
+
+=== EPOCH 54/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+53.75      |18.29     |25.16     |7.50      |2.80      |    |0.5020     |0.5941    |0.4771    |0.6280    |0.4896    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+55.97      |20.49     |24.44     |6.15      |4.89      |    |0.5391     |0.6290    |0.5696    |0.6296    |0.5543    |
+
+Saving model with new best mAP: 0.5543
+
+=== EPOCH 55/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.62      |18.32     |25.07     |7.43      |2.80      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.12      |20.43     |24.68     |5.81      |5.19      |
+
+
+=== EPOCH 56/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.52      |18.19     |25.10     |7.42      |2.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.04      |20.15     |23.38     |6.71      |3.79      |
+
+Saving model with new best validation loss: 54.036
+
+=== EPOCH 57/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.42      |18.09     |25.12     |7.45      |2.76      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.69      |20.38     |23.63     |6.45      |5.24      |
+
+
+=== EPOCH 58/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.46      |18.17     |25.06     |7.43      |2.79      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.14      |22.22     |22.04     |9.59      |4.29      |
+
+
+=== EPOCH 59/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+53.55      |18.27     |25.09     |7.40      |2.80      |    |0.5005     |0.5903    |0.4800    |0.6277    |0.4903    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+54.26      |20.38     |22.54     |7.18      |4.15      |    |0.5662     |0.6356    |0.5460    |0.6237    |0.5561    |
+
+Saving model with new best mAP: 0.5561
+
+=== EPOCH 60/174 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.49      |18.16     |25.08     |7.44      |2.80      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.87      |20.53     |22.66     |7.62      |4.06      |
+
+
+=== EPOCH 61/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.65      |17.76     |24.73     |7.44      |2.72      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.24      |19.62     |22.39     |6.98      |4.25      |
+
+Saving model with new best validation loss: 53.239
+
+=== EPOCH 62/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.42      |17.72     |24.59     |7.41      |2.69      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.10      |20.84     |23.14     |7.14      |4.98      |
+
+
+=== EPOCH 63/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.62      |17.79     |24.63     |7.44      |2.75      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.86      |19.95     |22.28     |7.19      |4.45      |
+
+
+=== EPOCH 64/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.50      |17.81     |24.56     |7.41      |2.72      |    |0.5126     |0.6001    |0.4994    |0.6413    |0.5060    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+53.57      |20.03     |23.12     |6.26      |4.17      |    |0.5680     |0.6421    |0.5714    |0.6384    |0.5697    |
+
+Saving model with new best mAP: 0.5697
+
+=== EPOCH 65/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.41      |17.76     |24.61     |7.39      |2.65      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.65      |19.46     |22.28     |6.91      |4.00      |
+
+Saving model with new best validation loss: 52.654
+
+=== EPOCH 66/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.55      |17.76     |24.65     |7.41      |2.73      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.26      |20.47     |22.40     |7.58      |4.82      |
+
+
+=== EPOCH 67/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.27      |17.65     |24.55     |7.43      |2.65      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.84      |20.51     |23.78     |6.16      |4.39      |
+
+
+=== EPOCH 68/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.28      |17.61     |24.53     |7.42      |2.72      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.95      |20.53     |23.56     |6.15      |4.70      |
+
+
+=== EPOCH 69/174 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.22      |17.67     |24.54     |7.36      |2.65      |    |0.5136     |0.6019    |0.5003    |0.6402    |0.5070    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+54.96      |20.55     |24.07     |5.84      |4.49      |    |0.5672     |0.6432    |0.5723    |0.6322    |0.5698    |
+
+Saving model with new best mAP: 0.5698
+
+=== EPOCH 70/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.67      |17.43     |24.28     |7.39      |2.57      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.11      |20.13     |23.03     |6.72      |4.23      |
+
+
+=== EPOCH 71/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.61      |17.35     |24.27     |7.39      |2.60      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.12      |18.59     |22.62     |6.10      |3.82      |
+
+Saving model with new best validation loss: 51.123
+
+=== EPOCH 72/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.53      |17.31     |24.25     |7.39      |2.58      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.19      |19.80     |22.63     |6.70      |4.06      |
+
+
+=== EPOCH 73/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.57      |17.41     |24.20     |7.41      |2.55      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.15      |20.39     |22.86     |6.60      |4.31      |
+
+
+=== EPOCH 74/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+51.47      |17.27     |24.27     |7.38      |2.55      |    |0.5165     |0.6085    |0.5077    |0.6497    |0.5121    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.31      |19.12     |22.22     |6.71      |4.27      |    |0.5687     |0.6538    |0.5852    |0.6469    |0.5770    |
+
+Saving model with new best mAP: 0.5770
+
+=== EPOCH 75/174 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.43      |17.28     |24.21     |7.38      |2.56      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.72      |19.50     |21.96     |7.61      |4.65      |
+
+
+=== EPOCH 76/174 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.91      |17.10     |23.97     |7.36      |2.48      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.32      |18.67     |24.16     |5.31      |4.17      |
+
+
+=== EPOCH 77/174 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.79      |17.03     |23.96     |7.33      |2.47      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.18      |19.80     |22.07     |6.91      |4.41      |
+
+
+=== EPOCH 78/174 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.88      |17.04     |23.97     |7.37      |2.49      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.74      |19.25     |22.39     |6.64      |4.47      |
+
+
+=== EPOCH 79/174 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.69      |17.06     |23.80     |7.33      |2.50      |    |0.5296     |0.6156    |0.5151    |0.6527    |0.5223    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+53.28      |19.20     |22.10     |7.11      |4.86      |    |0.6079     |0.6734    |0.5948    |0.6503    |0.6013    |
+
+Saving model with new best mAP: 0.6013
+
+=== EPOCH 80/174 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.19      |16.77     |23.63     |7.37      |2.41      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.00      |19.07     |23.15     |6.09      |4.69      |
+
+
+=== EPOCH 81/174 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.28      |16.86     |23.67     |7.33      |2.41      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.93      |19.18     |22.83     |6.17      |4.76      |
+
+
+=== EPOCH 82/174 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.26      |16.83     |23.68     |7.31      |2.44      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.81      |19.78     |21.65     |7.26      |5.12      |
+
+
+=== EPOCH 83/174 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.11      |16.70     |23.62     |7.33      |2.45      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.82      |19.17     |22.55     |6.47      |4.63      |
+
+
+=== EPOCH 84/174 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.75      |16.56     |23.50     |7.30      |2.39      |    |0.5404     |0.6236    |0.5302    |0.6619    |0.5353    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.43      |18.84     |23.66     |5.29      |4.63      |    |0.5863     |0.6550    |0.5924    |0.6499    |0.5894    |
+
+
+=== EPOCH 85/174 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.59      |16.54     |23.37     |7.31      |2.37      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.47      |19.33     |23.18     |6.00      |4.97      |
+
+
+=== EPOCH 86/174 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.67      |16.46     |23.52     |7.34      |2.36      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.07      |18.78     |21.60     |7.15      |4.54      |
+
+
+=== EPOCH 87/174 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.73      |16.61     |23.47     |7.30      |2.35      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.30      |19.33     |22.05     |6.44      |4.49      |
+
+
+=== EPOCH 88/174 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.33      |16.42     |23.25     |7.28      |2.38      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.34      |19.26     |21.72     |7.41      |4.96      |
+
+
+=== EPOCH 89/174 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.16      |16.40     |23.19     |7.29      |2.28      |    |0.5518     |0.6310    |0.5319    |0.6651    |0.5419    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.64      |18.79     |21.43     |7.45      |4.97      |    |0.6067     |0.6828    |0.6036    |0.6508    |0.6052    |
+
+Saving model with new best mAP: 0.6052
+
+=== EPOCH 90/174 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.34      |16.35     |23.31     |7.29      |2.38      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.70      |18.84     |21.67     |6.80      |4.39      |
+
+
+=== EPOCH 91/174 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.28      |16.42     |23.26     |7.28      |2.33      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.24      |18.39     |22.54     |6.10      |4.22      |
+
+
+=== EPOCH 92/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.89      |16.21     |23.13     |7.27      |2.28      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.92      |18.84     |21.85     |6.72      |4.51      |
+
+
+=== EPOCH 93/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.73      |16.18     |22.98     |7.23      |2.33      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.12      |19.11     |21.21     |7.54      |4.26      |
+
+
+=== EPOCH 94/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+48.70      |16.04     |23.03     |7.29      |2.33      |    |0.5528     |0.6334    |0.5362    |0.6677    |0.5445    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.80      |18.26     |20.75     |7.63      |4.16      |    |0.6119     |0.6840    |0.6030    |0.6612    |0.6074    |
+
+Saving model with new best validation loss: 50.801
+Saving model with new best mAP: 0.6074
+
+=== EPOCH 95/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.71      |16.13     |23.07     |7.24      |2.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.11      |18.74     |21.90     |6.65      |4.82      |
+
+
+=== EPOCH 96/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.69      |16.13     |23.08     |7.24      |2.24      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.37      |18.65     |22.17     |6.20      |4.34      |
+
+
+=== EPOCH 97/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.47      |15.98     |22.97     |7.26      |2.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.56      |18.59     |21.08     |7.89      |3.99      |
+
+
+=== EPOCH 98/174 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.79      |16.17     |23.01     |7.30      |2.30      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.42      |18.89     |22.19     |5.97      |4.38      |
+
+
+=== EPOCH 99/174 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+48.48      |16.04     |22.94     |7.27      |2.22      |    |0.5550     |0.6351    |0.5429    |0.6711    |0.5489    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.93      |18.55     |22.17     |5.80      |4.41      |    |0.6053     |0.6734    |0.5855    |0.6478    |0.5954    |
+
+
+=== EPOCH 100/174 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.37      |15.96     |22.85     |7.29      |2.27      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.09      |18.52     |22.20     |6.05      |4.32      |
+
+
+=== EPOCH 101/174 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.53      |16.07     |22.93     |7.27      |2.27      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.97      |18.74     |21.29     |7.23      |4.71      |
+
+
+=== EPOCH 102/174 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.36      |15.98     |22.89     |7.23      |2.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.70      |18.70     |23.01     |5.44      |4.55      |
+
+
+=== EPOCH 103/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.24      |15.90     |22.89     |7.21      |2.25      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.24      |18.24     |22.31     |6.07      |4.62      |
+
+
+=== EPOCH 104/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.99      |15.73     |22.80     |7.25      |2.20      |    |0.5551     |0.6350    |0.5460    |0.6774    |0.5505    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.18      |18.03     |21.23     |6.86      |4.07      |    |0.6152     |0.6890    |0.6028    |0.6602    |0.6090    |
+
+Saving model with new best validation loss: 50.183
+Saving model with new best mAP: 0.6090
+
+=== EPOCH 105/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.15      |15.85     |22.78     |7.26      |2.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.15      |18.49     |20.63     |7.79      |4.24      |
+
+
+=== EPOCH 106/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.20      |15.92     |22.82     |7.26      |2.20      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.87      |18.31     |21.54     |6.84      |4.19      |
+
+
+=== EPOCH 107/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.41      |15.90     |22.84     |7.38      |2.28      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.30      |18.50     |23.14     |5.25      |4.40      |
+
+
+=== EPOCH 108/174 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.12      |15.77     |22.71     |7.46      |2.19      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.63      |18.16     |22.02     |6.38      |4.07      |
+
+
+=== EPOCH 109/174 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+48.39      |15.86     |22.83     |7.49      |2.21      |    |0.5552     |0.6366    |0.5350    |0.6675    |0.5451    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.49      |18.08     |22.56     |5.61      |4.25      |    |0.5925     |0.6618    |0.5956    |0.6551    |0.5940    |
+
+
+=== EPOCH 110/174 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.24      |15.75     |22.82     |7.53      |2.14      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.82      |18.19     |22.37     |5.99      |4.27      |
+
+
+=== EPOCH 111/174 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.19      |15.75     |22.68     |7.55      |2.22      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.62      |18.63     |21.95     |6.56      |4.47      |
+
+
+=== EPOCH 112/174 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.15      |15.67     |22.76     |7.51      |2.20      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.93      |19.17     |22.12     |6.98      |4.66      |
+
+
+=== EPOCH 113/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.81      |15.67     |22.58     |7.42      |2.14      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.92      |18.21     |21.59     |6.82      |4.29      |
+
+
+=== EPOCH 114/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+48.04      |15.75     |22.72     |7.40      |2.17      |    |0.5572     |0.6388    |0.5432    |0.6743    |0.5502    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+51.66      |18.43     |22.94     |5.82      |4.47      |    |0.6102     |0.6733    |0.6042    |0.6528    |0.6072    |
+
+
+=== EPOCH 115/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.72      |15.65     |22.59     |7.32      |2.17      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.93      |18.45     |21.89     |6.47      |4.12      |
+
+
+=== EPOCH 116/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.87      |15.72     |22.69     |7.30      |2.15      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.56      |18.12     |21.78     |5.85      |3.80      |
+
+Saving model with new best validation loss: 49.558
+
+=== EPOCH 117/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.59      |15.57     |22.56     |7.34      |2.11      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.76      |18.81     |22.09     |6.08      |4.79      |
+
+
+=== EPOCH 118/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.70      |15.57     |22.64     |7.34      |2.15      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.55      |18.00     |22.39     |5.71      |4.45      |
+
+
+=== EPOCH 119/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.64      |15.54     |22.62     |7.33      |2.14      |    |0.5580     |0.6392    |0.5444    |0.6720    |0.5512    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+51.48      |18.80     |22.13     |6.08      |4.47      |    |0.6222     |0.6826    |0.5935    |0.6434    |0.6078    |
+
+
+=== EPOCH 120/174 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.79      |15.74     |22.59     |7.29      |2.17      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.75      |18.37     |21.29     |6.73      |4.36      |
+
+
+=== EPOCH 121/174 ===
+Learning Rate = 2.2517998136852506e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.47      |15.58     |22.48     |7.28      |2.13      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.53      |19.12     |21.92     |6.57      |4.92      |
+
+
+=== EPOCH 122/174 ===
+Learning Rate = 2.2517998136852506e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.51      |15.58     |22.47     |7.32      |2.14      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.96      |18.13     |20.84     |7.16      |3.83      |
+
+
+=== EPOCH 123/174 ===
+Learning Rate = 2.2517998136852506e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.55      |15.58     |22.58     |7.24      |2.15      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.76      |17.72     |20.47     |7.48      |4.09      |
+
+
+=== EPOCH 124/174 ===
+Learning Rate = 2.2517998136852506e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.55      |15.60     |22.51     |7.26      |2.18      |    |0.5671     |0.6409    |0.5436    |0.6746    |0.5554    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.87      |17.98     |21.35     |6.52      |4.02      |    |0.6215     |0.6806    |0.5978    |0.6575    |0.6097    |
+
+Saving model with new best mAP: 0.6097
+
+=== EPOCH 125/174 ===
+Learning Rate = 1.8014398509482006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.33      |15.52     |22.45     |7.25      |2.12      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.48      |18.16     |21.96     |6.24      |4.11      |
+
+
+=== EPOCH 126/174 ===
+Learning Rate = 1.8014398509482006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.22      |15.51     |22.37     |7.23      |2.10      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.86      |17.92     |21.62     |6.37      |3.95      |
+
+
+=== EPOCH 127/174 ===
+Learning Rate = 1.8014398509482006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.19      |15.39     |22.42     |7.27      |2.11      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.85      |18.79     |22.09     |5.79      |4.18      |
+
+
+=== EPOCH 128/174 ===
+Learning Rate = 1.8014398509482006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.41      |15.57     |22.48     |7.25      |2.12      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.51      |18.03     |21.43     |6.94      |4.11      |
+
+
+=== EPOCH 129/174 ===
+Learning Rate = 1.4411518807585605e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.16      |15.47     |22.32     |7.28      |2.09      |    |0.5671     |0.6424    |0.5502    |0.6799    |0.5586    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.87      |18.42     |22.44     |5.72      |4.29      |    |0.6227     |0.6804    |0.6112    |0.6528    |0.6170    |
+
+Saving model with new best mAP: 0.6170
+
+=== EPOCH 130/174 ===
+Learning Rate = 1.4411518807585605e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.16      |15.45     |22.36     |7.23      |2.11      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.29      |17.77     |21.89     |6.05      |4.57      |
+
+
+=== EPOCH 131/174 ===
+Learning Rate = 1.4411518807585605e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.16      |15.40     |22.41     |7.23      |2.12      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.74      |18.02     |21.48     |6.23      |4.01      |
+
+
+=== EPOCH 132/174 ===
+Learning Rate = 1.4411518807585605e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.07      |15.39     |22.39     |7.20      |2.09      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.09      |18.14     |21.94     |6.17      |3.84      |
+
+
+=== EPOCH 133/174 ===
+Learning Rate = 1.1529215046068485e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.84      |15.32     |22.22     |7.21      |2.10      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.05      |17.97     |21.23     |6.62      |4.24      |
+
+
+=== EPOCH 134/174 ===
+Learning Rate = 1.1529215046068485e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.01      |15.42     |22.29     |7.22      |2.08      |    |0.5680     |0.6447    |0.5485    |0.6786    |0.5582    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.36      |18.42     |21.73     |6.26      |3.95      |    |0.6104     |0.6790    |0.5963    |0.6465    |0.6034    |
+
+
+=== EPOCH 135/174 ===
+Learning Rate = 1.1529215046068485e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.94      |15.33     |22.28     |7.22      |2.12      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.89      |17.73     |21.93     |6.00      |4.23      |
+
+
+=== EPOCH 136/174 ===
+Learning Rate = 1.1529215046068485e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.94      |15.28     |22.32     |7.22      |2.12      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.07      |18.17     |22.57     |5.19      |4.13      |
+
+
+=== EPOCH 137/174 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.74      |15.26     |22.19     |7.21      |2.08      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.64      |17.95     |21.42     |5.98      |4.28      |
+
+
+=== EPOCH 138/174 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.83      |15.35     |22.19     |7.23      |2.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.49      |17.92     |21.18     |6.81      |4.57      |
+
+
+=== EPOCH 139/174 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.89      |15.32     |22.26     |7.22      |2.08      |    |0.5673     |0.6468    |0.5505    |0.6794    |0.5589    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.76      |18.40     |21.69     |6.34      |4.32      |    |0.6236     |0.6865    |0.5958    |0.6498    |0.6097    |
+
+
+=== EPOCH 140/174 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.83      |15.35     |22.23     |7.19      |2.05      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.60      |18.07     |21.25     |6.97      |4.31      |
+
+
+=== EPOCH 141/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.72      |15.24     |22.17     |7.23      |2.08      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.61      |17.92     |21.93     |5.87      |3.89      |
+
+
+=== EPOCH 142/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.68      |15.24     |22.19     |7.20      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.40      |18.15     |20.82     |7.17      |4.26      |
+
+
+=== EPOCH 143/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.82      |15.29     |22.25     |7.22      |2.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.23      |18.13     |21.57     |6.32      |4.21      |
+
+
+=== EPOCH 144/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.79      |15.34     |22.19     |7.21      |2.05      |    |0.5689     |0.6464    |0.5508    |0.6797    |0.5598    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.47      |17.86     |21.56     |6.15      |3.90      |    |0.6300     |0.6910    |0.6005    |0.6520    |0.6153    |
+
+Saving model with new best validation loss: 49.467
+
+=== EPOCH 145/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.69      |15.29     |22.16     |7.20      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.80      |18.23     |21.43     |6.54      |4.61      |
+
+
+=== EPOCH 146/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.76      |15.31     |22.18     |7.22      |2.05      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.91      |17.62     |21.78     |6.14      |4.35      |
+
+
+=== EPOCH 147/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.82      |15.27     |22.27     |7.21      |2.05      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.72      |17.89     |20.73     |7.00      |4.10      |
+
+
+=== EPOCH 148/174 ===
+Learning Rate = 7.378697629483831e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.80      |15.32     |22.23     |7.18      |2.07      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.77      |17.78     |22.03     |5.96      |4.00      |
+
+
+=== EPOCH 149/174 ===
+Learning Rate = 5.902958103587065e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.66      |15.21     |22.14     |7.22      |2.09      |    |0.5706     |0.6492    |0.5598    |0.6812    |0.5652    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.84      |18.06     |21.38     |6.15      |4.25      |    |0.6249     |0.6861    |0.6068    |0.6557    |0.6159    |
+
+
+=== EPOCH 150/174 ===
+Learning Rate = 5.902958103587065e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.63      |15.26     |22.10     |7.23      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.49      |17.81     |21.36     |6.31      |4.01      |
+
+
+=== EPOCH 151/174 ===
+Learning Rate = 5.902958103587065e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.79      |15.32     |22.20     |7.21      |2.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.68      |18.46     |21.29     |6.61      |4.32      |
+
+
+=== EPOCH 152/174 ===
+Learning Rate = 5.902958103587065e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.67      |15.24     |22.19     |7.15      |2.09      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.64      |18.07     |21.72     |6.25      |4.61      |
+
+
+=== EPOCH 153/174 ===
+Learning Rate = 4.722366482869652e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.47      |15.16     |22.07     |7.20      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.60      |17.92     |21.04     |6.79      |4.85      |
+
+
+=== EPOCH 154/174 ===
+Learning Rate = 4.722366482869652e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.68      |15.27     |22.18     |7.17      |2.07      |    |0.5721     |0.6474    |0.5569    |0.6815    |0.5645    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.45      |18.23     |21.16     |6.64      |4.42      |    |0.6291     |0.6927    |0.6003    |0.6528    |0.6147    |
+
+
+=== EPOCH 155/174 ===
+Learning Rate = 4.722366482869652e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.61      |15.28     |22.14     |7.18      |2.02      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.98      |17.91     |21.26     |6.67      |4.15      |
+
+
+=== EPOCH 156/174 ===
+Learning Rate = 4.722366482869652e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.55      |15.19     |22.14     |7.17      |2.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.69      |17.84     |21.02     |6.64      |4.19      |
+
+
+=== EPOCH 157/174 ===
+Learning Rate = 3.777893186295722e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.37      |15.11     |22.05     |7.18      |2.03      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.53      |18.24     |20.63     |7.17      |4.49      |
+
+
+=== EPOCH 158/174 ===
+Learning Rate = 3.777893186295722e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.42      |15.13     |22.10     |7.16      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.62      |17.61     |21.56     |6.21      |4.24      |
+
+
+=== EPOCH 159/174 ===
+Learning Rate = 3.777893186295722e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.49      |15.14     |22.11     |7.16      |2.07      |    |0.5712     |0.6490    |0.5550    |0.6809    |0.5631    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.01      |18.04     |20.82     |6.99      |4.17      |    |0.6301     |0.6979    |0.6036    |0.6532    |0.6168    |
+
+
+=== EPOCH 160/174 ===
+Learning Rate = 3.777893186295722e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.28      |15.06     |22.03     |7.18      |2.02      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.40      |18.25     |21.69     |6.09      |4.37      |
+
+
+=== EPOCH 161/174 ===
+Learning Rate = 3.022314549036578e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.30      |15.14     |22.00     |7.13      |2.02      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.02      |17.46     |21.48     |5.95      |4.12      |
+
+Saving model with new best validation loss: 49.017
+
+=== EPOCH 162/174 ===
+Learning Rate = 3.022314549036578e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.46      |15.19     |22.12     |7.14      |2.01      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.97      |17.81     |21.17     |6.72      |4.28      |
+
+
+=== EPOCH 163/174 ===
+Learning Rate = 3.022314549036578e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.22      |15.10     |21.98     |7.15      |1.99      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.88      |17.79     |21.35     |6.41      |4.33      |
+
+
+=== EPOCH 164/174 ===
+Learning Rate = 3.022314549036578e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.25      |15.05     |22.03     |7.17      |2.00      |    |0.5715     |0.6483    |0.5587    |0.6821    |0.5651    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.67      |17.99     |21.78     |5.84      |4.06      |    |0.6237     |0.6889    |0.6070    |0.6551    |0.6153    |
+
+
+=== EPOCH 165/174 ===
+Learning Rate = 3.022314549036578e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.27      |15.06     |22.05     |7.13      |2.04      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.92      |18.22     |20.67     |6.86      |4.17      |
+
+
+=== EPOCH 166/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.13      |15.02     |22.01     |7.11      |1.99      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.21      |17.70     |21.27     |6.50      |4.74      |
+
+
+=== EPOCH 167/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.14      |15.07     |21.93     |7.13      |2.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.82      |17.65     |21.25     |6.31      |4.61      |
+
+
+=== EPOCH 168/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.19      |15.03     |22.01     |7.16      |1.99      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.86      |17.38     |21.30     |6.31      |3.88      |
+
+Saving model with new best validation loss: 48.865
+
+=== EPOCH 169/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.22      |15.07     |21.98     |7.18      |1.99      |    |0.5715     |0.6496    |0.5621    |0.6875    |0.5668    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.70      |18.38     |21.97     |5.94      |4.42      |    |0.6266     |0.6828    |0.6028    |0.6493    |0.6147    |
+
+
+=== EPOCH 170/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.24      |14.99     |22.06     |7.20      |1.99      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.71      |17.81     |20.39     |7.02      |4.49      |
+
+
+=== EPOCH 171/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.32      |15.10     |22.01     |7.18      |2.03      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.68      |18.02     |21.19     |6.43      |4.04      |
+
+
+=== EPOCH 172/174 ===
+Learning Rate = 2.4178516392292624e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.33      |15.09     |22.05     |7.18      |2.01      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.00      |17.82     |21.40     |6.46      |4.32      |
+
+
+=== EPOCH 173/174 ===
+Learning Rate = 1.93428131138341e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.12      |15.01     |21.98     |7.16      |1.98      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.88      |17.74     |20.98     |6.37      |3.79      |
+
+
+=== EPOCH 174/174 ===
+Learning Rate = 1.93428131138341e-06
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.20      |15.04     |22.01     |7.15      |2.00      |    |0.5789     |0.6504    |0.5608    |0.6870    |0.5698    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.54      |17.78     |21.86     |5.82      |4.08      |    |0.6121     |0.6799    |0.6051    |0.6506    |0.6086    |
+
+Saving last model
+
+***Script finished: 01:08:07
+
+Time elapsed: 14:31:03.066668

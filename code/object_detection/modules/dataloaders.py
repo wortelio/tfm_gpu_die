@@ -157,7 +157,7 @@ def get_val_loader(dfire_len=config.VAL_DS_LEN,
         ds_len = dfire_len,
         transform=val_transform, 
         target_transform=None)
-    print(f'\nTest dataset len: {len(val_dfire_dataset)}')
+    print(f'\nTest DFire dataset len: {len(val_dfire_dataset)}')
     
     print("\nTEST FASDD UAV dataset")
     val_fasdd_uav_ds = dataset_fasdd.FASDDDataset(
@@ -172,7 +172,7 @@ def get_val_loader(dfire_len=config.VAL_DS_LEN,
         ds_len = fasdd_uav_len,
         transform=val_transform, 
         target_transform=None)
-    print(f'\nVal FASDD UAV dataset len: {len(val_fasdd_uav_ds)}')
+    print(f'\nTest FASDD UAV dataset len: {len(val_fasdd_uav_ds)}')
     
     print("\nTEST FASDD CV dataset")
     val_fasdd_cv_ds = dataset_fasdd.FASDDDataset(
