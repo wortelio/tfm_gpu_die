@@ -20,16 +20,16 @@ def get_train_loader():
                                   p=0.3),
         A.OneOf([
             A.RandomBrightnessContrast(p=0.4),
-            A.HueSaturationValue(hue_shift_limit=10, p=0.2),
+            A.HueSaturationValue(hue_shift_limit=10, p=0.1),
             A.Blur(blur_limit=(3,3), p=0.3),
-            A.CLAHE(clip_limit=2.0, p=0.3),
+            A.CLAHE(clip_limit=2.0, p=0.2),
         ], p=0.9),
-            # Shifting, scaling and rotation could dive 2 bbox inside same grid...
-            #A.ShiftScaleRotate(rotate_limit=10, p=0.2),
+        #Shifting, scaling and rotation could dive 2 bbox inside same grid...
+        #A.ShiftScaleRotate(rotate_limit=10, p=0.1),
         A.Resize(config.IMG_H, config.IMG_W, p=1),
         ToTensorV2(p=1),
     ], bbox_params=A.BboxParams(format='yolo', 
-                                min_area=16*16, 
+                                min_area= 8*8, #16*16, Changed to 8*8 to see smaller objects 
                                 min_visibility=0.1, 
                                 label_fields=['class_labels']))
     
@@ -209,6 +209,55 @@ def get_val_loader(dfire_len=config.VAL_DS_LEN,
 # ______________________________________________________________ #
 # ____________________   SPECIFIC LOADERS   ____________________ #
 # ______________________________________________________________ #
+def get_dfire_train_loader():
+    train_transform = A.Compose([
+        A.HorizontalFlip(p=0.5),
+        # If boxes are to close, it can remove some because they fall inside same cell
+        A.RandomSizedBBoxSafeCrop(height=int(1.4*config.IMG_H),
+                                  width= int(1.4*config.IMG_W),
+                                  erosion_rate=0.3,
+                                  p=0.3),
+        A.OneOf([
+            A.RandomBrightnessContrast(p=0.4),
+            A.HueSaturationValue(hue_shift_limit=10, p=0.2),
+            A.Blur(blur_limit=(3,3), p=0.3),
+            A.CLAHE(clip_limit=2.0, p=0.3),
+        ], p=0.9),
+            # Shifting, scaling and rotation could dive 2 bbox inside same grid...
+            #A.ShiftScaleRotate(rotate_limit=10, p=0.2),
+        A.Resize(config.IMG_H, config.IMG_W, p=1),
+        ToTensorV2(p=1),
+    ], bbox_params=A.BboxParams(format='yolo', 
+                                min_area=16*16, 
+                                min_visibility=0.1, 
+                                label_fields=['class_labels']))
+    
+    # TRAIN DATASET
+    print("\nTRAIN DFIRE dataset")
+    train_dfire_dataset = dataset_dfire.DFireDataset(
+        img_h = config.IMG_H, 
+        img_w = config.IMG_H, 
+        imgs_dir = config.DFIRE_TRAIN_IMGS_DIR, 
+        labels_dir = config.DFIRE_TRAIN_LABELS_DIR,            
+        S = config.S, 
+        C = config.C, 
+        max_obj = config.MAX_OBJ,
+        ds_len = config.DS_LEN,
+        transform=train_transform, 
+        target_transform=None)
+    print(f'\nTrain DFire dataset len: {len(train_dfire_dataset)}')
+   
+    train_loader = DataLoader(
+        dataset=train_dfire_dataset,
+        batch_size=config.BATCH_SIZE,
+        num_workers=config.NUM_WORKERS,
+        pin_memory=config.PIN_MEMORY,
+        shuffle=True,
+        drop_last=True)
+    
+    return train_loader
+
+
 def get_dfire_val_loader(dfire_len=config.VAL_DS_LEN):
     val_transform = A.Compose([
         A.Resize(config.IMG_H, config.IMG_W, p=1),

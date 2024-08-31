@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_fuseBN_256_fasdd/' + 'test_v11_MED_w4W3a8b4_FxdPnt_MSE_PerChnlW_IntBiasIntScl/'
+RUN_FOLDER = 'experiments_fuseBN_256_fasdd/' + 'test_v30_FASDD_VAL__MED_w4W3a8b4_FxdPnt_MSE_PerChnlW_IntBiasIntScl/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -45,10 +45,12 @@ VAL_LABEL_DIR = val_labels
 
 FASDD_UAV_IMGS_DIR = '../../../datasets/fasdd/fasdd_uav/images/'
 FASDD_UAV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/train.txt'
+FASDD_UAV_VAL_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/val.txt'
 FASDD_UAV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_uav/annotations/YOLO_UAV/test.txt'
 
 FASDD_CV_IMGS_DIR = '../../../datasets/fasdd/fasdd_cv/images/'
 FASDD_CV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/train.txt'
+FASDD_CV_VAL_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/val.txt'
 FASDD_CV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
 DS_LEN = None

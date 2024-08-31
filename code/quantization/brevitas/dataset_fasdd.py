@@ -107,11 +107,11 @@ class FASDDDataset(Dataset):
                 labels.append(label_array)
                 images.append(image_path)
         
-        print(f'DFire Removed wrong images: {wrong_imgs}')
-        print(f'DFire empty images: {empty}')
-        print(f'DFire only smoke images: {only_smoke}')
-        print(f'DFire only fire images: {only_fire}')
-        print(f'DFire smoke and fire images: {smoke_fire}')
+        print(f'FASDD Removed wrong images: {wrong_imgs}')
+        print(f'FASDD empty images: {empty}')
+        print(f'FASDD only smoke images: {only_smoke}')
+        print(f'FASDD only fire images: {only_fire}')
+        print(f'FASDD smoke and fire images: {smoke_fire}')
 
         labels_np = np.array(labels)
         labels_tensor = torch.tensor(labels_np, dtype=torch.float32)

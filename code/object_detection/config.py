@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_452_aimet_brevitas_fixed_point_w5W4H8a8b5_more_train/'
+RUN_FOLDER = 'experiments/' + 'test_51_no_comp_area8x8_brevitas_fixed_point_w4W2H8a8b4/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -24,7 +24,8 @@ N_CLASSES = len(CLASSES)
 BBOX_COLORS = {"smoke":(0,255,255), "fire":(255,255,0)}
 GRID_COLOR = (100, 100, 100)
 
-IMG_DIM = {'W':224, 'H':224} # (W, H)
+IMG_DIM = {'W':224, 'H':224} # (W, H) -> BED
+#IMG_DIM = {'W':88, 'H':88} # (W, H) -> Tinyissimo
 IMG_H = IMG_DIM['H']
 IMG_W = IMG_DIM['W']
 
@@ -32,10 +33,13 @@ S = 7
 B = 2
 C = N_CLASSES
 
-MAX_OBJ = 10
+MAX_OBJ = 30
 IOU_THRESHOLD = 0.5
 NMS_IOU_THRESHOLD = 0.5 # Supress boxes of the same inference during NMS
-SCORE_THRESHOLD = 0.001 # 0.2 # For confidence score, to consider there is a positive sample in a cell
+SCORE_THRESHOLD = 0.2 # For confidence score, to consider there is a positive sample in a cell
+# If you config 0.001, there are so many predictions that training is really slow during the epochs calculating mAP
+# It is better to use 0.001 only for the final model, to check how PR curve is
+
 # ______________________________________________________________________ #
 #                        Folders and Datasets                            #
 # ______________________________________________________________________ #
@@ -76,6 +80,7 @@ VAL_DS_LEN = None
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 MODEL = "BED"
+#MODEL = "Tinyissimo"
 
 LEARNING_RATE = 1e-3
 GRADIENTS_CLIP_NORM = 500
@@ -91,22 +96,22 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 50
+EPOCHS = 150
 
 LOAD_MODEL = True
 # Aimet Model
 # LOAD_MODEL_DIR = './experiments/test_35_pruning_090_after_svd_080_simple_model_more_train/weights/'
 # No Compression Model
-# LOAD_MODEL_DIR = './experiments/test_20_no_sigmoid_softmax_permute_out/weights/'
+LOAD_MODEL_DIR = './experiments/test_20_no_sigmoid_softmax_permute_out/weights/'
 # Retrain
-LOAD_MODEL_DIR = './experiments/test_451_aimet_brevitas_fixed_point_w5W4H8a8b5_more_train/weights/'
+#LOAD_MODEL_DIR = './experiments/test_451_aimet_brevitas_fixed_point_w5W4H8a8b5_more_train/weights/'
 if MODEL == "BED":
     # Aimet Model
     # LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6289__epoch=14.pt"
     # No Compression Model
-    # LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6405__epoch=144.pt"
+    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6405__epoch=144.pt"
     # Retrain
-    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6167__epoch=49.pt" 
+    #LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_detector__best_mAP=0.6167__epoch=49.pt" 
 
 LOSS_FN = "YOLOV1_LOSS"
 LAMBDA_L1_LOSS = 0

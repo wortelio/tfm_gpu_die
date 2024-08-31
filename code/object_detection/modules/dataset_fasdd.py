@@ -94,8 +94,8 @@ class FASDDDataset(Dataset):
         
         xmin = max(xmin, 0 + eps)
         ymin = max(ymin, 0 + eps)
-        xmax = min(xmax, 1)
-        ymax = min(ymax, 1)
+        xmax = min(xmax, 1 - eps)
+        ymax = min(ymax, 1 - eps)
         
         bbox = np.array([ 
                 (xmin+xmax)/2,
@@ -151,6 +151,14 @@ class FASDDDataset(Dataset):
                         box_ok = self.__bbox_check__([x, y, w, h])
                         x, y, w, h = box_ok[0], box_ok[1], box_ok[2], box_ok[3]
                         i, j = math.floor(y * self.S), math.floor(x * self.S)
+                        if i > 6:
+                            print(f'Box {box} of {fname} has i={i} out of index')
+                            print(f'Box checked: {box_ok}')
+                            i = 6
+                        if j > 6:
+                            print(f'Box {box} of {fname} has j={j} out of index')
+                            print(f'Box checked: {box_ok}')
+                            j = 6
                         if label_mtx[i, j] == 1:
                             overlapping_object = 1
                             overlapping_rem += 1

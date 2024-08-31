@@ -45,6 +45,17 @@ def get_train_loader():
         ds_len=config_aimet.DS_LEN,
         transform=train_transform)
     print(f'\nTrain FASDD UAV dataset len: {len(train_fasdd_uav_ds)}')
+
+    print("\nVAL FASDD UAV dataset")
+    val_fasdd_uav_ds = dataset_fasdd.FASDDDataset(
+        img_h=config_aimet.IMG_H, 
+        img_w=config_aimet.IMG_W, 
+        imgs_dir=config_aimet.FASDD_UAV_IMGS_DIR, 
+        labels_file=config_aimet.FASDD_UAV_VAL_LABELS_FILE, 
+        num_classes=config_aimet.N_CLASSES,
+        ds_len=config_aimet.DS_LEN,
+        transform=train_transform)
+    print(f'\nVal FASDD UAV dataset len: {len(val_fasdd_uav_ds)}')
     
     print("\nTRAIN FASDD CV dataset")
     train_fasdd_cv_ds = dataset_fasdd.FASDDDataset(
@@ -56,12 +67,31 @@ def get_train_loader():
         ds_len=config_aimet.DS_LEN,
         transform=train_transform)
     print(f'\nTrain FASDD CV dataset len: {len(train_fasdd_cv_ds)}')
+
+    print("\nVal FASDD CV dataset")
+    val_fasdd_cv_ds = dataset_fasdd.FASDDDataset(
+        img_h=config_aimet.IMG_H, 
+        img_w=config_aimet.IMG_W, 
+        imgs_dir=config_aimet.FASDD_CV_IMGS_DIR, 
+        labels_file=config_aimet.FASDD_CV_VAL_LABELS_FILE, 
+        num_classes=config_aimet.N_CLASSES,
+        ds_len=config_aimet.DS_LEN,
+        transform=train_transform)
+    print(f'\nVal FASDD CV dataset len: {len(val_fasdd_cv_ds)}')
     
-    print("\nConcatenate Train DFire and FASDD UAV datasets")
-    train_ds_concat = torch.utils.data.ConcatDataset((train_dfire_dataset, train_fasdd_uav_ds))
-    print(f'Train dataset len: {len(train_ds_concat)}')
-    print("Concatenate with FASDD CV dataset")
-    train_ds = torch.utils.data.ConcatDataset((train_ds_concat, train_fasdd_cv_ds))
+    print("\nConcatenate Train DFire and Train FASDD UAV datasets")
+    #train_ds_concat = torch.utils.data.ConcatDataset((train_dfire_dataset, train_fasdd_uav_ds))
+    #print(f'Train dataset len: {len(train_ds_concat)}')
+    train_ds = torch.utils.data.ConcatDataset((train_dfire_dataset, train_fasdd_uav_ds))
+    print(f'Train dataset len: {len(train_ds)}')
+    print("Concatenate with Val FASDD UAV dataset")
+    train_ds = torch.utils.data.ConcatDataset((train_ds, val_fasdd_uav_ds))
+    print(f'Train dataset len: {len(train_ds)}')
+    print("Concatenate with Train FASDD CV dataset")
+    train_ds = torch.utils.data.ConcatDataset((train_ds, train_fasdd_cv_ds))
+    print(f'Train dataset len: {len(train_ds)}')
+    print("Concatenate with Val FASDD CV dataset")
+    train_ds = torch.utils.data.ConcatDataset((train_ds, val_fasdd_cv_ds))
     print(f'Train dataset len: {len(train_ds)}')
     
     train_loader = DataLoader(

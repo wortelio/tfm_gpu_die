@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_256_add_fasdd/' + 'test_00/'
+RUN_FOLDER = 'experiments_original/' + '00_bed_original/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -70,7 +70,7 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 100
+EPOCHS = 140
 
 LOAD_MODEL = False
 if MODEL == "BED":

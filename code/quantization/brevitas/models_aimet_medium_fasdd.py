@@ -11,7 +11,7 @@ from brevitas.inject.defaults import RoundTo8bit
 from brevitas.inject.enum import ScalingImplType, RestrictValueType, BitWidthImplType
 from brevitas.core.scaling import ConstScaling
 
-import config
+import config_aimet
 
 
 class MyQuantIdFixedPoint(Uint8ActPerTensorFixedPoint):
@@ -26,7 +26,7 @@ class MyIntBias(Int8BiasPerTensorFixedPointInternalScaling):
     8-bit signed int bias quantizer with scale factor equal to the scale factor of the accumulator
     the bias is added to, so typically quant_input_scale * quant_weight_scale.
     """
-    bit_width = config.BIAS_BIT_WIDTH
+    bit_width = config_aimet.BIAS_BIT_WIDTH
     #pass
 
 class MyInt8Weight(Int8WeightPerChannelFixedPointMSE):
