@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_51_no_comp_area8x8_brevitas_fixed_point_w4W2H8a8b4/'
+RUN_FOLDER = 'experiments/' + 'test_15_intel_nc_ptq_no_comp/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -33,7 +33,7 @@ S = 7
 B = 2
 C = N_CLASSES
 
-MAX_OBJ = 30
+MAX_OBJ = 10
 IOU_THRESHOLD = 0.5
 NMS_IOU_THRESHOLD = 0.5 # Supress boxes of the same inference during NMS
 SCORE_THRESHOLD = 0.2 # For confidence score, to consider there is a positive sample in a cell
@@ -75,7 +75,7 @@ FASDD_RS_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_rs/annotations/YOLO_RS_RG
 FASDD_RS_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_rs/annotations/YOLO_RS_RGB/test.txt'
 
 DS_LEN = None
-VAL_DS_LEN = None
+VAL_DS_LEN = 200
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
@@ -98,7 +98,7 @@ PIN_MEMORY = True
 
 EPOCHS = 150
 
-LOAD_MODEL = True
+LOAD_MODEL = False
 # Aimet Model
 # LOAD_MODEL_DIR = './experiments/test_35_pruning_090_after_svd_080_simple_model_more_train/weights/'
 # No Compression Model

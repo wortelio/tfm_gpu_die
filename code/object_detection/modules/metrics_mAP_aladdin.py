@@ -140,7 +140,8 @@ def mAP(
     true_boxes, 
     iou_threshold=config.IOU_THRESHOLD, 
     box_format="midpoint", 
-    num_classes=config.C
+    num_classes=config.C,
+    plot_pr_curve=False
 ):
     """
     Calculates mean average precision 
@@ -285,18 +286,20 @@ def mAP(
         else:
             print("Wrong class")
             raise SystemExit("Wrong class in mAP")
-        plt.plot(recalls, precisions)#, 'b')
-        plt.scatter(recalls, precisions)#, color='b')
-        plt.fill_between(recalls, precisions, facecolor='#1f77b4', alpha=0.1)
-        #plt.fill_between(recalls, precisions, alpha=0.4)
-        plt.title("Precision-Recall Curve")
-        plt.ylim([0,1])
-        plt.xlim([0,1])
-        plt.xlabel("Recall")
-        plt.ylabel("Precision")
-        plt.grid()
-        plt.savefig(log_path + class_name + "_pre_rec_curve.png")
-        plt.close()
+            
+        if plot_pr_curve == True:
+            plt.plot(recalls, precisions)#, 'b')
+            plt.scatter(recalls, precisions)#, color='b')
+            plt.fill_between(recalls, precisions, facecolor='#1f77b4', alpha=0.1)
+            #plt.fill_between(recalls, precisions, alpha=0.4)
+            plt.title("Precision-Recall Curve")
+            plt.ylim([0,1])
+            plt.xlim([0,1])
+            plt.xlabel("Recall")
+            plt.ylabel("Precision")
+            plt.grid()
+            plt.savefig(log_path + class_name + "_pre_rec_curve.png")
+            plt.close()
 
     mAP = sum(average_precisions) / (len(average_precisions) + epsilon)
 

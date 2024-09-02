@@ -22,22 +22,30 @@ class ORIGINAL_BED_DETECTOR(nn.Module):
                 [
             # Conv2d [in_channels, out_channels, kernel_size, stride, padding, bias]
 
+                    # To test BED manual optim
+                    # Change the first convs 64 24, to 32 16
+                    
                     # CNNBlock 224x224
-                    ("conv1", nn.Conv2d(self.in_channels, 64, kernel_size=3, stride=1, padding=1,  bias=False)),
-                    ("bn1", nn.BatchNorm2d(64)),
+                    #("conv1", nn.Conv2d(self.in_channels, 64, kernel_size=3, stride=1, padding=1,  bias=False)),
+                    ("conv1", nn.Conv2d(self.in_channels, 32, kernel_size=3, stride=1, padding=1,  bias=False)), # To test BED manual optim
+                    #("bn1", nn.BatchNorm2d(64)),
+                    ("bn1", nn.BatchNorm2d(32)), # To test BED manual optim
                     ("relu1", nn.ReLU()),
                     #("dropout1", nn.Dropout2d(p=0.3)),
         
                     # CNNBlock 112x112
                     ("maxpool2", nn.MaxPool2d(kernel_size=2, stride=2)),
-                    ("conv2", nn.Conv2d(64, 24, kernel_size=3, stride=1, padding=1,  bias=False)),
-                    ("bn2", nn.BatchNorm2d(24)),
+                    #("conv2", nn.Conv2d(64, 24, kernel_size=3, stride=1, padding=1,  bias=False)),
+                    ("conv2", nn.Conv2d(32, 16, kernel_size=3, stride=1, padding=1,  bias=False)), # To test BED manual optim
+                    #("bn2", nn.BatchNorm2d(24)),
+                    ("bn2", nn.BatchNorm2d(16)),
                     ("relu2", nn.ReLU()),
                     #("dropout2",nn.Dropout2d(p=0.3)),
         
                     # CNNBlock 56x56
                     ("maxpool3", nn.MaxPool2d(kernel_size=2, stride=2)),
-                    ("conv31", nn.Conv2d(24, 16, kernel_size=1, stride=1, padding=0,  bias=False)),
+                    #("conv31", nn.Conv2d(24, 16, kernel_size=1, stride=1, padding=0,  bias=False)),
+                    ("conv31", nn.Conv2d(16, 16, kernel_size=1, stride=1, padding=0,  bias=False)), # To test BED manual optim
                     ("bn31", nn.BatchNorm2d(16)),
                     ("relu31", nn.ReLU()),
                     
