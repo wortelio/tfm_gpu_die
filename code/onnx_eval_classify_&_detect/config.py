@@ -30,13 +30,18 @@ SCORE_THRESHOLD = 0.001 # 0.2 # For confidence score, to consider there is a pos
 # ______________________________________________________________________ #
 #                        Folders and Datasets                            #
 # ______________________________________________________________________ #
-
+MINI = True
 # ===== DFire ===== #
-DFIRE_DS_DIR = '../../datasets/dfire_mini/'
-
-DFIRE_VAL_DIR = DFIRE_DS_DIR + 'train/'
-DFIRE_VAL_IMGS_DIR = DFIRE_VAL_DIR + 'images/'
-DFIRE_VAL_LABELS_DIR = DFIRE_VAL_DIR + 'labels/'
+if MINI == True:
+    DFIRE_DS_DIR = '../../datasets/dfire_mini/'
+    DFIRE_VAL_DIR = DFIRE_DS_DIR + 'train/'
+    DFIRE_VAL_IMGS_DIR = DFIRE_VAL_DIR + 'images/'
+    DFIRE_VAL_LABELS_DIR = DFIRE_VAL_DIR + 'labels/'
+else:
+    DFIRE_DS_DIR = '../../datasets/ds2fire/dfire_yolo/'
+    DFIRE_VAL_DIR = DFIRE_DS_DIR + 'test/'
+    DFIRE_VAL_IMGS_DIR = DFIRE_VAL_DIR + 'images/'
+    DFIRE_VAL_LABELS_DIR = DFIRE_VAL_DIR + 'labels/'  
 
 DS_LEN = None
 # ______________________________________________________________________ #
