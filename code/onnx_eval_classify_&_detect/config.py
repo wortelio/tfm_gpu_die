@@ -26,7 +26,7 @@ C = N_CLASSES
 MAX_OBJ = 10
 IOU_THRESHOLD = 0.5
 NMS_IOU_THRESHOLD = 0.5 # Supress boxes of the same inference during NMS
-SCORE_THRESHOLD = 0.001 # 0.2 # For confidence score, to consider there is a positive sample in a cell
+SCORE_THRESHOLD = 0.2 # For confidence score, to consider there is a positive sample in a cell
 # ______________________________________________________________________ #
 #                        Folders and Datasets                            #
 # ______________________________________________________________________ #
