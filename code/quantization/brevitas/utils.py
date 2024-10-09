@@ -190,11 +190,13 @@ def save_checkpoint(epoch, model, optimizer, scheduler, checkpoint_name):
     }, 
     checkpoint_name) 
     
-def load_checkpoint(model_path, model, optimizer, scheduler, device):
+def load_checkpoint(model_path, model, optimizer=None, scheduler=None, device='cpu'):
     checkpoint = torch.load(model_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
-    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+    if optimizer is not None:
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    if scheduler is not None:
+        scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
     start_epoch = checkpoint['epoch']
     print(f"Loading Model. Trained during {start_epoch} epochs")
     return start_epoch

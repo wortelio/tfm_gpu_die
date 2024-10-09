@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_fuseBN_256_fasdd/' + 'test_v21_FASDD_VAL__NoCOMP_w4W2a8b4_FxdPnt_MSE_PerChnlW_IntBiasIntScl/'
+RUN_FOLDER = 'experiments_fuseBN_256_fasdd/' + 'test_v41_FINN__PerTensorFloat_SignedIdentity_1000_imgs/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -53,7 +53,7 @@ FASDD_CV_TRAIN_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_
 FASDD_CV_VAL_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/val.txt'
 FASDD_CV_TEST_LABELS_FILE = '../../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
-DS_LEN = None
+DS_LEN = 1000
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
@@ -74,7 +74,7 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 100
+EPOCHS = 2
 
 LOAD_MODEL = True
 LOAD_MODEL_DIR = './models/'
@@ -91,7 +91,13 @@ SMOKE_PRECISION_WEIGHT = 0.8
 FIXED_POINT = True
 FUSE_BN = True
 
+# WEIGHTS_BIT_WIDTH = 4
+# BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
+# ACTIVATIONS_BIT_WIDTH = 8
+# BIAS_BIT_WIDTH = 4
+
+##### FINN
 WEIGHTS_BIT_WIDTH = 4
-BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
-ACTIVATIONS_BIT_WIDTH = 8
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 4
+ACTIVATIONS_BIT_WIDTH = 4
 BIAS_BIT_WIDTH = 4

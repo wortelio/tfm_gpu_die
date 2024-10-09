@@ -7,7 +7,7 @@ from brevitas.quant import Int8WeightPerTensorFixedPoint, Uint8ActPerTensorFixed
 from brevitas.quant import Int32Bias, Int16Bias, Int8Bias, IntBias
 from brevitas.quant import Int8BiasPerTensorFixedPointInternalScaling
 from brevitas.quant import Int8WeightPerChannelFloat, Int8WeightPerChannelFixedPoint, Int8WeightPerChannelFixedPointMSE
-from brevitas.inject.defaults import RoundTo8bit
+from brevitas.inject.defaults import RoundTo8bit, TruncTo8bit
 from brevitas.inject.enum import ScalingImplType, RestrictValueType, BitWidthImplType
 from brevitas.core.scaling import ConstScaling
 
@@ -365,7 +365,7 @@ class QUANT_MEDIUM_PRUNING_AFTER_SVD_CLASSIFIER(nn.Module):
                     ("avgpool5", qnn.TruncAvgPool2d(                  # Adaptive Avg Pool replaced to avoid extra calculations
                                 kernel_size=(28, 28),
                                 stride=1,
-                                trunc_quant=RoundTo8bit,
+                                trunc_quant=TruncTo8bit,#RoundTo8bit, Changed to TruncTo8Bit for FINN, which demands floor and not ceil
                                 return_quant_tensor=True)),
                     ("flatten5", nn.Flatten(start_dim=1)),
                     ("dropout5", nn.Dropout(p=0.2)),
