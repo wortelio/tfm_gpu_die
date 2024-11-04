@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_v04__imagenetQuant__w2a4_PerChannel_FixedPoint/'
+RUN_FOLDER = 'experiments_resnet/' + 'test_v03__w1a1__DEEP_Resnet__clip_convs_Linear4ReLU__400k_full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -24,7 +24,11 @@ if not os.path.isdir(ONNX_FOLDER):
 CLASSES = ["smoke", "fire"]
 NUM_CLASSES = len(CLASSES)
 
+#___   Padding Model  ___#
 IMG_DIM = {'W':224, 'H':224} # (W, H)
+#___ No Padding Model ___#
+# IMG_DIM = {'W':230, 'H':230} # (W, H)
+
 IMG_H = IMG_DIM['H']
 IMG_W = IMG_DIM['W']
 NUM_CHANNELS = 3
@@ -60,7 +64,7 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
-MODEL = "BED"
+MODEL = "BNN_BED"
 
 LEARNING_RATE = 1e-3
 #LEARNING_RATE = 1e-4
@@ -77,7 +81,7 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 50
+EPOCHS = 150
 
 LOAD_MODEL = False
 LOAD_MODEL_DIR = './models/'
@@ -100,6 +104,6 @@ FIXED_POINT = True
 
 ##### FINN
 WEIGHTS_BIT_WIDTH = 4
-BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 4
 ACTIVATIONS_BIT_WIDTH = 4
 BIAS_BIT_WIDTH = 4
