@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_brevitas/' + 'test_v03_1M_w1a1_full_ds/'
+RUN_FOLDER = 'experiments/' + 'test_v05_mini_No_resnet_70k_full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'

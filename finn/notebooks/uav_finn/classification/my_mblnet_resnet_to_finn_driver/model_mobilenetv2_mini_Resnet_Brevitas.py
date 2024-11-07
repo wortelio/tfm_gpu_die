@@ -13,10 +13,10 @@ from brevitas.quant import Int32Bias
 
 from brevitas.quant import TruncTo8bit
 
-from .common import CommonIntWeightPerChannelQuant
-from .common import CommonIntWeightPerTensorQuant
-from .common import CommonUintActQuant
-from .common import CommonIntActQuant
+from common import CommonIntWeightPerChannelQuant
+from common import CommonIntWeightPerTensorQuant
+from common import CommonUintActQuant
+from common import CommonIntActQuant
 
 def _make_divisible(v, divisor, min_value=None):
     """
@@ -202,8 +202,8 @@ class InvertedBlock(nn.Module):
 
         self.quant_identity_out = QuantIdentity(
                     act_quant=CommonIntActQuant,
-                    bit_width=act_bit_width),
-                )
+                    bit_width=act_bit_width)
+        
 
     def forward(self, x):
         if self.identity:
@@ -222,13 +222,13 @@ class InvertedBlock(nn.Module):
 
 
 
-class MobileNetV2_MINI(nn.Module):
+class MobileNetV2_MINI_RESNET(nn.Module):
     def __init__(self, num_classes=2, 
                  width_mult=1., 
                  in_bit_width=8,
                  weight_bit_width=4,
                  act_bit_width=4):
-        super(MobileNetV2_MINI, self).__init__()
+        super(MobileNetV2_MINI_RESNET, self).__init__()
         # setting of inverted residual blocks
         self.cfgs = [
             # t, c, n, s
@@ -258,10 +258,13 @@ class MobileNetV2_MINI(nn.Module):
         
         # building inverted residual blocks
         block = InvertedBlock
+        shared_quant = None
         for t, c, n, s in self.cfgs:
             output_channel = _make_divisible(c * width_mult, 4 if width_mult == 0.1 else 8)
             for i in range(n):
-                layers.append(block(input_channel, output_channel, s if i == 0 else 1, t, weight_bit_width, act_bit_width))
+                new_block = block(input_channel, output_channel, s if i == 0 else 1, t, weight_bit_width, act_bit_width, shared_quant)
+                layers.append(new_block)
+                shared_quant = new_block.get_shared_quant()
                 input_channel = output_channel
         self.features = nn.Sequential(*layers)
         
@@ -283,7 +286,12 @@ class MobileNetV2_MINI(nn.Module):
             weight_quant=CommonIntWeightPerTensorQuant,
             weight_bit_width=8)
 
-
+        # Bipolar Out
+        self.bipolar_out = QuantIdentity(
+            quant_type='binary', 
+            scaling_impl_type='const',
+            bit_width=1, min_val=-1.0, max_val=1.0) 
+        
     def forward(self, x):
         x = 2.0 * x - torch.tensor([1.0], device=x.device)
         x = self.features(x)
@@ -291,6 +299,7 @@ class MobileNetV2_MINI(nn.Module):
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
+        x = self.bipolar_out(x)
         return x
 
 
