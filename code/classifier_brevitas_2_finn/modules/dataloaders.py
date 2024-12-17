@@ -158,6 +158,39 @@ def get_val_loader():
     
     return val_loader
 
+
+# ______________________________________________________________________ #
+#                         DFIRE TEST DATASETS                            #
+# ______________________________________________________________________ #
+def get_dfire_val_loader():
+    val_transform = A.Compose([
+        A.Resize(config.IMG_H, config.IMG_W, p=1),
+        ToTensorV2(p=1),
+        ]
+    )
+    
+    print("\n====================\nTEST DFire dataset")
+    val_dfire_dataset = dataset_dfire.DFireDataset(
+        img_h = config.IMG_H,
+        img_w = config.IMG_W,
+        img_dir = config.DFIRE_TEST_IMG_DIR,
+        label_dir = config.DFIRE_TEST_LABEL_DIR,
+        num_classes = config.NUM_CLASSES,
+        ds_len = config.DS_LEN,
+        transform=val_transform)
+    print(f'\nTest dataset len: {len(val_dfire_dataset)}')
+        
+
+    val_loader = DataLoader(
+        dataset=val_dfire_dataset,
+        batch_size=config.BATCH_SIZE,
+        num_workers=config.NUM_WORKERS,
+        pin_memory=config.PIN_MEMORY,
+        shuffle=False,
+        drop_last=True)
+    
+    return val_loader
+
 # ______________________________________________________________________ #
 #                         DFIRE MINI DATASETS                            #
 # ______________________________________________________________________ #

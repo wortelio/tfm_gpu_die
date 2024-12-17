@@ -1,0 +1,2311 @@
+MOBILENETV2_DET Detector.
+	No Sigmoid, No Softmax. Permute as a Layer.
+	Albumentations: area changed to 8*8, to keep little boxes.
+	Albumentations: added ShiftScaleRotate p=0.1.
+	DFire and FASDD UAV and CV.
+	FASDD: train and val datasets to train and test dataset to validate.
+	Brevitas Quantization.
+
+
+Datasets Length
+	Train: Full
+	Val: Full
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Gradients Clip Norm: 10
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 3
+	Scheduler threshold: 0.01
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 125
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Grid, Bounding Boxes, Classes and Thresholds:
+	Grid: 7
+	Number of Bounding Boxes per Cell: 2
+	Number of Classes: 2
+	Maximum Number of Objects per Image: 10
+	IOU Threshold: 0.5
+	Score Threshold: 0.2
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Head Weights Bit Width: 8
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Loss Function: YOLOV1_LOSS
+Lambda for L1 regularization: 0
+
+Trainable parameters = 307761
+Total parameters = 307761
+
+Input shape is torch.Size([4, 3, 224, 224])
+Model shape is torch.Size([4, 12, 7, 7])
+
+
+ORIGINAL Model Summary
+==================================================================================================================================
+Layer (type:depth-idx)                                                           Output Shape              Param #
+==================================================================================================================================
+MobileNetV2_DET_BREVITAS                                                         [1, 12, 7, 7]             --
+├─Sequential: 1-1                                                                [1, 128, 7, 7]            297,901
+│    └─QuantIdentity: 2-1                                                        [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-1                                       [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-2                                       [1, 3, 224, 224]          1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─QuantIdentity: 2-3                                                        --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-4                                       --                        (recursive)
+│    └─Sequential: 2-4                                                           [1, 32, 112, 112]         --
+│    │    └─QuantConv2d: 3-5                                                     [1, 32, 112, 112]         864
+│    │    └─BatchNorm2d: 3-6                                                     [1, 32, 112, 112]         64
+│    │    └─QuantRelu6: 3-7                                                      [1, 32, 112, 112]         1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─Sequential: 2-6                                                           --                        (recursive)
+│    │    └─QuantRelu6: 3-9                                                      --                        (recursive)
+│    └─InvertedBlock: 2-7                                                        [1, 16, 112, 112]         --
+│    │    └─Sequential: 3-10                                                     [1, 16, 112, 112]         898
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-11                                                       --                        (recursive)
+│    │    └─Sequential: 3-14                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-11                                                       --                        (recursive)
+│    │    └─Sequential: 3-14                                                     --                        (recursive)
+│    └─InvertedBlock: 2-12                                                       [1, 24, 56, 56]           --
+│    │    └─Sequential: 3-15                                                     [1, 24, 56, 56]           1,747
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-16                                                       --                        (recursive)
+│    │    └─Sequential: 3-19                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-16                                                       --                        (recursive)
+│    │    └─Sequential: 3-19                                                     --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+│    └─InvertedBlock: 2-20                                                       [1, 24, 56, 56]           1
+│    │    └─Sequential: 3-23                                                     [1, 24, 56, 56]           2,979
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-30                                                  [1, 24, 56, 56]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-32                                                  --                        (recursive)
+│    └─InvertedBlock: 2-29                                                       [1, 32, 28, 28]           --
+│    │    └─Sequential: 3-33                                                     [1, 32, 28, 28]           3,379
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-33                                                       --                        (recursive)
+│    │    └─Sequential: 3-37                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-33                                                       --                        (recursive)
+│    │    └─Sequential: 3-37                                                     --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+│    └─InvertedBlock: 2-37                                                       [1, 32, 28, 28]           1
+│    │    └─Sequential: 3-41                                                     [1, 32, 28, 28]           4,995
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-48                                                  [1, 32, 28, 28]           1
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+│    └─InvertedBlock: 2-47                                                       [1, 32, 28, 28]           1
+│    │    └─Sequential: 3-52                                                     [1, 32, 28, 28]           4,995
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-59                                                  [1, 32, 28, 28]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-61                                                  --                        (recursive)
+│    └─InvertedBlock: 2-56                                                       [1, 64, 14, 14]           --
+│    │    └─Sequential: 3-62                                                     [1, 64, 14, 14]           7,107
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-60                                                       --                        (recursive)
+│    │    └─Sequential: 3-66                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-60                                                       --                        (recursive)
+│    │    └─Sequential: 3-66                                                     --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+│    └─InvertedBlock: 2-64                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-70                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-77                                                  [1, 64, 14, 14]           1
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+│    └─InvertedBlock: 2-74                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-81                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-88                                                  [1, 64, 14, 14]           1
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+│    └─InvertedBlock: 2-84                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-92                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-99                                                  [1, 64, 14, 14]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-101                                                 --                        (recursive)
+│    └─InvertedBlock: 2-93                                                       [1, 96, 14, 14]           --
+│    │    └─Sequential: 3-102                                                    [1, 96, 14, 14]           22,339
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-97                                                       --                        (recursive)
+│    │    └─Sequential: 3-106                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-97                                                       --                        (recursive)
+│    │    └─Sequential: 3-106                                                    --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+│    └─InvertedBlock: 2-101                                                      [1, 96, 14, 14]           1
+│    │    └─Sequential: 3-110                                                    [1, 96, 14, 14]           39,555
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-117                                                 [1, 96, 14, 14]           1
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+│    └─InvertedBlock: 2-111                                                      [1, 96, 14, 14]           1
+│    │    └─Sequential: 3-121                                                    [1, 96, 14, 14]           39,555
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-128                                                 [1, 96, 14, 14]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─QuantIdentity: 3-130                                                 --                        (recursive)
+│    └─InvertedBlock: 2-120                                                      [1, 128, 7, 7]            --
+│    │    └─Sequential: 3-131                                                    [1, 128, 7, 7]            45,763
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-124                                                      --                        (recursive)
+│    │    └─Sequential: 3-135                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-124                                                      --                        (recursive)
+│    │    └─Sequential: 3-135                                                    --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+│    └─InvertedBlock: 2-128                                                      [1, 128, 7, 7]            1
+│    │    └─Sequential: 3-139                                                    [1, 128, 7, 7]            69,123
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-146                                                 [1, 128, 7, 7]            1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─QuantIdentity: 3-148                                                 --                        (recursive)
+├─Sequential: 1-112                                                              [1, 12, 7, 7]             --
+│    └─Sequential: 2-137                                                         [1, 64, 7, 7]             --
+│    │    └─QuantConv2d: 3-149                                                   [1, 64, 7, 7]             8,192
+│    │    └─BatchNorm2d: 3-150                                                   [1, 64, 7, 7]             128
+│    │    └─QuantRelu6: 3-151                                                    [1, 64, 7, 7]             1
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+│    └─Sequential: 2-139                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-153                                                    --                        (recursive)
+│    └─Sequential: 2-140                                                         [1, 16, 7, 7]             --
+│    │    └─QuantConv2d: 3-154                                                   [1, 16, 7, 7]             1,024
+│    │    └─BatchNorm2d: 3-155                                                   [1, 16, 7, 7]             32
+│    │    └─QuantRelu6: 3-156                                                    [1, 16, 7, 7]             1
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+│    └─Sequential: 2-142                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-158                                                    --                        (recursive)
+│    └─Sequential: 2-143                                                         [1, 16, 7, 7]             --
+│    │    └─QuantConv2d: 3-159                                                   [1, 16, 7, 7]             256
+│    │    └─BatchNorm2d: 3-160                                                   [1, 16, 7, 7]             32
+│    │    └─QuantRelu6: 3-161                                                    [1, 16, 7, 7]             1
+│    └─QuantConv2d: 2-144                                                        [1, 12, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-162                                     [1, 16, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-163                                  [12, 16, 1, 1]            192
+│    │    └─ActQuantProxyFromInjector: 3-164                                     [1, 12, 7, 7]             --
+==================================================================================================================================
+Total params: 769,174
+Trainable params: 769,174
+Non-trainable params: 0
+Total mult-adds (M): 0.01
+==================================================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 24.25
+Params size (MB): 0.04
+Estimated Total Size (MB): 24.89
+==================================================================================================================================
+Starting script
+
+
+***Start Training: 01:38:42
+
+
+=== EPOCH 0/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+146.92     |67.93     |55.57     |8.03      |15.39     |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+103.68     |43.31     |45.11     |6.93      |8.33      |
+
+Saving model with new best validation loss: 103.681
+
+=== EPOCH 1/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+105.76     |43.21     |46.94     |7.05      |8.56      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+87.62      |33.83     |42.11     |4.69      |6.99      |
+
+Saving model with new best validation loss: 87.619
+
+=== EPOCH 2/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+96.69      |38.40     |42.95     |7.89      |7.45      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+82.52      |31.43     |39.76     |4.85      |6.48      |
+
+Saving model with new best validation loss: 82.520
+
+=== EPOCH 3/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+91.64      |35.94     |40.47     |8.39      |6.84      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+73.24      |27.79     |31.84     |8.31      |5.31      |
+
+Saving model with new best validation loss: 73.244
+
+=== EPOCH 4/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+87.75      |33.96     |38.80     |8.60      |6.38      |    |0.2055     |0.3659    |0.1447    |0.3453    |0.1751    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+71.85      |26.52     |32.00     |8.07      |5.26      |    |0.2235     |0.3410    |0.2609    |0.4928    |0.2422    |
+
+Saving model with new best validation loss: 71.846
+Saving model with new best mAP: 0.2422
+
+=== EPOCH 5/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+85.22      |32.65     |37.80     |8.70      |6.07      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+68.69      |24.46     |29.19     |10.46     |4.58      |
+
+Saving model with new best validation loss: 68.690
+
+=== EPOCH 6/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+83.52      |31.82     |37.05     |8.81      |5.85      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+68.88      |25.31     |29.82     |9.60      |4.15      |
+
+
+=== EPOCH 7/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+81.92      |31.00     |36.37     |8.88      |5.68      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.30      |24.52     |29.37     |7.03      |4.37      |
+
+Saving model with new best validation loss: 65.297
+
+=== EPOCH 8/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+80.87      |30.50     |35.96     |8.92      |5.49      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.01      |23.84     |29.30     |7.53      |4.34      |
+
+Saving model with new best validation loss: 65.005
+
+=== EPOCH 9/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+79.65      |29.89     |35.41     |8.95      |5.40      |    |0.2721     |0.4239    |0.1940    |0.4017    |0.2330    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+63.83      |23.43     |30.28     |6.16      |3.97      |    |0.3071     |0.4617    |0.3510    |0.5189    |0.3290    |
+
+Saving model with new best validation loss: 63.835
+Saving model with new best mAP: 0.3290
+
+=== EPOCH 10/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+78.70      |29.43     |34.98     |9.00      |5.28      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.74      |23.35     |26.71     |9.38      |4.29      |
+
+Saving model with new best validation loss: 63.739
+
+=== EPOCH 11/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+78.15      |29.31     |34.57     |9.03      |5.24      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.04      |22.24     |25.94     |9.19      |3.66      |
+
+Saving model with new best validation loss: 61.042
+
+=== EPOCH 12/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+77.32      |28.84     |34.18     |9.08      |5.21      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.62      |22.45     |28.14     |8.27      |3.77      |
+
+
+=== EPOCH 13/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+76.80      |28.51     |34.06     |9.12      |5.10      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.64      |21.91     |23.66     |13.47     |3.59      |
+
+
+=== EPOCH 14/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+76.39      |28.41     |33.82     |9.16      |5.00      |    |0.3074     |0.4613    |0.2122    |0.4281    |0.2598    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+60.38      |21.77     |25.48     |9.13      |4.00      |    |0.3722     |0.5108    |0.2299    |0.4622    |0.3011    |
+
+Saving model with new best validation loss: 60.381
+
+=== EPOCH 15/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+75.94      |28.23     |33.57     |9.17      |4.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.38      |22.28     |25.80     |8.77      |3.52      |
+
+Saving model with new best validation loss: 60.381
+
+=== EPOCH 16/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+75.29      |27.87     |33.36     |9.20      |4.85      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.13      |20.59     |24.17     |9.00      |3.36      |
+
+Saving model with new best validation loss: 57.127
+
+=== EPOCH 17/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+75.25      |27.94     |33.24     |9.22      |4.85      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.19      |22.68     |24.18     |11.00     |3.34      |
+
+
+=== EPOCH 18/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+74.97      |27.80     |33.17     |9.21      |4.79      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.85      |21.79     |25.17     |9.46      |3.43      |
+
+
+=== EPOCH 19/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+74.59      |27.51     |33.10     |9.17      |4.81      |    |0.3240     |0.4764    |0.2240    |0.4390    |0.2740    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.42      |20.51     |25.43     |7.96      |3.52      |    |0.3858     |0.5431    |0.4133    |0.5838    |0.3995    |
+
+Saving model with new best mAP: 0.3995
+
+=== EPOCH 20/124 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+74.19      |27.38     |32.86     |9.21      |4.74      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.95      |21.48     |25.14     |9.11      |3.22      |
+
+
+=== EPOCH 21/124 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+72.93      |26.70     |32.27     |9.28      |4.67      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.43      |19.76     |24.48     |7.91      |3.28      |
+
+Saving model with new best validation loss: 55.429
+
+=== EPOCH 22/124 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+72.18      |26.29     |32.08     |9.33      |4.49      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.60      |19.91     |25.49     |6.69      |3.51      |
+
+
+=== EPOCH 23/124 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+72.28      |26.44     |31.92     |9.36      |4.56      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.50      |20.53     |22.95     |11.92     |4.11      |
+
+
+=== EPOCH 24/124 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+71.85      |26.24     |31.77     |9.36      |4.49      |    |0.3442     |0.4976    |0.2421    |0.4595    |0.2931    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.06      |20.29     |22.81     |10.56     |3.39      |    |0.3972     |0.5902    |0.4418    |0.6087    |0.4195    |
+
+Saving model with new best mAP: 0.4195
+
+=== EPOCH 25/124 ===
+Learning Rate = 0.0008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+71.90      |26.29     |31.82     |9.30      |4.50      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+56.45      |20.32     |24.61     |8.25      |3.27      |
+
+
+=== EPOCH 26/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+70.20      |25.44     |31.19     |9.29      |4.28      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.05      |19.56     |23.13     |8.84      |3.52      |
+
+Saving model with new best validation loss: 55.047
+
+=== EPOCH 27/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+69.72      |25.24     |30.95     |9.30      |4.23      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.87      |18.96     |24.73     |8.12      |3.06      |
+
+Saving model with new best validation loss: 54.875
+
+=== EPOCH 28/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+69.64      |25.19     |30.94     |9.24      |4.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+53.65      |19.09     |23.58     |7.74      |3.24      |
+
+Saving model with new best validation loss: 53.649
+
+=== EPOCH 29/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+69.55      |25.21     |30.88     |9.24      |4.23      |    |0.3687     |0.5185    |0.2662    |0.4715    |0.3174    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+55.40      |19.02     |21.52     |11.92     |2.95      |    |0.4243     |0.5899    |0.4666    |0.6252    |0.4454    |
+
+Saving model with new best mAP: 0.4454
+
+=== EPOCH 30/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+69.43      |25.08     |30.88     |9.24      |4.23      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.51      |19.16     |23.08     |9.07      |3.20      |
+
+
+=== EPOCH 31/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+69.51      |25.16     |30.77     |9.27      |4.31      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+55.37      |19.74     |23.43     |8.84      |3.36      |
+
+
+=== EPOCH 32/124 ===
+Learning Rate = 0.00064
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+69.02      |24.94     |30.70     |9.23      |4.15      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+54.34      |18.93     |22.51     |9.67      |3.23      |
+
+
+=== EPOCH 33/124 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+68.08      |24.50     |30.30     |9.23      |4.05      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.20      |18.00     |20.42     |9.70      |3.09      |
+
+Saving model with new best validation loss: 51.204
+
+=== EPOCH 34/124 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+67.72      |24.37     |30.10     |9.23      |4.02      |    |0.3928     |0.5347    |0.2808    |0.4844    |0.3368    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+52.02      |18.63     |21.33     |9.13      |2.93      |    |0.4593     |0.6077    |0.4856    |0.6311    |0.4724    |
+
+Saving model with new best mAP: 0.4724
+
+=== EPOCH 35/124 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+67.53      |24.29     |30.01     |9.25      |3.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.10      |18.11     |21.28     |9.65      |3.05      |
+
+
+=== EPOCH 36/124 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+67.49      |24.34     |29.90     |9.25      |4.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.81      |18.41     |22.44     |8.07      |2.88      |
+
+
+=== EPOCH 37/124 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+67.34      |24.18     |29.95     |9.22      |4.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.37      |18.67     |21.79     |8.70      |3.21      |
+
+
+=== EPOCH 38/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+66.25      |23.79     |29.49     |9.18      |3.80      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.10      |18.06     |20.63     |10.54     |2.87      |
+
+
+=== EPOCH 39/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+66.02      |23.61     |29.38     |9.21      |3.83      |    |0.4049     |0.5483    |0.2934    |0.4935    |0.3491    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.80      |17.95     |19.48     |10.46     |2.91      |    |0.4607     |0.6132    |0.4524    |0.6222    |0.4566    |
+
+Saving model with new best validation loss: 50.799
+
+=== EPOCH 40/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.82      |23.50     |29.30     |9.21      |3.82      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.40      |17.95     |20.48     |9.95      |3.02      |
+
+
+=== EPOCH 41/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.79      |23.51     |29.27     |9.21      |3.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.97      |18.16     |18.90     |11.68     |3.23      |
+
+
+=== EPOCH 42/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.90      |23.64     |29.26     |9.19      |3.82      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.54      |18.01     |21.16     |8.53      |2.84      |
+
+Saving model with new best validation loss: 50.541
+
+=== EPOCH 43/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.89      |23.51     |29.29     |9.24      |3.86      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.35      |18.73     |21.33     |9.47      |2.83      |
+
+
+=== EPOCH 44/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+65.79      |23.51     |29.25     |9.20      |3.83      |    |0.4140     |0.5510    |0.2969    |0.4977    |0.3555    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.98      |17.83     |21.12     |9.27      |2.75      |    |0.4760     |0.6147    |0.4585    |0.6152    |0.4673    |
+
+
+=== EPOCH 45/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.59      |23.41     |29.13     |9.23      |3.82      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.84      |18.19     |20.65     |9.06      |2.94      |
+
+
+=== EPOCH 46/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.49      |23.40     |29.15     |9.19      |3.75      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.45      |17.94     |20.07     |9.54      |2.90      |
+
+Saving model with new best validation loss: 50.450
+
+=== EPOCH 47/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.37      |23.31     |29.03     |9.25      |3.78      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.61      |17.91     |20.20     |9.49      |3.02      |
+
+
+=== EPOCH 48/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.83      |23.52     |29.29     |9.21      |3.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.93      |18.12     |19.70     |10.14     |2.97      |
+
+
+=== EPOCH 49/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+65.57      |23.37     |29.17     |9.21      |3.82      |    |0.4122     |0.5510    |0.2905    |0.4945    |0.3513    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.74      |17.55     |20.61     |8.84      |2.74      |    |0.4660     |0.6212    |0.4755    |0.6254    |0.4708    |
+
+Saving model with new best validation loss: 49.739
+
+=== EPOCH 50/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.21      |23.24     |29.03     |9.16      |3.79      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.04      |18.31     |20.81     |8.90      |3.03      |
+
+
+=== EPOCH 51/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.21      |23.27     |28.99     |9.21      |3.74      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.85      |18.26     |21.73     |7.89      |2.96      |
+
+
+=== EPOCH 52/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.45      |23.44     |29.05     |9.18      |3.78      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.63      |17.49     |20.70     |8.66      |2.79      |
+
+Saving model with new best validation loss: 49.635
+
+=== EPOCH 53/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.13      |23.22     |28.93     |9.21      |3.77      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+51.32      |17.83     |19.50     |10.98     |3.03      |
+
+
+=== EPOCH 54/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+65.23      |23.25     |28.99     |9.22      |3.77      |    |0.4148     |0.5559    |0.2916    |0.4991    |0.3532    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+50.15      |17.60     |20.56     |9.12      |2.87      |    |0.4632     |0.6022    |0.4877    |0.6325    |0.4755    |
+
+Saving model with new best mAP: 0.4755
+
+=== EPOCH 55/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.46      |23.40     |29.05     |9.19      |3.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.80      |18.22     |21.01     |8.67      |2.90      |
+
+
+=== EPOCH 56/124 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+65.52      |23.51     |29.03     |9.18      |3.81      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+52.19      |18.18     |18.56     |12.53     |2.92      |
+
+
+=== EPOCH 57/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.38      |22.92     |28.63     |9.16      |3.67      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.15      |17.18     |21.84     |7.45      |2.68      |
+
+Saving model with new best validation loss: 49.154
+
+=== EPOCH 58/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.27      |22.94     |28.61     |9.16      |3.56      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.67      |17.08     |21.14     |7.75      |2.70      |
+
+Saving model with new best validation loss: 48.672
+
+=== EPOCH 59/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+64.41      |22.96     |28.63     |9.20      |3.63      |    |0.4277     |0.5614    |0.3051    |0.5057    |0.3664    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+49.89      |17.40     |18.91     |10.67     |2.90      |    |0.5053     |0.6414    |0.4947    |0.6362    |0.5000    |
+
+Saving model with new best mAP: 0.5000
+
+=== EPOCH 60/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.94      |22.76     |28.49     |9.17      |3.53      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.75      |17.24     |20.49     |9.17      |2.84      |
+
+
+=== EPOCH 61/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.00      |22.76     |28.49     |9.17      |3.58      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+49.12      |17.46     |19.76     |9.09      |2.80      |
+
+
+=== EPOCH 62/124 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+64.02      |22.83     |28.41     |9.19      |3.59      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+50.42      |17.58     |19.93     |10.13     |2.77      |
+
+
+=== EPOCH 63/124 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.90      |22.30     |27.95     |9.19      |3.46      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.21      |16.56     |20.97     |7.07      |2.61      |
+
+Saving model with new best validation loss: 47.215
+
+=== EPOCH 64/124 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+62.92      |22.26     |28.07     |9.11      |3.48      |    |0.4392     |0.5710    |0.3172    |0.5116    |0.3782    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+48.13      |16.93     |19.04     |9.41      |2.76      |    |0.5376     |0.6631    |0.4690    |0.6178    |0.5033    |
+
+Saving model with new best mAP: 0.5033
+
+=== EPOCH 65/124 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.78      |22.19     |27.92     |9.16      |3.51      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.00      |16.94     |21.24     |7.08      |2.73      |
+
+
+=== EPOCH 66/124 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+62.72      |22.17     |27.91     |9.14      |3.50      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.76      |16.64     |18.82     |10.67     |2.63      |
+
+
+=== EPOCH 67/124 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+63.07      |22.44     |27.96     |9.14      |3.52      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.26      |16.45     |18.83     |9.37      |2.61      |
+
+
+=== EPOCH 68/124 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.89      |21.86     |27.56     |9.09      |3.38      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.75      |16.54     |18.49     |10.01     |2.72      |
+
+
+=== EPOCH 69/124 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+62.12      |22.05     |27.62     |9.09      |3.36      |    |0.4456     |0.5768    |0.3229    |0.5168    |0.3842    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.66      |16.60     |20.31     |8.07      |2.69      |    |0.5163     |0.6215    |0.5004    |0.6359    |0.5083    |
+
+Saving model with new best mAP: 0.5083
+
+=== EPOCH 70/124 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.97      |21.89     |27.58     |9.13      |3.37      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.70      |16.84     |18.69     |9.46      |2.72      |
+
+
+=== EPOCH 71/124 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.96      |21.90     |27.61     |9.10      |3.34      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+47.64      |16.83     |20.15     |7.68      |2.99      |
+
+
+=== EPOCH 72/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.40      |21.65     |27.29     |9.11      |3.34      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.74      |16.24     |20.13     |7.80      |2.56      |
+
+Saving model with new best validation loss: 46.736
+
+=== EPOCH 73/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.11      |21.55     |27.27     |9.05      |3.25      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.99      |16.23     |19.21     |8.94      |2.61      |
+
+
+=== EPOCH 74/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+60.95      |21.41     |27.19     |9.08      |3.27      |    |0.4544     |0.5842    |0.3298    |0.5249    |0.3921    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.80      |16.49     |20.47     |7.32      |2.51      |    |0.5254     |0.6302    |0.4743    |0.6299    |0.4998    |
+
+
+=== EPOCH 75/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.80      |21.27     |27.10     |9.10      |3.33      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.72      |16.24     |18.42     |9.48      |2.57      |
+
+Saving model with new best validation loss: 46.720
+
+=== EPOCH 76/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.94      |21.37     |27.18     |9.13      |3.27      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.39      |16.24     |19.48     |7.98      |2.69      |
+
+Saving model with new best validation loss: 46.389
+
+=== EPOCH 77/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.08      |21.49     |27.24     |9.09      |3.25      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.68      |16.14     |21.10     |6.70      |2.75      |
+
+
+=== EPOCH 78/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+61.03      |21.54     |27.11     |9.08      |3.30      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.30      |16.30     |18.83     |8.48      |2.68      |
+
+Saving model with new best validation loss: 46.295
+
+=== EPOCH 79/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+60.85      |21.45     |27.06     |9.08      |3.25      |    |0.4533     |0.5867    |0.3329    |0.5293    |0.3931    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+47.52      |16.39     |18.73     |9.86      |2.54      |    |0.5150     |0.6494    |0.5314    |0.6596    |0.5232    |
+
+Saving model with new best mAP: 0.5232
+
+=== EPOCH 80/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.99      |21.55     |27.06     |9.11      |3.27      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.80      |16.21     |18.96     |9.02      |2.62      |
+
+
+=== EPOCH 81/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.86      |21.47     |27.07     |9.08      |3.24      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.26      |16.12     |19.05     |8.46      |2.63      |
+
+Saving model with new best validation loss: 46.261
+
+=== EPOCH 82/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.81      |21.25     |27.17     |9.10      |3.29      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.13      |16.26     |18.52     |8.84      |2.51      |
+
+Saving model with new best validation loss: 46.129
+
+=== EPOCH 83/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.89      |21.36     |27.18     |9.11      |3.24      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.58      |15.94     |18.77     |8.31      |2.56      |
+
+Saving model with new best validation loss: 45.582
+
+=== EPOCH 84/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+60.90      |21.42     |27.11     |9.06      |3.31      |    |0.4556     |0.5854    |0.3309    |0.5254    |0.3933    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.07      |16.62     |19.22     |7.56      |2.67      |    |0.5340     |0.6590    |0.5136    |0.6435    |0.5238    |
+
+Saving model with new best mAP: 0.5238
+
+=== EPOCH 85/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.75      |21.42     |27.08     |9.06      |3.19      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.81      |16.25     |19.60     |8.35      |2.61      |
+
+
+=== EPOCH 86/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.76      |21.41     |27.01     |9.10      |3.25      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.75      |15.91     |19.44     |7.91      |2.50      |
+
+
+=== EPOCH 87/124 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.77      |21.28     |27.13     |9.10      |3.26      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+48.67      |16.77     |17.76     |11.39     |2.75      |
+
+
+=== EPOCH 88/124 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.31      |21.21     |26.85     |9.04      |3.21      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.96      |16.02     |18.94     |8.48      |2.53      |
+
+
+=== EPOCH 89/124 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+59.96      |21.02     |26.75     |9.02      |3.16      |    |0.4677     |0.5918    |0.3388    |0.5324    |0.4033    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.33      |16.40     |18.81     |8.56      |2.56      |    |0.5245     |0.6516    |0.4507    |0.6194    |0.4876    |
+
+
+=== EPOCH 90/124 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.98      |20.98     |26.75     |9.08      |3.17      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.88      |15.95     |17.98     |9.44      |2.51      |
+
+
+=== EPOCH 91/124 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+60.12      |21.07     |26.80     |9.08      |3.17      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.58      |16.17     |19.94     |7.62      |2.85      |
+
+
+=== EPOCH 92/124 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.58      |20.83     |26.59     |9.02      |3.13      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.13      |15.76     |18.38     |8.39      |2.60      |
+
+Saving model with new best validation loss: 45.126
+
+=== EPOCH 93/124 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.38      |20.79     |26.47     |9.01      |3.10      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.35      |15.76     |19.46     |7.70      |2.43      |
+
+
+=== EPOCH 94/124 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+59.46      |20.85     |26.48     |9.00      |3.13      |    |0.4701     |0.5933    |0.3408    |0.5345    |0.4055    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+45.98      |15.90     |18.16     |9.26      |2.66      |    |0.5308     |0.6426    |0.5342    |0.6708    |0.5325    |
+
+Saving model with new best mAP: 0.5325
+
+=== EPOCH 95/124 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.34      |20.75     |26.45     |9.03      |3.11      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.24      |16.09     |17.06     |10.61     |2.49      |
+
+
+=== EPOCH 96/124 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.31      |20.72     |26.40     |9.06      |3.13      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.34      |15.95     |17.53     |9.18      |2.69      |
+
+
+=== EPOCH 97/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.10      |20.63     |26.40     |9.02      |3.05      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.45      |15.63     |17.68     |9.71      |2.44      |
+
+
+=== EPOCH 98/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.97      |20.56     |26.31     |9.00      |3.10      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.79      |15.59     |18.29     |8.38      |2.53      |
+
+Saving model with new best validation loss: 44.788
+
+=== EPOCH 99/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.82      |20.51     |26.24     |8.99      |3.07      |    |0.4679     |0.5997    |0.3497    |0.5409    |0.4088    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+46.11      |15.89     |19.67     |8.04      |2.51      |    |0.4974     |0.6440    |0.4341    |0.5996    |0.4658    |
+
+
+=== EPOCH 100/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.92      |20.58     |26.23     |9.03      |3.08      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.34      |15.68     |16.77     |10.39     |2.49      |
+
+
+=== EPOCH 101/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.72      |20.45     |26.22     |9.00      |3.06      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.55      |15.68     |18.24     |8.15      |2.48      |
+
+Saving model with new best validation loss: 44.553
+
+=== EPOCH 102/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.89      |20.60     |26.24     |8.95      |3.11      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.49      |15.73     |18.98     |8.13      |2.64      |
+
+
+=== EPOCH 103/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.72      |20.46     |26.21     |9.04      |3.02      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+45.13      |15.89     |18.80     |7.90      |2.54      |
+
+
+=== EPOCH 104/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.88      |20.59     |26.20     |9.02      |3.07      |    |0.4698     |0.5968    |0.3450    |0.5379    |0.4074    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+45.05      |15.25     |18.28     |9.02      |2.50      |    |0.5588     |0.6695    |0.5441    |0.6664    |0.5515    |
+
+Saving model with new best mAP: 0.5515
+
+=== EPOCH 105/124 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+59.01      |20.57     |26.30     |9.06      |3.09      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+46.65      |15.62     |18.24     |10.24     |2.56      |
+
+
+=== EPOCH 106/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.45      |20.35     |26.10     |8.97      |3.02      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.19      |15.44     |18.14     |8.10      |2.50      |
+
+Saving model with new best validation loss: 44.185
+
+=== EPOCH 107/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.32      |20.37     |26.01     |8.98      |2.96      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.91      |15.63     |18.35     |8.52      |2.41      |
+
+
+=== EPOCH 108/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.16      |20.27     |25.98     |8.96      |2.95      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.90      |15.70     |17.60     |9.22      |2.38      |
+
+
+=== EPOCH 109/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.22      |20.24     |26.05     |8.97      |2.96      |    |0.4838     |0.6060    |0.3482    |0.5402    |0.4160    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+44.15      |15.54     |18.99     |7.20      |2.42      |    |0.5601     |0.6617    |0.5394    |0.6574    |0.5498    |
+
+Saving model with new best validation loss: 44.151
+
+=== EPOCH 110/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.25      |20.35     |25.95     |8.96      |3.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.90      |15.37     |17.81     |9.29      |2.44      |
+
+
+=== EPOCH 111/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.35      |20.31     |26.04     |8.98      |3.01      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.80      |15.58     |17.83     |8.84      |2.55      |
+
+
+=== EPOCH 112/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.34      |20.28     |26.09     |9.01      |2.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+43.88      |15.33     |18.55     |7.56      |2.45      |
+
+Saving model with new best validation loss: 43.885
+
+=== EPOCH 113/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.40      |20.34     |26.07     |8.98      |3.01      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.48      |15.50     |18.15     |8.48      |2.35      |
+
+
+=== EPOCH 114/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+58.23      |20.38     |25.94     |8.97      |2.94      |    |0.4819     |0.6037    |0.3513    |0.5429    |0.4166    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+45.04      |15.68     |18.90     |7.92      |2.55      |    |0.5449     |0.6539    |0.5261    |0.6667    |0.5355    |
+
+
+=== EPOCH 115/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.13      |20.19     |26.00     |8.95      |3.00      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.34      |15.41     |18.22     |8.16      |2.55      |
+
+
+=== EPOCH 116/124 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+58.12      |20.25     |25.94     |8.96      |2.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.32      |15.43     |18.38     |7.98      |2.54      |
+
+
+=== EPOCH 117/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.75      |20.05     |25.76     |8.97      |2.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.18      |15.30     |18.06     |8.26      |2.57      |
+
+
+=== EPOCH 118/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.75      |20.14     |25.73     |8.98      |2.90      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.37      |15.38     |19.55     |7.05      |2.39      |
+
+
+=== EPOCH 119/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.90      |20.14     |25.79     |8.97      |3.00      |    |0.4821     |0.6071    |0.3534    |0.5438    |0.4177    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+43.36      |15.04     |17.70     |8.25      |2.37      |    |0.5644     |0.6834    |0.5317    |0.6561    |0.5481    |
+
+Saving model with new best validation loss: 43.364
+
+=== EPOCH 120/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.72      |19.99     |25.82     |8.94      |2.97      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+43.78      |15.18     |17.43     |8.65      |2.51      |
+
+
+=== EPOCH 121/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.42      |19.88     |25.65     |8.96      |2.93      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.30      |15.71     |18.56     |7.52      |2.52      |
+
+
+=== EPOCH 122/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.84      |20.13     |25.79     |8.98      |2.94      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+44.58      |15.28     |17.98     |8.81      |2.50      |
+
+
+=== EPOCH 123/124 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+57.51      |19.98     |25.66     |8.97      |2.91      |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+43.90      |15.23     |18.38     |7.72      |2.57      |
+
+
+=== EPOCH 124/124 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+57.44      |19.94     |25.69     |8.94      |2.87      |    |0.4913     |0.6116    |0.3533    |0.5453    |0.4223    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+43.56      |15.18     |18.25     |7.77      |2.36      |    |0.5782     |0.6837    |0.5394    |0.6591    |0.5588    |
+
+Saving model with new best mAP: 0.5588
+Saving last model
+
+***Script finished: 12:33:00
+
+Time elapsed: 10:54:18.460865

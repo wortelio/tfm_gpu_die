@@ -14,10 +14,10 @@ from brevitas.nn import QuantLinear
 
 from brevitas.quant import TruncTo8bit
 
-from modules.common_imagenet import CommonIntWeightPerTensorQuant
-from modules.common_imagenet import CommonIntWeightPerChannelQuant
-from modules.common_imagenet import CommonUintActQuant
-from modules.common_imagenet import CommonIntActQuant # For initial Q1.7 Identity Layer
+from modules.models.common_imagenet import CommonIntWeightPerTensorQuant
+from modules.models.common_imagenet import CommonIntWeightPerChannelQuant
+from modules.models.common_imagenet import CommonUintActQuant
+from modules.models.common_imagenet import CommonIntActQuant # For initial Q1.7 Identity Layer
 from .tensor_norm import TensorNorm
 
 import config

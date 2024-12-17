@@ -1,0 +1,581 @@
+MOBILENETV2_DET Detector.
+	No Sigmoid, No Softmax. Permute as a Layer.
+	Albumentations: area changed to 8*8, to keep little boxes.
+	Albumentations: added ShiftScaleRotate p=0.1.
+	DFire and FASDD UAV and CV.
+	FASDD: train and val datasets to train and test dataset to validate.
+	Brevitas Quantization.
+
+
+Datasets Length
+	Train: 200
+	Val: 200
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Gradients Clip Norm: 10
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 3
+	Scheduler threshold: 0.01
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Grid, Bounding Boxes, Classes and Thresholds:
+	Grid: 7
+	Number of Bounding Boxes per Cell: 2
+	Number of Classes: 2
+	Maximum Number of Objects per Image: 10
+	IOU Threshold: 0.5
+	Score Threshold: 0.2
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Head Weights Bit Width: 8
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Loss Function: YOLOV1_LOSS
+Lambda for L1 regularization: 0
+
+Trainable parameters = 307761
+Total parameters = 307761
+
+Input shape is torch.Size([4, 3, 224, 224])
+Model shape is torch.Size([4, 12, 7, 7])
+
+
+ORIGINAL Model Summary
+==================================================================================================================================
+Layer (type:depth-idx)                                                           Output Shape              Param #
+==================================================================================================================================
+MobileNetV2_DET_BREVITAS                                                         [1, 12, 7, 7]             --
+├─Sequential: 1-1                                                                [1, 128, 7, 7]            297,901
+│    └─QuantIdentity: 2-1                                                        [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-1                                       [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-2                                       [1, 3, 224, 224]          1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─QuantIdentity: 2-3                                                        --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-4                                       --                        (recursive)
+│    └─Sequential: 2-4                                                           [1, 32, 112, 112]         --
+│    │    └─QuantConv2d: 3-5                                                     [1, 32, 112, 112]         864
+│    │    └─BatchNorm2d: 3-6                                                     [1, 32, 112, 112]         64
+│    │    └─QuantRelu6: 3-7                                                      [1, 32, 112, 112]         1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─Sequential: 2-6                                                           --                        (recursive)
+│    │    └─QuantRelu6: 3-9                                                      --                        (recursive)
+│    └─InvertedBlock: 2-7                                                        [1, 16, 112, 112]         --
+│    │    └─Sequential: 3-10                                                     [1, 16, 112, 112]         898
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-11                                                       --                        (recursive)
+│    │    └─Sequential: 3-14                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-11                                                       --                        (recursive)
+│    │    └─Sequential: 3-14                                                     --                        (recursive)
+│    └─InvertedBlock: 2-12                                                       [1, 24, 56, 56]           --
+│    │    └─Sequential: 3-15                                                     [1, 24, 56, 56]           1,747
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-16                                                       --                        (recursive)
+│    │    └─Sequential: 3-19                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-16                                                       --                        (recursive)
+│    │    └─Sequential: 3-19                                                     --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+│    └─InvertedBlock: 2-20                                                       [1, 24, 56, 56]           1
+│    │    └─Sequential: 3-23                                                     [1, 24, 56, 56]           2,979
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─Sequential: 3-29                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-30                                                  [1, 24, 56, 56]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-28                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-32                                                  --                        (recursive)
+│    └─InvertedBlock: 2-29                                                       [1, 32, 28, 28]           --
+│    │    └─Sequential: 3-33                                                     [1, 32, 28, 28]           3,379
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-33                                                       --                        (recursive)
+│    │    └─Sequential: 3-37                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-33                                                       --                        (recursive)
+│    │    └─Sequential: 3-37                                                     --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+│    └─InvertedBlock: 2-37                                                       [1, 32, 28, 28]           1
+│    │    └─Sequential: 3-41                                                     [1, 32, 28, 28]           4,995
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-43                                                       --                        (recursive)
+│    │    └─Sequential: 3-47                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-48                                                  [1, 32, 28, 28]           1
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+│    └─InvertedBlock: 2-47                                                       [1, 32, 28, 28]           1
+│    │    └─Sequential: 3-52                                                     [1, 32, 28, 28]           4,995
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─Sequential: 3-58                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-59                                                  [1, 32, 28, 28]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-55                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-61                                                  --                        (recursive)
+│    └─InvertedBlock: 2-56                                                       [1, 64, 14, 14]           --
+│    │    └─Sequential: 3-62                                                     [1, 64, 14, 14]           7,107
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-60                                                       --                        (recursive)
+│    │    └─Sequential: 3-66                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-60                                                       --                        (recursive)
+│    │    └─Sequential: 3-66                                                     --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+│    └─InvertedBlock: 2-64                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-70                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-70                                                       --                        (recursive)
+│    │    └─Sequential: 3-76                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-77                                                  [1, 64, 14, 14]           1
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+│    └─InvertedBlock: 2-74                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-81                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-80                                                       --                        (recursive)
+│    │    └─Sequential: 3-87                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-88                                                  [1, 64, 14, 14]           1
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+│    └─InvertedBlock: 2-84                                                       [1, 64, 14, 14]           1
+│    │    └─Sequential: 3-92                                                     [1, 64, 14, 14]           18,179
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─Sequential: 3-98                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-99                                                  [1, 64, 14, 14]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-92                                                       --                        (recursive)
+│    │    └─QuantIdentity: 3-101                                                 --                        (recursive)
+│    └─InvertedBlock: 2-93                                                       [1, 96, 14, 14]           --
+│    │    └─Sequential: 3-102                                                    [1, 96, 14, 14]           22,339
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-97                                                       --                        (recursive)
+│    │    └─Sequential: 3-106                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-97                                                       --                        (recursive)
+│    │    └─Sequential: 3-106                                                    --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+│    └─InvertedBlock: 2-101                                                      [1, 96, 14, 14]           1
+│    │    └─Sequential: 3-110                                                    [1, 96, 14, 14]           39,555
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-107                                                      --                        (recursive)
+│    │    └─Sequential: 3-116                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-117                                                 [1, 96, 14, 14]           1
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+│    └─InvertedBlock: 2-111                                                      [1, 96, 14, 14]           1
+│    │    └─Sequential: 3-121                                                    [1, 96, 14, 14]           39,555
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─Sequential: 3-127                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-128                                                 [1, 96, 14, 14]           1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-119                                                      --                        (recursive)
+│    │    └─QuantIdentity: 3-130                                                 --                        (recursive)
+│    └─InvertedBlock: 2-120                                                      [1, 128, 7, 7]            --
+│    │    └─Sequential: 3-131                                                    [1, 128, 7, 7]            45,763
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-124                                                      --                        (recursive)
+│    │    └─Sequential: 3-135                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-124                                                      --                        (recursive)
+│    │    └─Sequential: 3-135                                                    --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+│    └─InvertedBlock: 2-128                                                      [1, 128, 7, 7]            1
+│    │    └─Sequential: 3-139                                                    [1, 128, 7, 7]            69,123
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─Sequential: 3-145                                                    --                        (recursive)
+│    │    └─QuantIdentity: 3-146                                                 [1, 128, 7, 7]            1
+├─Sequential: 1-110                                                              --                        (recursive)
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+├─Sequential: 1-111                                                              --                        (recursive)
+│    └─InvertedBlock: 2-136                                                      --                        (recursive)
+│    │    └─QuantIdentity: 3-148                                                 --                        (recursive)
+├─Sequential: 1-112                                                              [1, 12, 7, 7]             --
+│    └─Sequential: 2-137                                                         [1, 64, 7, 7]             --
+│    │    └─QuantConv2d: 3-149                                                   [1, 64, 7, 7]             8,192
+│    │    └─BatchNorm2d: 3-150                                                   [1, 64, 7, 7]             128
+│    │    └─QuantRelu6: 3-151                                                    [1, 64, 7, 7]             1
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+│    └─Sequential: 2-139                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-153                                                    --                        (recursive)
+│    └─Sequential: 2-140                                                         [1, 16, 7, 7]             --
+│    │    └─QuantConv2d: 3-154                                                   [1, 16, 7, 7]             1,024
+│    │    └─BatchNorm2d: 3-155                                                   [1, 16, 7, 7]             32
+│    │    └─QuantRelu6: 3-156                                                    [1, 16, 7, 7]             1
+│    └─Sequential: 2-141                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-157                                                    --                        (recursive)
+│    └─Sequential: 2-142                                                         --                        (recursive)
+│    │    └─QuantRelu6: 3-158                                                    --                        (recursive)
+│    └─Sequential: 2-143                                                         [1, 16, 7, 7]             --
+│    │    └─QuantConv2d: 3-159                                                   [1, 16, 7, 7]             256
+│    │    └─BatchNorm2d: 3-160                                                   [1, 16, 7, 7]             32
+│    │    └─QuantRelu6: 3-161                                                    [1, 16, 7, 7]             1
+│    └─QuantConv2d: 2-144                                                        [1, 12, 7, 7]             --
+│    │    └─ActQuantProxyFromInjector: 3-162                                     [1, 16, 7, 7]             --
+│    │    └─WeightQuantProxyFromInjector: 3-163                                  [12, 16, 1, 1]            192
+│    │    └─ActQuantProxyFromInjector: 3-164                                     [1, 12, 7, 7]             --
+==================================================================================================================================
+Total params: 769,174
+Trainable params: 769,174
+Non-trainable params: 0
+Total mult-adds (M): 0.01
+==================================================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 24.25
+Params size (MB): 0.04
+Estimated Total Size (MB): 24.89
+==================================================================================================================================
+Starting script
+
+
+***Start Training: 01:14:46
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+698.99     |383.36    |54.28     |178.26    |83.09     |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+560.70     |412.49    |49.63     |17.62     |80.95     |
+
+Saving model with new best validation loss: 560.698
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+420.33     |231.15    |54.56     |71.22     |63.40     |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+545.51     |397.62    |51.42     |21.19     |75.27     |
+
+Saving model with new best validation loss: 545.511
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+297.50     |153.69    |54.57     |35.93     |53.30     |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+272.06     |152.37    |49.76     |18.52     |51.41     |
+
+Saving model with new best validation loss: 272.061
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+231.17     |113.44    |53.33     |19.84     |44.57     |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|     | No mAP in this epoch |
+-----------|----------|--------------------------------|
+220.68     |114.96    |49.81     |14.67     |41.25     |
+
+Saving model with new best validation loss: 220.685
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+202.33     |97.61     |54.06     |13.20     |37.46     |    |0.0007     |0.0107    |0.0004    |0.0025    |0.0005    |
+
+VAL STATS
+Total Loss |Box Loss  |Conf Loss |NoObj Loss|Class Loss|    |Smoke AP   |Smoke AR  |Fire AP   |Fire AR   |mAP:0.50  |
+-----------|----------|--------------------------------|    |-----------|----------|--------------------------------|
+193.24     |97.37     |49.16     |11.93     |34.79     |    |0.0002     |0.0078    |0.0000    |0.0000    |0.0001    |
+
+Saving model with new best validation loss: 193.239
+Saving model with new best mAP: 0.0001
+Saving last model
+
+***Script finished: 01:15:39
+
+Time elapsed: 0:00:53.010233

@@ -2,8 +2,10 @@ import sys
 import matplotlib.pyplot as plt
 import pandas as pd
 import torch
-from brevitas.export import export_onnx_qcdq
-from brevitas.export import export_qonnx
+import config
+if config.BREVITAS_MODEL == True:
+    from brevitas.export import export_onnx_qcdq
+    from brevitas.export import export_qonnx
 
 
 class LogMetrics():

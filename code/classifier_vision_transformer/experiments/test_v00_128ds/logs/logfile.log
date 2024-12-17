@@ -1,0 +1,234 @@
+T2T_ViT Classifier.
+	One Head.
+	Weighted for Precision.
+	Dataset images divided by 255.
+
+
+Datasets Length
+	Train and Val: 128
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 32
+Num Workers: 4
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 71480
+Total parameters = 77784
+
+
+Torch Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+T2T_ViT                                  [1, 2]                    --
+├─Tokens2Token: 1-1                      [1, 196, 32]              --
+│    └─Unfold: 2-1                       [1, 147, 3136]            --
+│    └─TokenTransformer: 2-2             [1, 3136, 16]             --
+│    │    └─LayerNorm: 3-1               [1, 3136, 147]            294
+│    │    └─Attention: 3-2               [1, 3136, 16]             7,328
+│    │    └─LayerNorm: 3-3               [1, 3136, 16]             32
+│    │    └─NeuralNet: 3-4               [1, 3136, 16]             544
+│    └─Unfold: 2-3                       [1, 144, 784]             --
+│    └─TokenTransformer: 2-4             [1, 784, 16]              --
+│    │    └─LayerNorm: 3-5               [1, 784, 144]             288
+│    │    └─Attention: 3-6               [1, 784, 16]              7,184
+│    │    └─LayerNorm: 3-7               [1, 784, 16]              32
+│    │    └─NeuralNet: 3-8               [1, 784, 16]              544
+│    └─Unfold: 2-5                       [1, 144, 196]             --
+│    └─Linear: 2-6                       [1, 196, 32]              4,640
+├─ViT_Backbone: 1-2                      [1, 2]                    6,336
+│    └─ModuleList: 2-7                   --                        --
+│    │    └─Encoding: 3-9                [1, 197, 32]              12,608
+│    │    └─Encoding: 3-10               [1, 197, 32]              12,608
+│    │    └─Encoding: 3-11               [1, 197, 32]              12,608
+│    │    └─Encoding: 3-12               [1, 197, 32]              12,608
+│    └─LayerNorm: 2-8                    [1, 197, 32]              64
+│    └─Linear: 2-9                       [1, 2]                    66
+==========================================================================================
+Total params: 77,784
+Trainable params: 71,480
+Non-trainable params: 6,304
+Total mult-adds (M): 0.07
+==========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 10.42
+Params size (MB): 0.29
+Estimated Total Size (MB): 11.31
+==========================================================================================
+
+Torch Model
+T2T_ViT(
+  (tokens_to_token): Tokens2Token(
+    (soft_split0): Unfold(kernel_size=(7, 7), dilation=1, padding=(2, 2), stride=(4, 4))
+    (soft_split1): Unfold(kernel_size=(3, 3), dilation=1, padding=(1, 1), stride=(2, 2))
+    (soft_split2): Unfold(kernel_size=(3, 3), dilation=1, padding=(1, 1), stride=(2, 2))
+    (transformer1): TokenTransformer(
+      (norm1): LayerNorm((147,), eps=1e-05, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=147, out_features=48, bias=False)
+        (proj): Linear(in_features=16, out_features=16, bias=True)
+      )
+      (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+      (neuralnet): NeuralNet(
+        (fc1): Linear(in_features=16, out_features=16, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=16, out_features=16, bias=True)
+      )
+    )
+    (transformer2): TokenTransformer(
+      (norm1): LayerNorm((144,), eps=1e-05, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=144, out_features=48, bias=False)
+        (proj): Linear(in_features=16, out_features=16, bias=True)
+      )
+      (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+      (neuralnet): NeuralNet(
+        (fc1): Linear(in_features=16, out_features=16, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=16, out_features=16, bias=True)
+      )
+    )
+    (project): Linear(in_features=144, out_features=32, bias=True)
+  )
+  (vit_backbone): ViT_Backbone(
+    (blocks): ModuleList(
+      (0-3): 4 x Encoding(
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=32, out_features=96, bias=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (neuralnet): NeuralNet(
+          (fc1): Linear(in_features=32, out_features=128, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=128, out_features=32, bias=True)
+        )
+      )
+    )
+    (norm): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+    (head): Linear(in_features=32, out_features=2, bias=True)
+  )
+)
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 23:58:12
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5109   |0.0000   |0.0000   |0.0000   |
+40.35      |19.81     |20.55     |    Fire   |0.6703   |0.0000   |0.0000   |0.0000   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+39.33      |19.77     |19.56     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 39.3263
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5109   |0.0000   |0.0000   |0.0000   |
+38.79      |19.81     |18.97     |    Fire   |0.7000   |0.6939   |0.1611   |0.2615   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+36.72      |19.65     |17.07     |    Fire   |0.7552   |0.5775   |0.7069   |0.6357   |
+
+Saving model with new best validation loss: 36.7241
+Saving model with best Mean F1: 0.3178
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4984   |0.4231   |0.0703   |0.1205   |
+37.10      |19.85     |17.24     |    Fire   |0.7406   |0.5949   |0.6682   |0.6295   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+36.53      |19.73     |16.80     |    Fire   |0.7500   |0.5980   |0.5259   |0.5596   |
+
+Saving model with new best validation loss: 36.5339
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5109   |0.0000   |0.0000   |0.0000   |
+36.43      |19.79     |16.63     |    Fire   |0.7453   |0.6348   |0.5355   |0.5810   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+35.50      |19.75     |15.75     |    Fire   |0.7682   |0.6174   |0.6121   |0.6147   |
+
+Saving model with new best validation loss: 35.5038
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5312   |0.6444   |0.0927   |0.1620   |
+35.57      |19.72     |15.85     |    Fire   |0.7719   |0.6432   |0.6919   |0.6667   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5443   |0.6182   |0.1809   |0.2798   |
+33.79      |19.45     |14.34     |    Fire   |0.7943   |0.6989   |0.5603   |0.6220   |
+
+Saving model with new best validation loss: 33.7940
+Saving model with best Mean F1: 0.4509
+Saving last model
+
+***Script finished: 23:58:42
+
+Time elapsed: 0:00:29.868065
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.5442708134651184, 0.7942708134651184], 'Precision': [0.6181818246841431, 0.698924720287323], 'Recall': [0.1808510571718216, 0.5603448152542114], 'F1': [0.27983540296554565, 0.6220095753669739]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.30000001192092896, 0.7699999809265137], 'Precision': [0.7777777910232544, 0.8333333134651184], 'Recall': [0.09333333373069763, 0.4285714328289032], 'F1': [0.1666666716337204, 0.5660377144813538]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.30000001192092896, 0.8333333134651184], 'Precision': [0.6666666865348816, 0.875], 'Recall': [0.09090909361839294, 0.6363636255264282], 'F1': [0.1599999964237213, 0.7368420958518982]}

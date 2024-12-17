@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_15_intel_nc_ptq_no_comp/'
+RUN_FOLDER = 'experiments_mobilenetv2/' + 'test_01_full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -75,11 +75,12 @@ FASDD_RS_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_rs/annotations/YOLO_RS_RG
 FASDD_RS_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_rs/annotations/YOLO_RS_RGB/test.txt'
 
 DS_LEN = None
-VAL_DS_LEN = 200
+VAL_DS_LEN = None
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
-MODEL = "BED"
+# MODEL = "BED"
+MODEL = "MOBILENETV2"
 #MODEL = "Tinyissimo"
 
 LEARNING_RATE = 1e-3
@@ -96,7 +97,7 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 150
+EPOCHS = 120
 
 LOAD_MODEL = False
 # Aimet Model

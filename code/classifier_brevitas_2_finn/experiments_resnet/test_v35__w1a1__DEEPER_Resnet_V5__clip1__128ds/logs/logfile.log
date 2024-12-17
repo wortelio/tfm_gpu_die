@@ -1,0 +1,604 @@
+BED Classifier.
+	One Head.
+	Weighted for Precision.
+	Brevitas Default.
+	Dataset images divided by 255.
+
+Training Brevitas Model = True
+
+Datasets Length
+	Train and Val: 128
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 2
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 738919
+Total parameters = 738919
+
+=============================================================================================================================
+Layer (type:depth-idx)                                                      Output Shape              Param #
+=============================================================================================================================
+CNV_w1a1_DEEP_Resnet_V5                                                     [1, 2]                    --
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantIdentity: 2-1                                                   [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-1                                  [1, 3, 224, 224]          --
+│    │    └─ActQuantProxyFromInjector: 3-2                                  [1, 3, 224, 224]          --
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantIdentity: 2-5                                                   --                        --
+│    │    └─ActQuantProxyFromInjector: 3-6                                  --                        --
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantIdentity: 2-5                                                   --                        --
+│    │    └─ActQuantProxyFromInjector: 3-6                                  --                        --
+│    └─QuantConv2d: 2-6                                                     [1, 64, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-7                                  [1, 3, 224, 224]          --
+│    │    └─WeightQuantProxyFromInjector: 3-8                               [64, 3, 3, 3]             1,728
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantConv2d: 2-8                                                     --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-10                              --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-11                                 [1, 64, 224, 224]         --
+│    └─BatchNorm2d: 2-9                                                     [1, 64, 224, 224]         128
+│    └─QuantReLU: 2-10                                                      [1, 64, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-12                                 [1, 64, 224, 224]         --
+│    │    └─ActQuantProxyFromInjector: 3-13                                 [1, 64, 224, 224]         1
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantReLU: 2-14                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-17                                 --                        (recursive)
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantReLU: 2-14                                                      --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-17                                 --                        (recursive)
+│    └─MaxPool2d: 2-15                                                      [1, 64, 112, 112]         --
+│    └─QuantConv2d: 2-16                                                    [1, 32, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-18                                 [1, 64, 112, 112]         --
+│    │    └─WeightQuantProxyFromInjector: 3-19                              [32, 64, 3, 3]            18,432
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantConv2d: 2-18                                                    --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-21                              --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-22                                 [1, 32, 112, 112]         --
+│    └─BatchNorm2d: 2-19                                                    [1, 32, 112, 112]         64
+│    └─QuantIdentity: 2-20                                                  [1, 32, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-23                                 [1, 32, 112, 112]         --
+│    │    └─ActQuantProxyFromInjector: 3-24                                 [1, 32, 112, 112]         --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantIdentity: 2-22                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-26                                 --                        --
+│    └─MaxPool2d: 2-23                                                      [1, 32, 56, 56]           --
+│    └─QuantIdentity: 2-24                                                  [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-27                                 [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-28                                 [1, 32, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-17                                                          --                        (recursive)
+│    └─QuantIdentity: 2-26                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-30                                 --                        --
+├─ModuleList: 1-24                                                          --                        (recursive)
+│    └─QuantConv2d: 2-27                                                    [1, 16, 56, 56]           512
+│    │    └─ActQuantProxyFromInjector: 3-31                                 [1, 32, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-32                              [16, 32, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-33                                 [1, 16, 56, 56]           --
+│    └─BatchNorm2d: 2-28                                                    [1, 16, 56, 56]           32
+│    └─QuantIdentity: 2-29                                                  [1, 16, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-34                                 [1, 16, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-35                                 [1, 16, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-24                                                          --                        (recursive)
+│    └─QuantIdentity: 2-31                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-37                                 --                        --
+│    └─QuantConv2d: 2-32                                                    [1, 32, 56, 56]           4,608
+│    │    └─ActQuantProxyFromInjector: 3-38                                 [1, 16, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-39                              [32, 16, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-40                                 [1, 32, 56, 56]           --
+│    └─BatchNorm2d: 2-33                                                    [1, 32, 56, 56]           64
+│    └─QuantIdentity: 2-34                                                  [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-41                                 [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-42                                 [1, 32, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-24                                                          --                        (recursive)
+│    └─QuantIdentity: 2-36                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-44                                 --                        --
+│    └─QuantConv2d: 2-37                                                    [1, 32, 56, 56]           1,024
+│    │    └─ActQuantProxyFromInjector: 3-45                                 [1, 32, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-46                              [32, 32, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-47                                 [1, 32, 56, 56]           --
+│    └─BatchNorm2d: 2-38                                                    [1, 32, 56, 56]           64
+│    └─QuantIdentity: 2-39                                                  [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-48                                 [1, 32, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-49                                 [1, 32, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-24                                                          --                        (recursive)
+│    └─QuantIdentity: 2-41                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-51                                 --                        --
+├─QuantIdentity: 1-25                                                       [1, 32, 56, 56]           --
+│    └─ActQuantProxyFromInjector: 2-42                                      [1, 32, 56, 56]           --
+│    └─ActQuantProxyFromInjector: 2-43                                      [1, 32, 56, 56]           --
+│    │    └─FusedActivationQuantProxy: 3-52                                 [1, 32, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─QuantIdentity: 1-27                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-45                                      --                        --
+│    │    └─FusedActivationQuantProxy: 3-54                                 --                        --
+├─ModuleList: 1-32                                                          --                        (recursive)
+│    └─QuantConv2d: 2-46                                                    [1, 64, 56, 56]           18,432
+│    │    └─ActQuantProxyFromInjector: 3-55                                 [1, 32, 56, 56]           --
+│    │    └─WeightQuantProxyFromInjector: 3-56                              [64, 32, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-57                                 [1, 64, 56, 56]           --
+│    └─BatchNorm2d: 2-47                                                    [1, 64, 56, 56]           128
+│    └─QuantIdentity: 2-48                                                  [1, 64, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-58                                 [1, 64, 56, 56]           --
+│    │    └─ActQuantProxyFromInjector: 3-59                                 [1, 64, 56, 56]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-32                                                          --                        (recursive)
+│    └─QuantIdentity: 2-50                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-61                                 --                        --
+│    └─MaxPool2d: 2-51                                                      [1, 64, 28, 28]           --
+│    └─QuantIdentity: 2-52                                                  [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-62                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-63                                 [1, 64, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-32                                                          --                        (recursive)
+│    └─QuantIdentity: 2-54                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-65                                 --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantConv2d: 2-55                                                    [1, 32, 28, 28]           2,048
+│    │    └─ActQuantProxyFromInjector: 3-66                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-67                              [32, 64, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-68                                 [1, 32, 28, 28]           --
+│    └─BatchNorm2d: 2-56                                                    [1, 32, 28, 28]           64
+│    └─QuantIdentity: 2-57                                                  [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-69                                 [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-70                                 [1, 32, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantIdentity: 2-59                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-72                                 --                        --
+│    └─QuantConv2d: 2-60                                                    [1, 64, 28, 28]           18,432
+│    │    └─ActQuantProxyFromInjector: 3-73                                 [1, 32, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-74                              [64, 32, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-75                                 [1, 64, 28, 28]           --
+│    └─BatchNorm2d: 2-61                                                    [1, 64, 28, 28]           128
+│    └─QuantIdentity: 2-62                                                  [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-76                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-77                                 [1, 64, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantIdentity: 2-64                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-79                                 --                        --
+│    └─QuantConv2d: 2-65                                                    [1, 32, 28, 28]           2,048
+│    │    └─ActQuantProxyFromInjector: 3-80                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-81                              [32, 64, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-82                                 [1, 32, 28, 28]           --
+│    └─BatchNorm2d: 2-66                                                    [1, 32, 28, 28]           64
+│    └─QuantIdentity: 2-67                                                  [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-83                                 [1, 32, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-84                                 [1, 32, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantIdentity: 2-69                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-86                                 --                        --
+│    └─QuantConv2d: 2-70                                                    [1, 64, 28, 28]           18,432
+│    │    └─ActQuantProxyFromInjector: 3-87                                 [1, 32, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-88                              [64, 32, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-89                                 [1, 64, 28, 28]           --
+│    └─BatchNorm2d: 2-71                                                    [1, 64, 28, 28]           128
+│    └─QuantIdentity: 2-72                                                  [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-90                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-91                                 [1, 64, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantIdentity: 2-74                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-93                                 --                        --
+│    └─QuantConv2d: 2-75                                                    [1, 64, 28, 28]           4,096
+│    │    └─ActQuantProxyFromInjector: 3-94                                 [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-95                              [64, 64, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-96                                 [1, 64, 28, 28]           --
+│    └─BatchNorm2d: 2-76                                                    [1, 64, 28, 28]           128
+│    └─QuantIdentity: 2-77                                                  [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-97                                 [1, 64, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-98                                 [1, 64, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-43                                                          --                        (recursive)
+│    └─QuantIdentity: 2-79                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-100                                --                        --
+├─QuantIdentity: 1-44                                                       [1, 64, 28, 28]           --
+│    └─ActQuantProxyFromInjector: 2-80                                      [1, 64, 28, 28]           --
+│    └─ActQuantProxyFromInjector: 2-81                                      [1, 64, 28, 28]           --
+│    │    └─FusedActivationQuantProxy: 3-101                                [1, 64, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─QuantIdentity: 1-46                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-83                                      --                        --
+│    │    └─FusedActivationQuantProxy: 3-103                                --                        --
+├─ModuleList: 1-51                                                          --                        (recursive)
+│    └─QuantConv2d: 2-84                                                    [1, 96, 28, 28]           55,296
+│    │    └─ActQuantProxyFromInjector: 3-104                                [1, 64, 28, 28]           --
+│    │    └─WeightQuantProxyFromInjector: 3-105                             [96, 64, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-106                                [1, 96, 28, 28]           --
+│    └─BatchNorm2d: 2-85                                                    [1, 96, 28, 28]           192
+│    └─QuantIdentity: 2-86                                                  [1, 96, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-107                                [1, 96, 28, 28]           --
+│    │    └─ActQuantProxyFromInjector: 3-108                                [1, 96, 28, 28]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-51                                                          --                        (recursive)
+│    └─QuantIdentity: 2-88                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-110                                --                        --
+│    └─MaxPool2d: 2-89                                                      [1, 96, 14, 14]           --
+│    └─QuantIdentity: 2-90                                                  [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-111                                [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-112                                [1, 96, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-51                                                          --                        (recursive)
+│    └─QuantIdentity: 2-92                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-114                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantConv2d: 2-93                                                    [1, 48, 14, 14]           4,608
+│    │    └─ActQuantProxyFromInjector: 3-115                                [1, 96, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-116                             [48, 96, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-117                                [1, 48, 14, 14]           --
+│    └─BatchNorm2d: 2-94                                                    [1, 48, 14, 14]           96
+│    └─QuantIdentity: 2-95                                                  [1, 48, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-118                                [1, 48, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-119                                [1, 48, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantIdentity: 2-97                                                  --                        --
+│    │    └─ActQuantProxyFromInjector: 3-121                                --                        --
+│    └─QuantConv2d: 2-98                                                    [1, 96, 14, 14]           41,472
+│    │    └─ActQuantProxyFromInjector: 3-122                                [1, 48, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-123                             [96, 48, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-124                                [1, 96, 14, 14]           --
+│    └─BatchNorm2d: 2-99                                                    [1, 96, 14, 14]           192
+│    └─QuantIdentity: 2-100                                                 [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-125                                [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-126                                [1, 96, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantIdentity: 2-102                                                 --                        --
+│    │    └─ActQuantProxyFromInjector: 3-128                                --                        --
+│    └─QuantConv2d: 2-103                                                   [1, 48, 14, 14]           4,608
+│    │    └─ActQuantProxyFromInjector: 3-129                                [1, 96, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-130                             [48, 96, 1, 1]            --
+│    │    └─ActQuantProxyFromInjector: 3-131                                [1, 48, 14, 14]           --
+│    └─BatchNorm2d: 2-104                                                   [1, 48, 14, 14]           96
+│    └─QuantIdentity: 2-105                                                 [1, 48, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-132                                [1, 48, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-133                                [1, 48, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantIdentity: 2-107                                                 --                        --
+│    │    └─ActQuantProxyFromInjector: 3-135                                --                        --
+│    └─QuantConv2d: 2-108                                                   [1, 96, 14, 14]           41,472
+│    │    └─ActQuantProxyFromInjector: 3-136                                [1, 48, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-137                             [96, 48, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-138                                [1, 96, 14, 14]           --
+│    └─BatchNorm2d: 2-109                                                   [1, 96, 14, 14]           192
+│    └─QuantIdentity: 2-110                                                 [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-139                                [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-140                                [1, 96, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantIdentity: 2-112                                                 --                        --
+│    │    └─ActQuantProxyFromInjector: 3-142                                --                        --
+│    └─QuantConv2d: 2-113                                                   [1, 96, 14, 14]           82,944
+│    │    └─ActQuantProxyFromInjector: 3-143                                [1, 96, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-144                             [96, 96, 3, 3]            --
+│    │    └─ActQuantProxyFromInjector: 3-145                                [1, 96, 14, 14]           --
+│    └─BatchNorm2d: 2-114                                                   [1, 96, 14, 14]           192
+│    └─QuantIdentity: 2-115                                                 [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-146                                [1, 96, 14, 14]           --
+│    │    └─ActQuantProxyFromInjector: 3-147                                [1, 96, 14, 14]           --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-62                                                          --                        (recursive)
+│    └─QuantIdentity: 2-117                                                 --                        --
+│    │    └─ActQuantProxyFromInjector: 3-149                                --                        --
+├─QuantIdentity: 1-63                                                       [1, 96, 14, 14]           --
+│    └─ActQuantProxyFromInjector: 2-118                                     [1, 96, 14, 14]           --
+│    └─ActQuantProxyFromInjector: 2-119                                     [1, 96, 14, 14]           --
+│    │    └─FusedActivationQuantProxy: 3-150                                [1, 96, 14, 14]           --
+├─ModuleList: 1-66                                                          --                        (recursive)
+│    └─QuantConv2d: 2-120                                                   [1, 128, 14, 14]          110,592
+│    │    └─ActQuantProxyFromInjector: 3-151                                [1, 96, 14, 14]           --
+│    │    └─WeightQuantProxyFromInjector: 3-152                             [128, 96, 3, 3]           --
+│    │    └─ActQuantProxyFromInjector: 3-153                                [1, 128, 14, 14]          --
+│    └─BatchNorm2d: 2-121                                                   [1, 128, 14, 14]          256
+│    └─QuantIdentity: 2-122                                                 [1, 128, 14, 14]          --
+│    │    └─ActQuantProxyFromInjector: 3-154                                [1, 128, 14, 14]          --
+│    │    └─ActQuantProxyFromInjector: 3-155                                [1, 128, 14, 14]          --
+├─QuantIdentity: 1-65                                                       --                        --
+│    └─ActQuantProxyFromInjector: 2-123                                     --                        --
+│    │    └─FusedActivationQuantProxy: 3-156                                --                        --
+├─ModuleList: 1-66                                                          --                        (recursive)
+│    └─QuantIdentity: 2-124                                                 --                        --
+│    │    └─ActQuantProxyFromInjector: 3-157                                --                        --
+│    └─MaxPool2d: 2-125                                                     [1, 128, 7, 7]            --
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantConv2d: 2-126                                                   [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-158                                [1, 128, 7, 7]            --
+│    │    └─WeightQuantProxyFromInjector: 3-159                             [128, 128, 3, 3]          147,456
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantConv2d: 2-128                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-161                             --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-162                                [1, 128, 7, 7]            --
+│    └─BatchNorm2d: 2-129                                                   [1, 128, 7, 7]            256
+│    └─QuantReLU: 2-130                                                     [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-163                                [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-164                                [1, 128, 7, 7]            1
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantReLU: 2-134                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-168                                --                        (recursive)
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantReLU: 2-134                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-168                                --                        (recursive)
+│    └─QuantConv2d: 2-135                                                   [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-169                                [1, 128, 7, 7]            --
+│    │    └─WeightQuantProxyFromInjector: 3-170                             [128, 128, 3, 3]          147,456
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantConv2d: 2-137                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-172                             --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-173                                [1, 128, 7, 7]            --
+│    └─BatchNorm2d: 2-138                                                   [1, 128, 7, 7]            256
+│    └─QuantReLU: 2-139                                                     [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-174                                [1, 128, 7, 7]            --
+│    │    └─ActQuantProxyFromInjector: 3-175                                [1, 128, 7, 7]            1
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantReLU: 2-143                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+├─ModuleList: 1-79                                                          --                        (recursive)
+│    └─QuantReLU: 2-143                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-179                                --                        (recursive)
+├─TruncAvgPool2d: 1-80                                                      [1, 128, 1, 1]            --
+│    └─TruncQuantProxyFromInjector: 2-144                                   [1, 128, 1, 1]            --
+│    │    └─TruncIntQuant: 3-180                                            [1, 128, 1, 1]            --
+├─ModuleList: 1-81                                                          --                        (recursive)
+│    └─QuantLinear: 2-145                                                   [1, 64]                   --
+│    │    └─ActQuantProxyFromInjector: 3-181                                [1, 128]                  --
+│    │    └─WeightQuantProxyFromInjector: 3-182                             [64, 128]                 8,192
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+│    └─QuantLinear: 2-147                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-184                             --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-185                                [1, 64]                   --
+│    └─BatchNorm1d: 2-148                                                   [1, 64]                   128
+│    └─QuantReLU: 2-149                                                     [1, 64]                   --
+│    │    └─ActQuantProxyFromInjector: 3-186                                [1, 64]                   --
+│    │    └─ActQuantProxyFromInjector: 3-187                                [1, 64]                   1
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+│    └─QuantReLU: 2-153                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-191                                --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+│    └─QuantReLU: 2-153                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-191                                --                        (recursive)
+│    └─QuantLinear: 2-154                                                   [1, 32]                   --
+│    │    └─ActQuantProxyFromInjector: 3-192                                [1, 64]                   --
+│    │    └─WeightQuantProxyFromInjector: 3-193                             [32, 64]                  2,048
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+│    └─QuantLinear: 2-156                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-195                             --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-196                                [1, 32]                   --
+│    └─BatchNorm1d: 2-157                                                   [1, 32]                   64
+│    └─QuantReLU: 2-158                                                     [1, 32]                   --
+│    │    └─ActQuantProxyFromInjector: 3-197                                [1, 32]                   --
+│    │    └─ActQuantProxyFromInjector: 3-198                                [1, 32]                   1
+│    └─QuantLinear: 2-159                                                   --                        (recursive)
+│    │    └─WeightQuantProxyFromInjector: 3-199                             --                        (recursive)
+│    └─QuantReLU: 2-160                                                     --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-200                                --                        (recursive)
+│    └─QuantLinear: 2-161                                                   [1, 2]                    --
+│    │    └─ActQuantProxyFromInjector: 3-201                                [1, 32]                   --
+│    │    └─WeightQuantProxyFromInjector: 3-202                             [2, 32]                   64
+│    │    └─ActQuantProxyFromInjector: 3-203                                [1, 2]                    --
+│    └─TensorNorm: 2-162                                                    [1, 2]                    2
+=============================================================================================================================
+Total params: 738,919
+Trainable params: 738,919
+Non-trainable params: 0
+Total mult-adds (M): 0.00
+=============================================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 35.63
+Params size (MB): 0.01
+Estimated Total Size (MB): 36.24
+=============================================================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 13:55:17
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5266   |0.5132   |0.6198   |0.5615   |
+91.66      |44.75     |46.91     |    Fire   |0.5672   |0.3813   |0.5024   |0.4335   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+129.49     |74.48     |55.01     |    Fire   |0.7005   |0.5714   |0.0345   |0.0650   |
+
+Saving model with new best validation loss: 129.4915
+Saving model with best Mean F1: 0.0325
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4875   |0.4811   |0.6102   |0.5380   |
+85.13      |43.48     |41.66     |    Fire   |0.6297   |0.4500   |0.5545   |0.4968   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5651   |0.6207   |0.2872   |0.3927   |
+87.48      |45.60     |41.88     |    Fire   |0.7370   |0.7586   |0.1897   |0.3034   |
+
+Saving model with new best validation loss: 87.4798
+Saving model with best Mean F1: 0.3481
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5297   |0.5154   |0.6422   |0.5718   |
+79.51      |41.39     |38.12     |    Fire   |0.6984   |0.5366   |0.6256   |0.5777   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5677   |0.5753   |0.4468   |0.5030   |
+76.05      |39.71     |36.34     |    Fire   |0.7526   |0.6207   |0.4655   |0.5320   |
+
+Saving model with new best validation loss: 76.0510
+Saving model with best Mean F1: 0.5175
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5547   |0.5352   |0.6805   |0.5992   |
+74.94      |39.58     |35.36     |    Fire   |0.7344   |0.5919   |0.6256   |0.6083   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5443   |0.5330   |0.5585   |0.5455   |
+74.45      |40.14     |34.31     |    Fire   |0.7656   |0.6140   |0.6034   |0.6087   |
+
+Saving model with new best validation loss: 74.4470
+Saving model with best Mean F1: 0.5771
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5578   |0.5379   |0.6805   |0.6008   |
+75.00      |40.21     |34.79     |    Fire   |0.7500   |0.6164   |0.6398   |0.6279   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5781   |0.5644   |0.6064   |0.5846   |
+76.40      |39.80     |36.61     |    Fire   |0.7344   |0.5461   |0.7155   |0.6194   |
+
+Saving model with best Mean F1: 0.6020
+Saving last model
+
+***Script finished: 13:56:43
+
+Time elapsed: 0:01:25.605477
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.578125, 0.734375], 'Precision': [0.5643564462661743, 0.5460526347160339], 'Recall': [0.6063829660415649, 0.7155172228813171], 'F1': [0.5846154093742371, 0.6194030046463013]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.5600000023841858, 0.800000011920929], 'Precision': [0.8039215803146362, 0.7272727489471436], 'Recall': [0.54666668176651, 0.6857143044471741], 'F1': [0.6507936716079712, 0.7058823704719543]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.5, 0.800000011920929], 'Precision': [0.7333333492279053, 0.692307710647583], 'Recall': [0.5, 0.8181818127632141], 'F1': [0.5945945978164673, 0.75]}

@@ -1,0 +1,195 @@
+BED Classifier.
+	One Head.
+	Weighted for Precision.
+	Brevitas Default.
+	Dataset images divided by 255.
+
+
+Datasets Length
+	Training Brevitas Model = False
+	Train and Val: 128
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 2
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 786718
+Total parameters = 786718
+
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Torch_CNV_w1a1_Balanced_Resnet_bram      [1, 2]                    --
+├─Sequential: 1-1                        [1, 240, 1, 1]            --
+│    └─Sequential: 2-1                   [1, 8, 112, 112]          --
+│    │    └─Conv2d: 3-1                  [1, 8, 224, 224]          216
+│    │    └─BatchNorm2d: 3-2             [1, 8, 224, 224]          16
+│    │    └─ReLU: 3-3                    [1, 8, 224, 224]          --
+│    │    └─MaxPool2d: 3-4               [1, 8, 112, 112]          --
+│    └─Sequential: 2-2                   [1, 14, 56, 56]           --
+│    │    └─Conv2d: 3-5                  [1, 14, 112, 112]         1,008
+│    │    └─BatchNorm2d: 3-6             [1, 14, 112, 112]         28
+│    │    └─ReLU: 3-7                    [1, 14, 112, 112]         --
+│    │    └─MaxPool2d: 3-8               [1, 14, 56, 56]           --
+│    └─ConvBlock: 2-3                    [1, 28, 28, 28]           --
+│    │    └─Sequential: 3-9              [1, 28, 56, 56]           4,344
+│    │    └─Sequential: 3-10             [1, 28, 56, 56]           4,568
+│    │    └─MaxPool2d: 3-11              [1, 28, 28, 28]           --
+│    └─ConvBlock: 2-4                    [1, 60, 14, 14]           --
+│    │    └─Sequential: 3-12             [1, 60, 28, 28]           17,220
+│    │    └─Sequential: 3-13             [1, 60, 28, 28]           18,180
+│    │    └─MaxPool2d: 3-14              [1, 60, 14, 14]           --
+│    └─ConvBlock: 2-5                    [1, 120, 7, 7]            --
+│    │    └─Sequential: 3-15             [1, 120, 14, 14]          68,760
+│    │    └─Sequential: 3-16             [1, 120, 14, 14]          72,360
+│    │    └─MaxPool2d: 3-17              [1, 120, 7, 7]            --
+│    └─ConvBlock: 2-6                    [1, 240, 1, 1]            --
+│    │    └─Sequential: 3-18             [1, 240, 7, 7]            274,320
+│    │    └─Sequential: 3-19             [1, 240, 7, 7]            288,720
+│    │    └─AvgPool2d: 3-20              [1, 240, 1, 1]            --
+├─Sequential: 1-2                        [1, 2]                    --
+│    └─Sequential: 2-7                   [1, 120]                  --
+│    │    └─Linear: 3-21                 [1, 120]                  28,800
+│    │    └─BatchNorm1d: 3-22            [1, 120]                  240
+│    │    └─ReLU: 3-23                   [1, 120]                  --
+│    └─Sequential: 2-8                   [1, 64]                   --
+│    │    └─Linear: 3-24                 [1, 64]                   7,680
+│    │    └─BatchNorm1d: 3-25            [1, 64]                   128
+│    │    └─ReLU: 3-26                   [1, 64]                   --
+│    └─Linear: 2-9                       [1, 2]                    130
+==========================================================================================
+Total params: 786,718
+Trainable params: 786,718
+Non-trainable params: 0
+Total mult-adds (M): 133.43
+==========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 17.60
+Params size (MB): 3.15
+Estimated Total Size (MB): 21.35
+==========================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 18:28:21
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6141   |0.5859   |0.7188   |0.6456   |
+79.55      |38.75     |40.81     |    Fire   |0.7375   |0.5837   |0.7109   |0.6410   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+83.50      |39.90     |43.60     |    Fire   |0.7109   |0.8571   |0.0517   |0.0976   |
+
+Saving model with new best validation loss: 83.4998
+Saving model with best Mean F1: 0.0488
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6500   |0.6450   |0.6326   |0.6387   |
+72.29      |36.85     |35.44     |    Fire   |0.8078   |0.6803   |0.7867   |0.7297   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5495   |0.5540   |0.4096   |0.4709   |
+78.10      |39.11     |38.99     |    Fire   |0.7891   |0.6606   |0.6207   |0.6400   |
+
+Saving model with new best validation loss: 78.1037
+Saving model with best Mean F1: 0.5555
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6734   |0.6818   |0.6230   |0.6511   |
+66.94      |35.34     |31.60     |    Fire   |0.8391   |0.7477   |0.7725   |0.7599   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7057   |0.7246   |0.6436   |0.6817   |
+71.03      |35.53     |35.50     |    Fire   |0.7370   |0.5591   |0.6121   |0.5844   |
+
+Saving model with new best validation loss: 71.0252
+Saving model with best Mean F1: 0.6330
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6781   |0.6904   |0.6198   |0.6532   |
+63.55      |34.52     |29.03     |    Fire   |0.8172   |0.7176   |0.7346   |0.7260   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6302   |0.6533   |0.5213   |0.5799   |
+64.92      |36.63     |28.30     |    Fire   |0.8151   |0.6829   |0.7241   |0.7029   |
+
+Saving model with new best validation loss: 64.9231
+Saving model with best Mean F1: 0.6414
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7016   |0.7118   |0.6550   |0.6822   |
+60.38      |33.29     |27.09     |    Fire   |0.8313   |0.7395   |0.7536   |0.7465   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6562   |0.6687   |0.5904   |0.6271   |
+73.00      |38.63     |34.37     |    Fire   |0.7786   |0.6131   |0.7241   |0.6640   |
+
+Saving model with best Mean F1: 0.6456
+Saving last model
+
+***Script finished: 18:28:47
+
+Time elapsed: 0:00:25.774108
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.65625, 0.7786458134651184], 'Precision': [0.6686747074127197, 0.6131386756896973], 'Recall': [0.5904255509376526, 0.7241379022598267], 'F1': [0.6271186470985413, 0.6640316247940063]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.4099999964237213, 0.7900000214576721], 'Precision': [0.75, 0.7333333492279053], 'Recall': [0.3199999928474426, 0.6285714507102966], 'F1': [0.44859811663627625, 0.6769230961799622]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.36666667461395264, 0.8333333134651184], 'Precision': [0.6000000238418579, 0.7142857313156128], 'Recall': [0.40909090638160706, 0.9090909361839294], 'F1': [0.4864864945411682, 0.800000011920929]}

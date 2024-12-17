@@ -1,0 +1,1616 @@
+T2T_ViT Classifier.
+	One Head.
+	Weighted for Precision.
+	Dataset images divided by 255.
+
+
+Datasets Length
+	Train and Val: Full
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 32
+Num Workers: 4
+Pin Memory: True
+Epochs: 100
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 71480
+Total parameters = 77784
+
+
+Torch Summary
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+T2T_ViT                                  [1, 2]                    --
+├─Tokens2Token: 1-1                      [1, 196, 32]              --
+│    └─Unfold: 2-1                       [1, 147, 3136]            --
+│    └─TokenTransformer: 2-2             [1, 3136, 16]             --
+│    │    └─LayerNorm: 3-1               [1, 3136, 147]            294
+│    │    └─Attention: 3-2               [1, 3136, 16]             7,328
+│    │    └─LayerNorm: 3-3               [1, 3136, 16]             32
+│    │    └─NeuralNet: 3-4               [1, 3136, 16]             544
+│    └─Unfold: 2-3                       [1, 144, 784]             --
+│    └─TokenTransformer: 2-4             [1, 784, 16]              --
+│    │    └─LayerNorm: 3-5               [1, 784, 144]             288
+│    │    └─Attention: 3-6               [1, 784, 16]              7,184
+│    │    └─LayerNorm: 3-7               [1, 784, 16]              32
+│    │    └─NeuralNet: 3-8               [1, 784, 16]              544
+│    └─Unfold: 2-5                       [1, 144, 196]             --
+│    └─Linear: 2-6                       [1, 196, 32]              4,640
+├─ViT_Backbone: 1-2                      [1, 2]                    6,336
+│    └─ModuleList: 2-7                   --                        --
+│    │    └─Encoding: 3-9                [1, 197, 32]              12,608
+│    │    └─Encoding: 3-10               [1, 197, 32]              12,608
+│    │    └─Encoding: 3-11               [1, 197, 32]              12,608
+│    │    └─Encoding: 3-12               [1, 197, 32]              12,608
+│    └─LayerNorm: 2-8                    [1, 197, 32]              64
+│    └─Linear: 2-9                       [1, 2]                    66
+==========================================================================================
+Total params: 77,784
+Trainable params: 71,480
+Non-trainable params: 6,304
+Total mult-adds (M): 0.07
+==========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 10.42
+Params size (MB): 0.29
+Estimated Total Size (MB): 11.31
+==========================================================================================
+
+Torch Model
+T2T_ViT(
+  (tokens_to_token): Tokens2Token(
+    (soft_split0): Unfold(kernel_size=(7, 7), dilation=1, padding=(2, 2), stride=(4, 4))
+    (soft_split1): Unfold(kernel_size=(3, 3), dilation=1, padding=(1, 1), stride=(2, 2))
+    (soft_split2): Unfold(kernel_size=(3, 3), dilation=1, padding=(1, 1), stride=(2, 2))
+    (transformer1): TokenTransformer(
+      (norm1): LayerNorm((147,), eps=1e-05, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=147, out_features=48, bias=False)
+        (proj): Linear(in_features=16, out_features=16, bias=True)
+      )
+      (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+      (neuralnet): NeuralNet(
+        (fc1): Linear(in_features=16, out_features=16, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=16, out_features=16, bias=True)
+      )
+    )
+    (transformer2): TokenTransformer(
+      (norm1): LayerNorm((144,), eps=1e-05, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=144, out_features=48, bias=False)
+        (proj): Linear(in_features=16, out_features=16, bias=True)
+      )
+      (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+      (neuralnet): NeuralNet(
+        (fc1): Linear(in_features=16, out_features=16, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=16, out_features=16, bias=True)
+      )
+    )
+    (project): Linear(in_features=144, out_features=32, bias=True)
+  )
+  (vit_backbone): ViT_Backbone(
+    (blocks): ModuleList(
+      (0-3): 4 x Encoding(
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=32, out_features=96, bias=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (neuralnet): NeuralNet(
+          (fc1): Linear(in_features=32, out_features=128, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=128, out_features=32, bias=True)
+        )
+      )
+    )
+    (norm): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+    (head): Linear(in_features=32, out_features=2, bias=True)
+  )
+)
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 00:41:01
+
+
+=== EPOCH 0/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7089   |0.7588   |0.5619   |0.6457   |
+28.33      |15.81     |12.51     |    Fire   |0.8273   |0.7787   |0.6634   |0.7164   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7893   |0.8126   |0.7189   |0.7629   |
+22.47      |13.30     |9.17      |    Fire   |0.8821   |0.7710   |0.9054   |0.8328   |
+
+Saving model with new best validation loss: 22.4702
+Saving model with best Mean F1: 0.7978
+
+=== EPOCH 1/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7653   |0.7970   |0.6747   |0.7308   |
+22.64      |13.46     |9.18      |    Fire   |0.8816   |0.8512   |0.7755   |0.8116   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8162   |0.8096   |0.7977   |0.8036   |
+19.13      |12.02     |7.11      |    Fire   |0.9105   |0.8747   |0.8448   |0.8595   |
+
+Saving model with new best validation loss: 19.1283
+Saving model with best Mean F1: 0.8316
+
+=== EPOCH 2/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7848   |0.8164   |0.7019   |0.7548   |
+20.92      |12.51     |8.41      |    Fire   |0.8915   |0.8645   |0.7945   |0.8280   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8099   |0.8509   |0.7235   |0.7820   |
+18.84      |11.40     |7.45      |    Fire   |0.9063   |0.8361   |0.8843   |0.8596   |
+
+Saving model with new best validation loss: 18.8404
+
+=== EPOCH 3/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.7955   |0.8250   |0.7193   |0.7685   |
+19.91      |11.97     |7.95      |    Fire   |0.8990   |0.8751   |0.8082   |0.8403   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8222   |0.8467   |0.7605   |0.8013   |
+17.23      |10.80     |6.43      |    Fire   |0.9200   |0.8589   |0.9014   |0.8796   |
+
+Saving model with new best validation loss: 17.2309
+Saving model with best Mean F1: 0.8405
+
+=== EPOCH 4/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8043   |0.8357   |0.7289   |0.7786   |
+19.14      |11.56     |7.58      |    Fire   |0.9043   |0.8803   |0.8203   |0.8492   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8316   |0.8587   |0.7692   |0.8115   |
+16.83      |10.37     |6.46      |    Fire   |0.9187   |0.8667   |0.8853   |0.8759   |
+
+Saving model with new best validation loss: 16.8301
+Saving model with best Mean F1: 0.8437
+
+=== EPOCH 5/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8108   |0.8392   |0.7413   |0.7872   |
+18.61      |11.21     |7.40      |    Fire   |0.9062   |0.8818   |0.8253   |0.8526   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8200   |0.8098   |0.8077   |0.8088   |
+18.85      |11.38     |7.47      |    Fire   |0.9065   |0.8014   |0.9458   |0.8676   |
+
+
+=== EPOCH 6/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8171   |0.8470   |0.7475   |0.7942   |
+18.14      |10.95     |7.19      |    Fire   |0.9086   |0.8849   |0.8298   |0.8565   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8297   |0.8292   |0.8043   |0.8166   |
+16.24      |10.74     |5.50      |    Fire   |0.9320   |0.8801   |0.9149   |0.8971   |
+
+Saving model with new best validation loss: 16.2448
+Saving model with best Mean F1: 0.8568
+
+=== EPOCH 7/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8213   |0.8509   |0.7534   |0.7992   |
+17.81      |10.77     |7.05      |    Fire   |0.9113   |0.8875   |0.8361   |0.8610   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8284   |0.9255   |0.6917   |0.7917   |
+16.05      |10.31     |5.74      |    Fire   |0.9291   |0.8813   |0.9028   |0.8919   |
+
+Saving model with new best validation loss: 16.0545
+
+=== EPOCH 8/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8258   |0.8552   |0.7595   |0.8045   |
+17.46      |10.55     |6.91      |    Fire   |0.9124   |0.8877   |0.8399   |0.8631   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8482   |0.8996   |0.7632   |0.8258   |
+15.29      |9.67      |5.62      |    Fire   |0.9318   |0.9138   |0.8719   |0.8924   |
+
+Saving model with new best validation loss: 15.2883
+Saving model with best Mean F1: 0.8591
+
+=== EPOCH 9/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8281   |0.8594   |0.7601   |0.8067   |
+17.21      |10.37     |6.84      |    Fire   |0.9136   |0.8911   |0.8399   |0.8647   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8544   |0.8638   |0.8204   |0.8416   |
+15.37      |9.59      |5.78      |    Fire   |0.9291   |0.8776   |0.9078   |0.8924   |
+
+Saving model with best Mean F1: 0.8670
+
+=== EPOCH 10/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8316   |0.8610   |0.7672   |0.8114   |
+16.98      |10.25     |6.73      |    Fire   |0.9155   |0.8928   |0.8444   |0.8679   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8468   |0.8500   |0.8197   |0.8346   |
+17.51      |9.94      |7.57      |    Fire   |0.9009   |0.7817   |0.9634   |0.8631   |
+
+
+=== EPOCH 11/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8328   |0.8617   |0.7691   |0.8128   |
+16.82      |10.13     |6.69      |    Fire   |0.9151   |0.8910   |0.8454   |0.8676   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8511   |0.8525   |0.8271   |0.8396   |
+15.06      |9.93      |5.13      |    Fire   |0.9373   |0.8922   |0.9173   |0.9045   |
+
+Saving model with new best validation loss: 15.0650
+Saving model with best Mean F1: 0.8721
+
+=== EPOCH 12/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8360   |0.8647   |0.7736   |0.8166   |
+16.56      |10.00     |6.56      |    Fire   |0.9177   |0.8948   |0.8496   |0.8716   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8626   |0.8935   |0.8044   |0.8466   |
+14.20      |8.89      |5.31      |    Fire   |0.9365   |0.8930   |0.9135   |0.9031   |
+
+Saving model with new best validation loss: 14.1978
+Saving model with best Mean F1: 0.8749
+
+=== EPOCH 13/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8380   |0.8679   |0.7747   |0.8186   |
+16.42      |9.89      |6.53      |    Fire   |0.9187   |0.8961   |0.8515   |0.8732   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8566   |0.8939   |0.7894   |0.8384   |
+14.95      |9.25      |5.69      |    Fire   |0.9306   |0.8686   |0.9259   |0.8963   |
+
+
+=== EPOCH 14/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8411   |0.8704   |0.7793   |0.8223   |
+16.16      |9.76      |6.39      |    Fire   |0.9193   |0.8958   |0.8537   |0.8742   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8614   |0.8969   |0.7978   |0.8444   |
+15.08      |9.09      |5.99      |    Fire   |0.9262   |0.8516   |0.9351   |0.8914   |
+
+
+=== EPOCH 15/99 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8421   |0.8717   |0.7805   |0.8236   |
+16.10      |9.72      |6.38      |    Fire   |0.9194   |0.8948   |0.8553   |0.8746   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8566   |0.8940   |0.7895   |0.8385   |
+14.97      |9.12      |5.85      |    Fire   |0.9264   |0.8480   |0.9418   |0.8924   |
+
+
+=== EPOCH 16/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8466   |0.8752   |0.7873   |0.8289   |
+15.68      |9.46      |6.22      |    Fire   |0.9226   |0.8993   |0.8610   |0.8798   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8670   |0.8854   |0.8245   |0.8539   |
+14.03      |8.78      |5.25      |    Fire   |0.9354   |0.8823   |0.9239   |0.9026   |
+
+Saving model with new best validation loss: 14.0296
+Saving model with best Mean F1: 0.8782
+
+=== EPOCH 17/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8494   |0.8770   |0.7919   |0.8323   |
+15.57      |9.39      |6.18      |    Fire   |0.9224   |0.9008   |0.8584   |0.8791   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8582   |0.8943   |0.7927   |0.8405   |
+14.32      |9.18      |5.14      |    Fire   |0.9369   |0.8844   |0.9264   |0.9049   |
+
+
+=== EPOCH 18/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8504   |0.8787   |0.7926   |0.8334   |
+15.45      |9.28      |6.18      |    Fire   |0.9230   |0.9005   |0.8608   |0.8802   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8551   |0.8261   |0.8772   |0.8509   |
+16.06      |9.62      |6.44      |    Fire   |0.9163   |0.8164   |0.9568   |0.8811   |
+
+
+=== EPOCH 19/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8517   |0.8785   |0.7958   |0.8351   |
+15.41      |9.26      |6.15      |    Fire   |0.9230   |0.9004   |0.8611   |0.8803   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8726   |0.9112   |0.8086   |0.8568   |
+13.61      |8.22      |5.39      |    Fire   |0.9351   |0.8728   |0.9361   |0.9034   |
+
+Saving model with new best validation loss: 13.6143
+Saving model with best Mean F1: 0.8801
+
+=== EPOCH 20/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8511   |0.8785   |0.7945   |0.8344   |
+15.35      |9.26      |6.09      |    Fire   |0.9236   |0.9013   |0.8619   |0.8812   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8651   |0.8740   |0.8340   |0.8536   |
+13.95      |8.86      |5.09      |    Fire   |0.9382   |0.8778   |0.9402   |0.9079   |
+
+Saving model with best Mean F1: 0.8807
+
+=== EPOCH 21/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8530   |0.8805   |0.7968   |0.8366   |
+15.22      |9.16      |6.05      |    Fire   |0.9243   |0.9026   |0.8629   |0.8823   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8541   |0.9298   |0.7468   |0.8283   |
+13.25      |8.55      |4.69      |    Fire   |0.9424   |0.9029   |0.9214   |0.9121   |
+
+Saving model with new best validation loss: 13.2485
+
+=== EPOCH 22/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8549   |0.8820   |0.7995   |0.8388   |
+15.15      |9.12      |6.02      |    Fire   |0.9252   |0.9028   |0.8656   |0.8838   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8680   |0.8825   |0.8305   |0.8557   |
+13.39      |8.65      |4.74      |    Fire   |0.9416   |0.8904   |0.9349   |0.9121   |
+
+Saving model with best Mean F1: 0.8839
+
+=== EPOCH 23/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8551   |0.8824   |0.7996   |0.8390   |
+15.13      |9.08      |6.06      |    Fire   |0.9243   |0.9026   |0.8628   |0.8822   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8552   |0.8458   |0.8471   |0.8465   |
+14.40      |9.35      |5.05      |    Fire   |0.9366   |0.8747   |0.9388   |0.9056   |
+
+
+=== EPOCH 24/99 ===
+Learning Rate = 0.0008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8545   |0.8819   |0.7988   |0.8383   |
+15.08      |9.05      |6.03      |    Fire   |0.9249   |0.9039   |0.8632   |0.8831   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8732   |0.9016   |0.8206   |0.8592   |
+13.51      |8.34      |5.17      |    Fire   |0.9347   |0.8657   |0.9450   |0.9036   |
+
+
+=== EPOCH 25/99 ===
+Learning Rate = 0.00064
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8591   |0.8867   |0.8044   |0.8436   |
+14.74      |8.85      |5.89      |    Fire   |0.9269   |0.9056   |0.8681   |0.8865   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8821   |0.9265   |0.8146   |0.8669   |
+12.68      |7.70      |4.99      |    Fire   |0.9389   |0.8810   |0.9380   |0.9086   |
+
+Saving model with new best validation loss: 12.6824
+Saving model with best Mean F1: 0.8878
+
+=== EPOCH 26/99 ===
+Learning Rate = 0.00064
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8609   |0.8872   |0.8080   |0.8458   |
+14.72      |8.82      |5.90      |    Fire   |0.9266   |0.9065   |0.8659   |0.8857   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8744   |0.9314   |0.7919   |0.8560   |
+12.87      |8.02      |4.85      |    Fire   |0.9412   |0.9024   |0.9180   |0.9101   |
+
+
+=== EPOCH 27/99 ===
+Learning Rate = 0.00064
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8619   |0.8897   |0.8075   |0.8466   |
+14.59      |8.75      |5.84      |    Fire   |0.9272   |0.9060   |0.8687   |0.8870   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8806   |0.8897   |0.8524   |0.8707   |
+13.24      |7.97      |5.27      |    Fire   |0.9334   |0.8626   |0.9451   |0.9020   |
+
+
+=== EPOCH 28/99 ===
+Learning Rate = 0.00064
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8616   |0.8876   |0.8094   |0.8467   |
+14.59      |8.72      |5.87      |    Fire   |0.9267   |0.9065   |0.8664   |0.8860   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8791   |0.9039   |0.8320   |0.8665   |
+12.72      |7.89      |4.83      |    Fire   |0.9408   |0.8824   |0.9431   |0.9118   |
+
+Saving model with best Mean F1: 0.8891
+
+=== EPOCH 29/99 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8652   |0.8917   |0.8133   |0.8507   |
+14.22      |8.52      |5.71      |    Fire   |0.9285   |0.9075   |0.8711   |0.8890   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8845   |0.8975   |0.8523   |0.8743   |
+12.09      |7.58      |4.51      |    Fire   |0.9448   |0.9024   |0.9302   |0.9161   |
+
+Saving model with new best validation loss: 12.0895
+Saving model with best Mean F1: 0.8952
+
+=== EPOCH 30/99 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8645   |0.8904   |0.8130   |0.8499   |
+14.22      |8.52      |5.70      |    Fire   |0.9298   |0.9093   |0.8737   |0.8912   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8862   |0.9057   |0.8467   |0.8752   |
+12.34      |7.48      |4.87      |    Fire   |0.9405   |0.8828   |0.9412   |0.9111   |
+
+
+=== EPOCH 31/99 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8661   |0.8923   |0.8148   |0.8518   |
+14.15      |8.48      |5.67      |    Fire   |0.9299   |0.9095   |0.8736   |0.8912   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8775   |0.8841   |0.8518   |0.8676   |
+12.40      |8.15      |4.24      |    Fire   |0.9498   |0.9202   |0.9254   |0.9228   |
+
+Saving model with best Mean F1: 0.8952
+
+=== EPOCH 32/99 ===
+Learning Rate = 0.0005120000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8651   |0.8913   |0.8136   |0.8507   |
+14.16      |8.51      |5.64      |    Fire   |0.9298   |0.9093   |0.8738   |0.8912   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8684   |0.8365   |0.8959   |0.8652   |
+14.50      |8.97      |5.53      |    Fire   |0.9330   |0.8592   |0.9488   |0.9018   |
+
+
+=== EPOCH 33/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8683   |0.8937   |0.8185   |0.8544   |
+13.95      |8.36      |5.58      |    Fire   |0.9309   |0.9110   |0.8754   |0.8928   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8868   |0.8977   |0.8575   |0.8771   |
+12.08      |7.60      |4.48      |    Fire   |0.9452   |0.8970   |0.9387   |0.9174   |
+
+Saving model with new best validation loss: 12.0794
+Saving model with best Mean F1: 0.8972
+
+=== EPOCH 34/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8690   |0.8950   |0.8184   |0.8550   |
+13.92      |8.31      |5.60      |    Fire   |0.9310   |0.9112   |0.8754   |0.8929   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8873   |0.9194   |0.8340   |0.8746   |
+12.05      |7.46      |4.59      |    Fire   |0.9433   |0.8919   |0.9389   |0.9148   |
+
+Saving model with new best validation loss: 12.0485
+
+=== EPOCH 35/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8701   |0.8947   |0.8214   |0.8565   |
+13.83      |8.27      |5.56      |    Fire   |0.9313   |0.9114   |0.8762   |0.8934   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8865   |0.8892   |0.8673   |0.8781   |
+13.32      |7.62      |5.71      |    Fire   |0.9299   |0.8470   |0.9565   |0.8984   |
+
+
+=== EPOCH 36/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8722   |0.8982   |0.8224   |0.8586   |
+13.79      |8.25      |5.54      |    Fire   |0.9311   |0.9115   |0.8753   |0.8930   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8860   |0.9174   |0.8332   |0.8733   |
+12.03      |7.37      |4.66      |    Fire   |0.9434   |0.8858   |0.9475   |0.9156   |
+
+Saving model with new best validation loss: 12.0307
+
+=== EPOCH 37/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8713   |0.8962   |0.8227   |0.8579   |
+13.81      |8.28      |5.53      |    Fire   |0.9314   |0.9111   |0.8768   |0.8936   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8819   |0.8889   |0.8565   |0.8724   |
+13.17      |7.94      |5.22      |    Fire   |0.9344   |0.8609   |0.9513   |0.9039   |
+
+
+=== EPOCH 38/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8708   |0.8963   |0.8213   |0.8572   |
+13.78      |8.25      |5.54      |    Fire   |0.9313   |0.9112   |0.8765   |0.8935   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8834   |0.9032   |0.8430   |0.8721   |
+12.49      |7.76      |4.72      |    Fire   |0.9426   |0.8892   |0.9402   |0.9140   |
+
+
+=== EPOCH 39/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8713   |0.8957   |0.8232   |0.8579   |
+13.81      |8.23      |5.58      |    Fire   |0.9308   |0.9090   |0.8774   |0.8929   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8898   |0.9305   |0.8281   |0.8763   |
+11.80      |7.26      |4.55      |    Fire   |0.9444   |0.8924   |0.9421   |0.9166   |
+
+Saving model with new best validation loss: 11.8048
+
+=== EPOCH 40/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8707   |0.8956   |0.8218   |0.8571   |
+13.78      |8.25      |5.53      |    Fire   |0.9312   |0.9107   |0.8767   |0.8934   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8871   |0.9422   |0.8101   |0.8712   |
+12.25      |7.38      |4.87      |    Fire   |0.9412   |0.8737   |0.9569   |0.9134   |
+
+
+=== EPOCH 41/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8719   |0.8967   |0.8234   |0.8585   |
+13.73      |8.20      |5.54      |    Fire   |0.9315   |0.9115   |0.8766   |0.8937   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8873   |0.9065   |0.8485   |0.8765   |
+11.86      |7.44      |4.43      |    Fire   |0.9471   |0.9102   |0.9284   |0.9192   |
+
+Saving model with best Mean F1: 0.8979
+
+=== EPOCH 42/99 ===
+Learning Rate = 0.0004096000000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8733   |0.8984   |0.8249   |0.8601   |
+13.64      |8.17      |5.47      |    Fire   |0.9325   |0.9129   |0.8786   |0.8955   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8844   |0.8848   |0.8676   |0.8761   |
+13.07      |7.76      |5.31      |    Fire   |0.9354   |0.8590   |0.9581   |0.9058   |
+
+
+=== EPOCH 43/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8728   |0.8982   |0.8241   |0.8595   |
+13.56      |8.13      |5.43      |    Fire   |0.9331   |0.9134   |0.8798   |0.8963   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8881   |0.8945   |0.8647   |0.8793   |
+12.40      |7.52      |4.88      |    Fire   |0.9382   |0.8793   |0.9383   |0.9078   |
+
+
+=== EPOCH 44/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8738   |0.8984   |0.8261   |0.8608   |
+13.48      |8.10      |5.37      |    Fire   |0.9342   |0.9148   |0.8820   |0.8981   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8853   |0.8752   |0.8824   |0.8788   |
+13.33      |7.75      |5.57      |    Fire   |0.9311   |0.8451   |0.9643   |0.9008   |
+
+
+=== EPOCH 45/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8736   |0.8982   |0.8258   |0.8605   |
+13.51      |8.08      |5.43      |    Fire   |0.9329   |0.9137   |0.8790   |0.8960   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8903   |0.9265   |0.8334   |0.8775   |
+11.70      |7.15      |4.55      |    Fire   |0.9438   |0.8855   |0.9494   |0.9164   |
+
+Saving model with new best validation loss: 11.6993
+
+=== EPOCH 46/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8762   |0.9001   |0.8299   |0.8636   |
+13.41      |7.99      |5.42      |    Fire   |0.9334   |0.9135   |0.8807   |0.8968   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8878   |0.8990   |0.8584   |0.8782   |
+12.06      |7.37      |4.69      |    Fire   |0.9426   |0.8823   |0.9496   |0.9147   |
+
+
+=== EPOCH 47/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8742   |0.8981   |0.8273   |0.8613   |
+13.46      |8.08      |5.38      |    Fire   |0.9333   |0.9144   |0.8794   |0.8966   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8906   |0.8783   |0.8914   |0.8848   |
+12.19      |7.53      |4.67      |    Fire   |0.9421   |0.8845   |0.9446   |0.9136   |
+
+Saving model with best Mean F1: 0.8992
+
+=== EPOCH 48/99 ===
+Learning Rate = 0.0003276800000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8755   |0.8999   |0.8283   |0.8626   |
+13.41      |8.04      |5.38      |    Fire   |0.9334   |0.9144   |0.8797   |0.8967   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8879   |0.8964   |0.8617   |0.8787   |
+12.44      |7.59      |4.85      |    Fire   |0.9403   |0.8735   |0.9539   |0.9119   |
+
+
+=== EPOCH 49/99 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8765   |0.9004   |0.8302   |0.8639   |
+13.27      |7.95      |5.31      |    Fire   |0.9343   |0.9141   |0.8833   |0.8984   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8930   |0.9212   |0.8453   |0.8816   |
+11.84      |7.08      |4.76      |    Fire   |0.9422   |0.8839   |0.9459   |0.9138   |
+
+
+=== EPOCH 50/99 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8775   |0.9015   |0.8312   |0.8649   |
+13.23      |7.91      |5.32      |    Fire   |0.9336   |0.9135   |0.8814   |0.8972   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8897   |0.8768   |0.8912   |0.8839   |
+12.16      |7.59      |4.58      |    Fire   |0.9447   |0.8883   |0.9487   |0.9175   |
+
+Saving model with best Mean F1: 0.9007
+
+=== EPOCH 51/99 ===
+Learning Rate = 0.0002621440000000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8774   |0.9005   |0.8322   |0.8650   |
+13.27      |7.90      |5.37      |    Fire   |0.9336   |0.9146   |0.8803   |0.8971   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8930   |0.9138   |0.8535   |0.8827   |
+11.71      |7.13      |4.58      |    Fire   |0.9444   |0.8936   |0.9405   |0.9164   |
+
+
+=== EPOCH 52/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8790   |0.9025   |0.8338   |0.8668   |
+13.13      |7.83      |5.30      |    Fire   |0.9347   |0.9157   |0.8827   |0.8989   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8930   |0.9142   |0.8530   |0.8825   |
+11.66      |7.09      |4.57      |    Fire   |0.9442   |0.8901   |0.9445   |0.9165   |
+
+Saving model with new best validation loss: 11.6597
+
+=== EPOCH 53/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8794   |0.9030   |0.8341   |0.8672   |
+13.07      |7.81      |5.26      |    Fire   |0.9346   |0.9138   |0.8845   |0.8989   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8934   |0.9075   |0.8616   |0.8839   |
+11.59      |7.15      |4.44      |    Fire   |0.9445   |0.8962   |0.9374   |0.9163   |
+
+Saving model with new best validation loss: 11.5881
+
+=== EPOCH 54/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8790   |0.9038   |0.8323   |0.8666   |
+13.13      |7.85      |5.28      |    Fire   |0.9353   |0.9159   |0.8844   |0.8999   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8967   |0.9119   |0.8644   |0.8875   |
+11.79      |7.00      |4.78      |    Fire   |0.9398   |0.8723   |0.9539   |0.9113   |
+
+
+=== EPOCH 55/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8806   |0.9036   |0.8362   |0.8686   |
+13.10      |7.83      |5.28      |    Fire   |0.9347   |0.9143   |0.8842   |0.8990   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8983   |0.9201   |0.8588   |0.8884   |
+11.38      |7.02      |4.36      |    Fire   |0.9456   |0.8974   |0.9397   |0.9181   |
+
+Saving model with new best validation loss: 11.3767
+Saving model with best Mean F1: 0.9032
+
+=== EPOCH 56/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8796   |0.9033   |0.8342   |0.8674   |
+13.04      |7.79      |5.25      |    Fire   |0.9348   |0.9157   |0.8830   |0.8990   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8862   |0.8655   |0.8981   |0.8815   |
+12.14      |7.80      |4.33      |    Fire   |0.9463   |0.8942   |0.9463   |0.9195   |
+
+
+=== EPOCH 57/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8806   |0.9030   |0.8369   |0.8687   |
+12.97      |7.74      |5.23      |    Fire   |0.9359   |0.9182   |0.8837   |0.9006   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8988   |0.8975   |0.8865   |0.8920   |
+11.56      |7.06      |4.50      |    Fire   |0.9443   |0.8869   |0.9492   |0.9170   |
+
+Saving model with best Mean F1: 0.9045
+
+=== EPOCH 58/99 ===
+Learning Rate = 0.00020971520000000012
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8801   |0.9037   |0.8351   |0.8680   |
+12.98      |7.79      |5.19      |    Fire   |0.9367   |0.9182   |0.8864   |0.9020   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8931   |0.9020   |0.8674   |0.8843   |
+11.73      |7.09      |4.64      |    Fire   |0.9415   |0.8842   |0.9431   |0.9127   |
+
+
+=== EPOCH 59/99 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8822   |0.9047   |0.8389   |0.8706   |
+12.95      |7.70      |5.25      |    Fire   |0.9361   |0.9174   |0.8852   |0.9010   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8936   |0.8897   |0.8838   |0.8867   |
+12.26      |7.30      |4.96      |    Fire   |0.9387   |0.8677   |0.9568   |0.9101   |
+
+
+=== EPOCH 60/99 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8830   |0.9057   |0.8395   |0.8714   |
+12.82      |7.62      |5.20      |    Fire   |0.9356   |0.9167   |0.8845   |0.9003   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8961   |0.9211   |0.8527   |0.8856   |
+11.22      |6.90      |4.32      |    Fire   |0.9474   |0.9060   |0.9345   |0.9200   |
+
+Saving model with new best validation loss: 11.2174
+
+=== EPOCH 61/99 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8832   |0.9069   |0.8388   |0.8715   |
+12.83      |7.63      |5.20      |    Fire   |0.9358   |0.9168   |0.8849   |0.9006   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8933   |0.8835   |0.8910   |0.8873   |
+12.56      |7.45      |5.11      |    Fire   |0.9364   |0.8596   |0.9609   |0.9074   |
+
+
+=== EPOCH 62/99 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8836   |0.9063   |0.8404   |0.8721   |
+12.86      |7.65      |5.21      |    Fire   |0.9349   |0.9167   |0.8823   |0.8992   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8941   |0.8956   |0.8778   |0.8866   |
+11.92      |7.08      |4.83      |    Fire   |0.9388   |0.8686   |0.9558   |0.9101   |
+
+
+=== EPOCH 63/99 ===
+Learning Rate = 0.0001677721600000001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8835   |0.9062   |0.8402   |0.8719   |
+12.80      |7.62      |5.18      |    Fire   |0.9354   |0.9165   |0.8841   |0.9000   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8971   |0.9165   |0.8599   |0.8873   |
+11.61      |6.81      |4.80      |    Fire   |0.9406   |0.8794   |0.9465   |0.9117   |
+
+
+=== EPOCH 64/99 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8846   |0.9071   |0.8418   |0.8732   |
+12.70      |7.56      |5.15      |    Fire   |0.9372   |0.9191   |0.8872   |0.9028   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8994   |0.9074   |0.8759   |0.8914   |
+11.93      |6.86      |5.07      |    Fire   |0.9376   |0.8655   |0.9560   |0.9085   |
+
+
+=== EPOCH 65/99 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8842   |0.9072   |0.8407   |0.8726   |
+12.68      |7.57      |5.11      |    Fire   |0.9369   |0.9181   |0.8872   |0.9024   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8977   |0.8980   |0.8833   |0.8905   |
+11.26      |7.05      |4.21      |    Fire   |0.9484   |0.9023   |0.9430   |0.9222   |
+
+Saving model with best Mean F1: 0.9064
+
+=== EPOCH 66/99 ===
+Learning Rate = 0.00013421772800000008
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8838   |0.9065   |0.8407   |0.8724   |
+12.71      |7.55      |5.16      |    Fire   |0.9360   |0.9164   |0.8862   |0.9011   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8980   |0.9146   |0.8644   |0.8888   |
+11.65      |6.94      |4.71      |    Fire   |0.9413   |0.8760   |0.9540   |0.9133   |
+
+
+=== EPOCH 67/99 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8846   |0.9064   |0.8426   |0.8733   |
+12.57      |7.49      |5.08      |    Fire   |0.9375   |0.9200   |0.8871   |0.9033   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8979   |0.9164   |0.8621   |0.8884   |
+11.29      |6.77      |4.51      |    Fire   |0.9444   |0.8875   |0.9486   |0.9170   |
+
+
+=== EPOCH 68/99 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8849   |0.9071   |0.8425   |0.8736   |
+12.63      |7.50      |5.13      |    Fire   |0.9371   |0.9183   |0.8875   |0.9026   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8920   |0.8696   |0.9070   |0.8879   |
+12.15      |7.43      |4.71      |    Fire   |0.9415   |0.8797   |0.9493   |0.9132   |
+
+
+=== EPOCH 69/99 ===
+Learning Rate = 0.00010737418240000007
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8858   |0.9073   |0.8442   |0.8747   |
+12.59      |7.49      |5.11      |    Fire   |0.9370   |0.9168   |0.8890   |0.9027   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9009   |0.9195   |0.8655   |0.8917   |
+11.35      |6.70      |4.65      |    Fire   |0.9414   |0.8808   |0.9474   |0.9129   |
+
+
+=== EPOCH 70/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8862   |0.9083   |0.8442   |0.8751   |
+12.60      |7.49      |5.11      |    Fire   |0.9370   |0.9181   |0.8877   |0.9027   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9019   |0.9192   |0.8682   |0.8930   |
+11.10      |6.63      |4.47      |    Fire   |0.9451   |0.8927   |0.9440   |0.9176   |
+
+Saving model with new best validation loss: 11.0965
+
+=== EPOCH 71/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8869   |0.9092   |0.8447   |0.8758   |
+12.55      |7.44      |5.11      |    Fire   |0.9373   |0.9189   |0.8877   |0.9030   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8964   |0.9003   |0.8773   |0.8887   |
+11.52      |6.93      |4.59      |    Fire   |0.9423   |0.8847   |0.9451   |0.9139   |
+
+
+=== EPOCH 72/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8857   |0.9067   |0.8448   |0.8746   |
+12.46      |7.44      |5.03      |    Fire   |0.9377   |0.9195   |0.8882   |0.9036   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9014   |0.9041   |0.8846   |0.8943   |
+11.05      |6.84      |4.21      |    Fire   |0.9465   |0.8989   |0.9407   |0.9193   |
+
+Saving model with new best validation loss: 11.0494
+Saving model with best Mean F1: 0.9068
+
+=== EPOCH 73/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8854   |0.9067   |0.8440   |0.8743   |
+12.54      |7.46      |5.08      |    Fire   |0.9370   |0.9176   |0.8881   |0.9026   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9021   |0.9137   |0.8750   |0.8939   |
+11.20      |6.63      |4.57      |    Fire   |0.9426   |0.8812   |0.9510   |0.9148   |
+
+
+=== EPOCH 74/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8869   |0.9092   |0.8450   |0.8759   |
+12.49      |7.42      |5.07      |    Fire   |0.9382   |0.9198   |0.8897   |0.9045   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9010   |0.9034   |0.8846   |0.8939   |
+11.29      |6.69      |4.60      |    Fire   |0.9413   |0.8783   |0.9506   |0.9130   |
+
+
+=== EPOCH 75/99 ===
+Learning Rate = 8.589934592000007e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8867   |0.9074   |0.8463   |0.8758   |
+12.53      |7.43      |5.09      |    Fire   |0.9376   |0.9195   |0.8880   |0.9035   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9002   |0.9157   |0.8681   |0.8913   |
+11.40      |6.67      |4.73      |    Fire   |0.9407   |0.8745   |0.9541   |0.9126   |
+
+
+=== EPOCH 76/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8877   |0.9086   |0.8474   |0.8770   |
+12.46      |7.37      |5.09      |    Fire   |0.9374   |0.9187   |0.8882   |0.9032   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9000   |0.9004   |0.8857   |0.8930   |
+11.11      |6.78      |4.33      |    Fire   |0.9462   |0.8985   |0.9405   |0.9190   |
+
+
+=== EPOCH 77/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8883   |0.9101   |0.8470   |0.8775   |
+12.45      |7.38      |5.06      |    Fire   |0.9381   |0.9201   |0.8890   |0.9042   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8994   |0.8961   |0.8898   |0.8929   |
+11.89      |6.94      |4.96      |    Fire   |0.9382   |0.8700   |0.9516   |0.9090   |
+
+
+=== EPOCH 78/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8879   |0.9084   |0.8481   |0.8772   |
+12.39      |7.35      |5.04      |    Fire   |0.9382   |0.9198   |0.8897   |0.9045   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9021   |0.9168   |0.8715   |0.8936   |
+10.89      |6.64      |4.26      |    Fire   |0.9474   |0.9039   |0.9375   |0.9204   |
+
+Saving model with new best validation loss: 10.8932
+Saving model with best Mean F1: 0.9070
+
+=== EPOCH 79/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8886   |0.9099   |0.8479   |0.8778   |
+12.43      |7.36      |5.08      |    Fire   |0.9380   |0.9190   |0.8898   |0.9042   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9023   |0.9130   |0.8763   |0.8942   |
+11.08      |6.58      |4.51      |    Fire   |0.9439   |0.8866   |0.9483   |0.9164   |
+
+
+=== EPOCH 80/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8887   |0.9099   |0.8483   |0.8780   |
+12.40      |7.35      |5.05      |    Fire   |0.9382   |0.9202   |0.8892   |0.9045   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9016   |0.9054   |0.8834   |0.8943   |
+11.33      |6.66      |4.67      |    Fire   |0.9411   |0.8770   |0.9517   |0.9128   |
+
+
+=== EPOCH 81/99 ===
+Learning Rate = 6.871947673600006e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8868   |0.9074   |0.8467   |0.8760   |
+12.41      |7.36      |5.05      |    Fire   |0.9384   |0.9200   |0.8899   |0.9047   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9025   |0.9220   |0.8664   |0.8934   |
+10.95      |6.62      |4.33      |    Fire   |0.9460   |0.8968   |0.9416   |0.9187   |
+
+
+=== EPOCH 82/99 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8882   |0.9091   |0.8481   |0.8775   |
+12.39      |7.33      |5.05      |    Fire   |0.9371   |0.9187   |0.8872   |0.9027   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9035   |0.9084   |0.8843   |0.8962   |
+11.15      |6.73      |4.43      |    Fire   |0.9453   |0.8925   |0.9449   |0.9180   |
+
+Saving model with best Mean F1: 0.9071
+
+=== EPOCH 83/99 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8896   |0.9108   |0.8494   |0.8790   |
+12.34      |7.31      |5.03      |    Fire   |0.9387   |0.9208   |0.8902   |0.9053   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9030   |0.9005   |0.8928   |0.8967   |
+11.25      |6.72      |4.52      |    Fire   |0.9432   |0.8832   |0.9503   |0.9155   |
+
+
+=== EPOCH 84/99 ===
+Learning Rate = 5.497558138880005e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8875   |0.9085   |0.8469   |0.8766   |
+12.45      |7.36      |5.08      |    Fire   |0.9379   |0.9196   |0.8887   |0.9039   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9044   |0.9096   |0.8853   |0.8973   |
+10.98      |6.58      |4.41      |    Fire   |0.9452   |0.8952   |0.9412   |0.9176   |
+
+Saving model with best Mean F1: 0.9074
+
+=== EPOCH 85/99 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8882   |0.9094   |0.8476   |0.8774   |
+12.35      |7.32      |5.03      |    Fire   |0.9387   |0.9203   |0.8907   |0.9053   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9053   |0.9084   |0.8888   |0.8985   |
+11.26      |6.66      |4.61      |    Fire   |0.9423   |0.8799   |0.9521   |0.9146   |
+
+
+=== EPOCH 86/99 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8894   |0.9096   |0.8501   |0.8789   |
+12.28      |7.27      |5.00      |    Fire   |0.9386   |0.9194   |0.8913   |0.9051   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9070   |0.9230   |0.8758   |0.8988   |
+10.85      |6.41      |4.44      |    Fire   |0.9449   |0.8888   |0.9486   |0.9177   |
+
+Saving model with new best validation loss: 10.8538
+Saving model with best Mean F1: 0.9082
+
+=== EPOCH 87/99 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8882   |0.9083   |0.8490   |0.8776   |
+12.34      |7.33      |5.01      |    Fire   |0.9386   |0.9205   |0.8901   |0.9051   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9018   |0.9031   |0.8868   |0.8949   |
+11.38      |6.71      |4.67      |    Fire   |0.9415   |0.8790   |0.9502   |0.9132   |
+
+
+=== EPOCH 88/99 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8890   |0.9093   |0.8495   |0.8784   |
+12.31      |7.29      |5.02      |    Fire   |0.9382   |0.9197   |0.8897   |0.9045   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9003   |0.8984   |0.8889   |0.8936   |
+11.45      |6.79      |4.66      |    Fire   |0.9412   |0.8762   |0.9534   |0.9132   |
+
+
+=== EPOCH 89/99 ===
+Learning Rate = 4.3980465111040044e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8898   |0.9093   |0.8515   |0.8795   |
+12.26      |7.27      |5.00      |    Fire   |0.9394   |0.9213   |0.8919   |0.9063   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9039   |0.9085   |0.8852   |0.8967   |
+11.03      |6.52      |4.51      |    Fire   |0.9441   |0.8861   |0.9496   |0.9168   |
+
+
+=== EPOCH 90/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8891   |0.9095   |0.8497   |0.8786   |
+12.28      |7.28      |5.00      |    Fire   |0.9395   |0.9227   |0.8905   |0.9063   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9037   |0.9089   |0.8844   |0.8965   |
+10.87      |6.57      |4.30      |    Fire   |0.9462   |0.8949   |0.9450   |0.9193   |
+
+
+=== EPOCH 91/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8888   |0.9094   |0.8489   |0.8781   |
+12.34      |7.30      |5.04      |    Fire   |0.9380   |0.9187   |0.8901   |0.9042   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9043   |0.9066   |0.8884   |0.8974   |
+11.32      |6.60      |4.71      |    Fire   |0.9401   |0.8748   |0.9515   |0.9115   |
+
+
+=== EPOCH 92/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8893   |0.9103   |0.8492   |0.8787   |
+12.27      |7.27      |5.00      |    Fire   |0.9384   |0.9198   |0.8904   |0.9049   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9040   |0.9233   |0.8684   |0.8950   |
+10.64      |6.48      |4.17      |    Fire   |0.9474   |0.9049   |0.9360   |0.9202   |
+
+Saving model with new best validation loss: 10.6447
+
+=== EPOCH 93/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8887   |0.9101   |0.8480   |0.8779   |
+12.34      |7.32      |5.03      |    Fire   |0.9386   |0.9204   |0.8901   |0.9050   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9024   |0.9007   |0.8913   |0.8960   |
+11.30      |6.74      |4.56      |    Fire   |0.9432   |0.8837   |0.9498   |0.9156   |
+
+
+=== EPOCH 94/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8893   |0.9100   |0.8494   |0.8787   |
+12.37      |7.31      |5.05      |    Fire   |0.9379   |0.9194   |0.8890   |0.9040   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9040   |0.9067   |0.8878   |0.8971   |
+11.15      |6.65      |4.50      |    Fire   |0.9438   |0.8877   |0.9464   |0.9161   |
+
+
+=== EPOCH 95/99 ===
+Learning Rate = 3.5184372088832036e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8903   |0.9112   |0.8505   |0.8798   |
+12.21      |7.23      |4.98      |    Fire   |0.9389   |0.9212   |0.8904   |0.9055   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9056   |0.9222   |0.8733   |0.8971   |
+10.76      |6.44      |4.32      |    Fire   |0.9461   |0.8921   |0.9486   |0.9194   |
+
+Saving model with best Mean F1: 0.9083
+
+=== EPOCH 96/99 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8900   |0.9104   |0.8507   |0.8796   |
+12.24      |7.25      |4.99      |    Fire   |0.9392   |0.9211   |0.8916   |0.9061   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8998   |0.8906   |0.8978   |0.8942   |
+11.64      |7.03      |4.61      |    Fire   |0.9419   |0.8829   |0.9464   |0.9135   |
+
+
+=== EPOCH 97/99 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8904   |0.9110   |0.8510   |0.8800   |
+12.23      |7.26      |4.96      |    Fire   |0.9395   |0.9214   |0.8920   |0.9065   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9042   |0.9061   |0.8889   |0.8974   |
+11.29      |6.65      |4.64      |    Fire   |0.9419   |0.8797   |0.9508   |0.9139   |
+
+
+=== EPOCH 98/99 ===
+Learning Rate = 2.814749767106563e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8898   |0.9100   |0.8507   |0.8793   |
+12.29      |7.25      |5.04      |    Fire   |0.9380   |0.9188   |0.8902   |0.9042   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9043   |0.9069   |0.8882   |0.8974   |
+11.04      |6.62      |4.42      |    Fire   |0.9449   |0.8916   |0.9450   |0.9175   |
+
+
+=== EPOCH 99/99 ===
+Learning Rate = 2.2517998136852506e-05
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.8909   |0.9120   |0.8509   |0.8804   |
+12.22      |7.24      |4.98      |    Fire   |0.9385   |0.9201   |0.8903   |0.9050   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9051   |0.9140   |0.8817   |0.8976   |
+10.87      |6.51      |4.36      |    Fire   |0.9455   |0.8945   |0.9432   |0.9182   |
+
+Saving last model
+
+***Script finished: 14:00:45
+
+Time elapsed: 13:19:44.344094
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.9055519104003906, 0.9461235404014587], 'Precision': [0.9221711158752441, 0.8920528888702393], 'Recall': [0.8733229041099548, 0.9485620260238647], 'F1': [0.897082507610321, 0.9194400310516357]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.8700000047683716, 0.9200000166893005], 'Precision': [0.9558823704719543, 0.9090909361839294], 'Recall': [0.8666666746139526, 0.8571428656578064], 'F1': [0.9090909361839294, 0.8823529481887817]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.8999999761581421, 0.8666666746139526], 'Precision': [1.0, 0.7692307829856873], 'Recall': [0.8636363744735718, 0.9090909361839294], 'F1': [0.9268292784690857, 0.8333333134651184]}

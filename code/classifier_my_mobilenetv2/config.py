@@ -1,9 +1,10 @@
 import os
 import torch
+
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_v05_mini_No_resnet_70k_full_ds/'
+RUN_FOLDER = 'experiments_brevitas/' + 'test_v052_mini_resnet_70k_CLOUDS_full_ds_50EpochsMore/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -26,6 +27,9 @@ NUM_CLASSES = len(CLASSES)
 
 #___   Padding Model  ___#
 IMG_DIM = {'W':224, 'H':224} # (W, H)
+# IMG_DIM = {'W':160, 'H':160} # (W, H)
+# IMG_DIM = {'W':112, 'H':112} # (W, H)
+
 #___ No Padding Model ___#
 # IMG_DIM = {'W':230, 'H':230} # (W, H)
 
@@ -52,6 +56,8 @@ FASDD_CV_TRAIN_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/
 FASDD_CV_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/val.txt'
 FASDD_CV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
+CLOUDS_IMG_DIR = '../../datasets/clouds/images/'
+
 DS_LEN = None
 
 ### DFire Mini ###
@@ -64,7 +70,8 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
-MODEL = "MY_MBLNET_V2"
+BREVITAS_MODEL = True
+MODEL = "MY_MBLNET_V2_Resnet"
 
 LEARNING_RATE = 1e-3
 #LEARNING_RATE = 1e-4
@@ -81,12 +88,11 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 100
+EPOCHS = 50
 
-LOAD_MODEL = False
-LOAD_MODEL_DIR = './models/'
-if MODEL == "BED":
-    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_classifier__fused__dfire_fasdd.pt"
+LOAD_MODEL = True
+LOAD_MODEL_DIR = './experiments_brevitas/test_v051_mini_resnet_70k_CLOUDS_full_ds/weights/'
+LOAD_MODEL_FILE = LOAD_MODEL_DIR + "MY_MBLNET_V2_Resnet_classifier__best_mean_F1.pt"
 
 
 LOSS_FN = "BCE"

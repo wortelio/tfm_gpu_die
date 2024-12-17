@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_resnet/' + 'test_v03__w1a1__DEEP_Resnet__clip_convs_Linear4ReLU__400k_full_ds/'
+RUN_FOLDER = 'experiments_resnet/' + 'test_v38__w1a1__DEEPER_Resnet_V51__clip1__128ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -52,7 +52,7 @@ FASDD_CV_TRAIN_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/
 FASDD_CV_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/val.txt'
 FASDD_CV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
-DS_LEN = None
+DS_LEN = 128
 
 ### DFire Mini ###
 dfire_mini_dir = '../../datasets/dfire_mini/'
@@ -64,7 +64,8 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 # ______________________________________________________________________ #
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
-MODEL = "BNN_BED"
+BREVITAS_MODEL = True
+MODEL = "BNN_BED_Resnet_V7"
 
 LEARNING_RATE = 1e-3
 #LEARNING_RATE = 1e-4
@@ -81,7 +82,7 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 150
+EPOCHS = 5
 
 LOAD_MODEL = False
 LOAD_MODEL_DIR = './models/'
@@ -104,6 +105,6 @@ FIXED_POINT = True
 
 ##### FINN
 WEIGHTS_BIT_WIDTH = 4
-BIG_LAYERS_WEIGHTS_BIT_WIDTH = 4
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2 #4
 ACTIVATIONS_BIT_WIDTH = 4
 BIAS_BIT_WIDTH = 4

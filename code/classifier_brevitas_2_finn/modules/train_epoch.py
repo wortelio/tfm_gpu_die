@@ -25,9 +25,13 @@ def train_fn(loader, model, optimizer, loss_fn, device):
         # Gradient Descent
         optimizer.zero_grad()
         train_loss.backward()
+        
         # torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=10.0)
-        torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=1.0)
+        torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=1.)
+        # torch.nn.utils.clip_grad_value_(model.features.parameters(), clip_value=0.5)
+        
         optimizer.step()
+        
         if hasattr(model, 'clip_weights'):
             model.clip_weights(-1, 1)
 

@@ -1,0 +1,414 @@
+ECA Mobilenetv2.
+	One Head.
+	Weighted for Precision.
+	Brevitas Default.
+	Dataset images divided by 255.
+
+
+Datasets Length
+	Train and Val: 128
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 68892
+Total parameters = 68892
+
+
+Torch Summary
+====================================================================================================
+Layer (type:depth-idx)                             Output Shape              Param #
+====================================================================================================
+ECA_MobileNetV2                                    [1, 2]                    --
+├─Sequential: 1-1                                  [1, 128, 14, 14]          --
+│    └─ConvBNReLU: 2-1                             [1, 32, 112, 112]         --
+│    │    └─Conv2d: 3-1                            [1, 32, 112, 112]         864
+│    │    └─BatchNorm2d: 3-2                       [1, 32, 112, 112]         64
+│    │    └─ReLU6: 3-3                             [1, 32, 112, 112]         --
+│    └─InvertedResidual: 2-2                       [1, 8, 112, 112]          --
+│    │    └─Sequential: 3-4                        [1, 8, 112, 112]          625
+│    └─InvertedResidual: 2-3                       [1, 16, 56, 56]           --
+│    │    └─Sequential: 3-5                        [1, 16, 56, 56]           625
+│    └─InvertedResidual: 2-4                       [1, 16, 56, 56]           --
+│    │    └─Sequential: 3-6                        [1, 16, 56, 56]           1,473
+│    └─InvertedResidual: 2-5                       [1, 24, 28, 28]           --
+│    │    └─Sequential: 3-7                        [1, 24, 28, 28]           1,745
+│    └─InvertedResidual: 2-6                       [1, 24, 28, 28]           --
+│    │    └─Sequential: 3-8                        [1, 24, 28, 28]           2,977
+│    └─InvertedResidual: 2-7                       [1, 32, 14, 14]           --
+│    │    └─Sequential: 3-9                        [1, 32, 14, 14]           6,689
+│    └─InvertedResidual: 2-8                       [1, 32, 14, 14]           --
+│    │    └─Sequential: 3-10                       [1, 32, 14, 14]           9,921
+│    └─InvertedResidual: 2-9                       [1, 32, 14, 14]           --
+│    │    └─Sequential: 3-11                       [1, 32, 14, 14]           9,921
+│    └─InvertedResidual: 2-10                      [1, 64, 14, 14]           --
+│    │    └─Sequential: 3-12                       [1, 64, 14, 14]           7,105
+│    └─InvertedResidual: 2-11                      [1, 64, 14, 14]           --
+│    │    └─Sequential: 3-13                       [1, 64, 14, 14]           18,177
+│    └─ConvBNReLU: 2-12                            [1, 128, 14, 14]          --
+│    │    └─Conv2d: 3-14                           [1, 128, 14, 14]          8,192
+│    │    └─BatchNorm2d: 3-15                      [1, 128, 14, 14]          256
+│    │    └─ReLU6: 3-16                            [1, 128, 14, 14]          --
+├─AdaptiveAvgPool2d: 1-2                           [1, 128, 1, 1]            --
+├─Sequential: 1-3                                  [1, 2]                    --
+│    └─Dropout: 2-13                               [1, 128]                  --
+│    └─Linear: 2-14                                [1, 2]                    258
+====================================================================================================
+Total params: 68,892
+Trainable params: 68,892
+Non-trainable params: 0
+Total mult-adds (M): 41.82
+====================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 32.52
+Params size (MB): 0.28
+Estimated Total Size (MB): 33.39
+====================================================================================================
+
+Torch Model
+ECA_MobileNetV2(
+  (features): Sequential(
+    (0): ConvBNReLU(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU6(inplace=True)
+    )
+    (1): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (2): BatchNorm2d(8, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (2): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(8, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(16, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=16, bias=False)
+          (1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (3): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(16, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (4): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(16, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=32, bias=False)
+          (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(32, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (5): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+          (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(48, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (6): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=96, bias=False)
+          (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(96, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (7): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(32, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(128, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (8): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(32, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(128, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (9): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=64, bias=False)
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (10): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBNReLU(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (1): ConvBNReLU(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU6(inplace=True)
+        )
+        (2): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (3): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (4): eca_layer(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (conv): Conv1d(1, 1, kernel_size=(1,), stride=(1,), bias=False)
+          (sigmoid): Sigmoid()
+        )
+      )
+    )
+    (11): ConvBNReLU(
+      (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU6(inplace=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (classifier): Sequential(
+    (0): Dropout(p=0.25, inplace=False)
+    (1): Linear(in_features=128, out_features=2, bias=True)
+  )
+)
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 14:30:42
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5109   |0.0000   |0.0000   |0.0000   |
+80.93      |39.28     |41.64     |    Fire   |0.6656   |0.4400   |0.0521   |0.0932   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+82.65      |39.85     |42.79     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 82.6490
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5109   |0.0000   |0.0000   |0.0000   |
+75.29      |38.29     |37.01     |    Fire   |0.6703   |0.0000   |0.0000   |0.0000   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+82.49      |39.91     |42.57     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 82.4870
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5156   |1.0000   |0.0096   |0.0190   |
+69.61      |37.68     |31.93     |    Fire   |0.6734   |1.0000   |0.0095   |0.0188   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4896   |0.4896   |1.0000   |0.6573   |
+83.91      |40.10     |43.81     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with best Mean F1: 0.3287
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5672   |0.6636   |0.2332   |0.3452   |
+67.85      |37.35     |30.50     |    Fire   |0.7406   |0.7711   |0.3033   |0.4354   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4896   |0.4896   |1.0000   |0.6573   |
+85.43      |40.31     |45.12     |    Fire   |0.3021   |0.3021   |1.0000   |0.4640   |
+
+Saving model with best Mean F1: 0.5607
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6031   |0.6612   |0.3866   |0.4879   |
+66.52      |37.07     |29.44     |    Fire   |0.7891   |0.7923   |0.4882   |0.6041   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4896   |0.4896   |1.0000   |0.6573   |
+84.70      |40.42     |44.28     |    Fire   |0.4896   |0.3710   |0.9914   |0.5399   |
+
+Saving model with best Mean F1: 0.5986
+Saving last model
+
+***Script finished: 14:31:08
+
+Time elapsed: 0:00:25.569120
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.4895833432674408, 0.4895833432674408], 'Precision': [0.4895833432674408, 0.3709677457809448], 'Recall': [1.0, 0.9913793206214905], 'F1': [0.6573426723480225, 0.5399060845375061]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.7400000095367432, 0.5400000214576721], 'Precision': [0.747474730014801, 0.43209877610206604], 'Recall': [0.9866666793823242, 1.0], 'F1': [0.8505747318267822, 0.6034482717514038]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.7333333492279053, 0.5], 'Precision': [0.7333333492279053, 0.42307692766189575], 'Recall': [1.0, 1.0], 'F1': [0.8461538553237915, 0.5945945978164673]}
