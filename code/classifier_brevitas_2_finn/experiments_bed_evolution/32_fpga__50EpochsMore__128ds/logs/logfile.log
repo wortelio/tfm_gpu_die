@@ -1,0 +1,168 @@
+BED_FPGA.
+	One Head.
+	Weighted for Precision.
+	Dataset images divided by 255.
+
+Training Brevitas Model = False
+
+Datasets Length
+	Train and Val: 128
+
+Load Model: True
+	Model: ./experiments_bed_evolution/31_fpga__full_ds/weights/BED_FPGA_classifier__best_mean_F1.pt
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 2
+
+IMG DIMS:
+	Width: 230
+	Height: 230
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 2
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+********* Datasets Length *********
+Train Dataset Length: 640
+Test Dataset Length: 384
+
+Trainable parameters = 60090
+Total parameters = 60090
+
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+BED_CLASSIFIER_FPGA                      [1, 2]                    --
+├─Sequential: 1-1                        [1, 2]                    --
+│    └─Conv2d: 2-1                       [1, 12, 228, 228]         324
+│    └─BatchNorm2d: 2-2                  [1, 12, 228, 228]         24
+│    └─ReLU: 2-3                         [1, 12, 228, 228]         --
+│    └─MaxPool2d: 2-4                    [1, 12, 114, 114]         --
+│    └─Sequential: 2-5                   [1, 16, 112, 112]         --
+│    │    └─Conv2d: 3-1                  [1, 24, 112, 114]         864
+│    │    └─Conv2d: 3-2                  [1, 16, 112, 112]         1,152
+│    └─BatchNorm2d: 2-6                  [1, 16, 112, 112]         32
+│    └─ReLU: 2-7                         [1, 16, 112, 112]         --
+│    └─MaxPool2d: 2-8                    [1, 16, 56, 56]           --
+│    └─Conv2d: 2-9                       [1, 16, 56, 56]           256
+│    └─BatchNorm2d: 2-10                 [1, 16, 56, 56]           32
+│    └─ReLU: 2-11                        [1, 16, 56, 56]           --
+│    └─Sequential: 2-12                  [1, 32, 54, 54]           --
+│    │    └─Conv2d: 3-3                  [1, 16, 54, 56]           768
+│    │    └─Conv2d: 3-4                  [1, 32, 54, 54]           1,536
+│    └─BatchNorm2d: 2-13                 [1, 32, 54, 54]           64
+│    └─ReLU: 2-14                        [1, 32, 54, 54]           --
+│    └─Conv2d: 2-15                      [1, 32, 54, 54]           1,024
+│    └─BatchNorm2d: 2-16                 [1, 32, 54, 54]           64
+│    └─ReLU: 2-17                        [1, 32, 54, 54]           --
+│    └─Sequential: 2-18                  [1, 64, 52, 52]           --
+│    │    └─Conv2d: 3-5                  [1, 42, 52, 54]           4,032
+│    │    └─Conv2d: 3-6                  [1, 64, 52, 52]           8,064
+│    └─BatchNorm2d: 2-19                 [1, 64, 52, 52]           128
+│    └─ReLU: 2-20                        [1, 64, 52, 52]           --
+│    └─MaxPool2d: 2-21                   [1, 64, 26, 26]           --
+│    └─Conv2d: 2-22                      [1, 30, 26, 26]           1,920
+│    └─BatchNorm2d: 2-23                 [1, 30, 26, 26]           60
+│    └─ReLU: 2-24                        [1, 30, 26, 26]           --
+│    └─Conv2d: 2-25                      [1, 60, 24, 24]           16,200
+│    └─BatchNorm2d: 2-26                 [1, 60, 24, 24]           120
+│    └─ReLU: 2-27                        [1, 60, 24, 24]           --
+│    └─Conv2d: 2-28                      [1, 32, 24, 24]           1,920
+│    └─BatchNorm2d: 2-29                 [1, 32, 24, 24]           64
+│    └─ReLU: 2-30                        [1, 32, 24, 24]           --
+│    └─Sequential: 2-31                  [1, 58, 22, 22]           --
+│    │    └─Conv2d: 3-7                  [1, 42, 22, 24]           4,032
+│    │    └─Conv2d: 3-8                  [1, 58, 22, 22]           7,308
+│    └─BatchNorm2d: 2-32                 [1, 58, 22, 22]           116
+│    └─ReLU: 2-33                        [1, 58, 22, 22]           --
+│    └─Conv2d: 2-34                      [1, 32, 22, 22]           1,856
+│    └─BatchNorm2d: 2-35                 [1, 32, 22, 22]           64
+│    └─ReLU: 2-36                        [1, 32, 22, 22]           --
+│    └─Sequential: 2-37                  [1, 64, 20, 20]           --
+│    │    └─Conv2d: 3-9                  [1, 20, 20, 22]           1,920
+│    │    └─Conv2d: 3-10                 [1, 64, 20, 20]           3,840
+│    └─BatchNorm2d: 2-38                 [1, 64, 20, 20]           128
+│    └─ReLU: 2-39                        [1, 64, 20, 20]           --
+│    └─AdaptiveAvgPool2d: 2-40           [1, 64, 1, 1]             --
+│    └─Flatten: 2-41                     [1, 64]                   --
+│    └─Linear: 2-42                      [1, 32]                   2,048
+│    └─BatchNorm1d: 2-43                 [1, 32]                   64
+│    └─ReLU: 2-44                        [1, 32]                   --
+│    └─Linear: 2-45                      [1, 2]                    66
+==========================================================================================
+Total params: 60,090
+Trainable params: 60,090
+Non-trainable params: 0
+Total mult-adds (M): 106.73
+==========================================================================================
+Input size (MB): 0.63
+Forward/backward pass size (MB): 26.06
+Params size (MB): 0.24
+Estimated Total Size (MB): 26.93
+==========================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Loading checkpoint of model trained 97 epochs.
+Val losses of checkpoint
+{'Total': 14.154399394989014, 'Smoke': 9.11992092927297, 'Fire': 5.034478644529979}
+Val metrics of checkpoint
+{'Accuracy': [0.9322916865348816, 0.9713541865348816], 'Precision': [0.9550561904907227, 0.9411764740943909], 'Recall': [0.9042553305625916, 0.9655172228813171], 'F1': [0.9289617538452148, 0.9531915187835693]}
+Starting script
+
+
+***Start Training: 14:38:35
+
+
+=== EPOCH 0/1 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9547   |0.9581   |0.9489   |0.9535   |
+11.33      |8.39      |2.94      |    Fire   |0.9859   |0.9810   |0.9763   |0.9786   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9297   |0.9548   |0.8989   |0.9260   |
+15.05      |9.50      |5.55      |    Fire   |0.9661   |0.9256   |0.9655   |0.9451   |
+
+Saving model with new best validation loss: 15.0487
+Saving model with best Mean F1: 0.9356
+
+=== EPOCH 1/1 ===
+Learning Rate = 9.223372036854789e-06
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9531   |0.9701   |0.9329   |0.9511   |
+10.78      |6.74      |4.04      |    Fire   |0.9828   |0.9854   |0.9621   |0.9736   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.9349   |0.9553   |0.9096   |0.9319   |
+15.55      |9.71      |5.84      |    Fire   |0.9609   |0.9174   |0.9569   |0.9367   |
+
+Saving last model
+
+***Script finished: 14:38:45
+
+Time elapsed: 0:00:10.007527
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.9296875, 0.9661458134651184], 'Precision': [0.9548022747039795, 0.9256198406219482], 'Recall': [0.8989361524581909, 0.9655172228813171], 'F1': [0.9260274171829224, 0.945147693157196]}

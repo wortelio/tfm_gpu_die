@@ -3,7 +3,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_resnet/' + 'test_v38__w1a1__DEEPER_Resnet_V51__clip1__128ds/'
+RUN_FOLDER = 'experiments_bed_evolution/' + '71_brevitas__230_manual_old_SmallBig__full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -18,6 +18,15 @@ if not os.path.isdir(WEIGHTS_FOLDER):
 ONNX_FOLDER = RUN_FOLDER + 'onnx/'
 if not os.path.isdir(ONNX_FOLDER):
     os.mkdir(ONNX_FOLDER)
+
+AIMET_RUN = False
+if AIMET_RUN == True:
+    PLOTS_FOLDER_2 = RUN_FOLDER + 'plots_2/'
+    if not os.path.isdir(PLOTS_FOLDER_2):
+        os.mkdir(PLOTS_FOLDER_2)
+    WEIGHTS_FOLDER_2 = RUN_FOLDER + 'weights_2/'
+    if not os.path.isdir(WEIGHTS_FOLDER_2):
+        os.mkdir(WEIGHTS_FOLDER_2)
 # ______________________________________________________________________ #
 #                        Classes and Dimensions                          #
 # ______________________________________________________________________ #
@@ -25,9 +34,9 @@ CLASSES = ["smoke", "fire"]
 NUM_CLASSES = len(CLASSES)
 
 #___   Padding Model  ___#
-IMG_DIM = {'W':224, 'H':224} # (W, H)
+# IMG_DIM = {'W':224, 'H':224} # (W, H)
 #___ No Padding Model ___#
-# IMG_DIM = {'W':230, 'H':230} # (W, H)
+IMG_DIM = {'W':230, 'H':230} # (W, H)
 
 IMG_H = IMG_DIM['H']
 IMG_W = IMG_DIM['W']
@@ -52,7 +61,7 @@ FASDD_CV_TRAIN_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/
 FASDD_CV_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/val.txt'
 FASDD_CV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
-DS_LEN = 128
+DS_LEN = None
 
 ### DFire Mini ###
 dfire_mini_dir = '../../datasets/dfire_mini/'
@@ -65,33 +74,41 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 BREVITAS_MODEL = True
-MODEL = "BNN_BED_Resnet_V7"
+MODEL = "BED_FPGA_230"
 
 LEARNING_RATE = 1e-3
-#LEARNING_RATE = 1e-4
+# LEARNING_RATE = 1e-4
 # Optimizer
-#WEIGHT_DECAY = 1e-4
 WEIGHT_DECAY = 1e-3
+# WEIGHT_DECAY = 1e-4
 FACTOR = 0.8
-PATIENCE = 2
+PATIENCE = 3 #2
 THRES = 0.001
 MIN_LR = 1e-6
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 64 
+BATCH_SIZE = 128 
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 5
+EPOCHS = 150
 
 LOAD_MODEL = False
-LOAD_MODEL_DIR = './models/'
-if MODEL == "BED":
-    LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_classifier__fused__dfire_fasdd.pt"
+LOAD_MODEL_DIR = './experiments_bed_evolution/11_downto_28__full_ds/weights/'
+LOAD_MODEL_FILE = LOAD_MODEL_DIR + "BED_Downto_28_classifier__best_mean_F1.pt"
 
 
 LOSS_FN = "BCE"
 SMOKE_PRECISION_WEIGHT = 0.8
+
+# ______________________________________________________________________ #
+#                        AIMET CONFIGURATION                             #
+# ______________________________________________________________________ #
+USE_PREVIOUS_DIC = False
+SVD_DIC_FILE =  './data/greedy_selection_eval_scores_dict.pkl' if USE_PREVIOUS_DIC else None
+PRUNING_DIC_FILE =  './data/greedy_selection_eval_scores_dict.pkl' if USE_PREVIOUS_DIC else None
+SVD_COMPRESSION_RATIO = 0.80
+PRUNING_COMPRESSION_RATIO = 0.90
 
 # ______________________________________________________________________ #
 #                             Quantization                               #
@@ -105,6 +122,6 @@ FIXED_POINT = True
 
 ##### FINN
 WEIGHTS_BIT_WIDTH = 4
-BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2 #4
+BIG_LAYERS_WEIGHTS_BIT_WIDTH = 2
 ACTIVATIONS_BIT_WIDTH = 4
 BIAS_BIT_WIDTH = 4

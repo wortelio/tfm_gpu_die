@@ -101,7 +101,7 @@ def get_train_loader():
     
     return train_loader
 
-def get_val_loader():
+def get_val_loader(val_ds_len=config.DS_LEN):
     val_transform = A.Compose([
         A.Resize(config.IMG_H, config.IMG_W, p=1),
         ToTensorV2(p=1),
@@ -115,7 +115,7 @@ def get_val_loader():
         img_dir = config.DFIRE_TEST_IMG_DIR,
         label_dir = config.DFIRE_TEST_LABEL_DIR,
         num_classes = config.NUM_CLASSES,
-        ds_len = config.DS_LEN,
+        ds_len = val_ds_len,
         transform=val_transform)
     print(f'\nTest dataset len: {len(val_dfire_dataset)}')
     
@@ -126,7 +126,7 @@ def get_val_loader():
         imgs_dir=config.FASDD_UAV_IMGS_DIR, 
         labels_file=config.FASDD_UAV_TEST_LABELS_FILE, 
         num_classes=config.NUM_CLASSES,
-        ds_len=config.DS_LEN,
+        ds_len=val_ds_len,
         transform=val_transform)
     print(f'\nTest FASDD UAV dataset len: {len(val_fasdd_uav_ds)}')
     
@@ -137,7 +137,7 @@ def get_val_loader():
         imgs_dir=config.FASDD_CV_IMGS_DIR, 
         labels_file=config.FASDD_CV_TEST_LABELS_FILE, 
         num_classes=config.NUM_CLASSES,
-        ds_len=config.DS_LEN,
+        ds_len=val_ds_len,
         transform=val_transform)
     print(f'\nTest FASDD CV dataset len: {len(val_fasdd_cv_ds)}')
     

@@ -102,10 +102,14 @@ class ECA_MobileNetV2(nn.Module):
         for t, c, n, s in inverted_residual_setting:
             output_channel = int(c * width_mult)
             for i in range(n):
-                if c < 96:
-                    ksize = 1
-                else:
+                # if c < 96:
+                #     ksize = 1
+                # else:
+                #     ksize = 3
+                if c < 24:
                     ksize = 3
+                else:
+                    ksize = 5
                 stride = s if i == 0 else 1
                 features.append(block(input_channel, output_channel, stride, expand_ratio=t, k_size=ksize))
                 input_channel = output_channel

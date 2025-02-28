@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments/' + 'test_v01_full_ds/'
+RUN_FOLDER = 'experiments/' + 'test_v11_MobileViTv3_v1_full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -57,6 +57,7 @@ FASDD_CV_VAL_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/va
 FASDD_CV_TEST_LABELS_FILE = '../../datasets/fasdd/fasdd_cv/annotations/YOLO_CV/test.txt'
 
 CLOUDS_IMG_DIR = '../../datasets/clouds/images/'
+ADD_CLOUDS = False
 
 DS_LEN = None
 
@@ -71,7 +72,7 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 BREVITAS_MODEL = False
-MODEL = "T2T_ViT"
+MODEL = "MobileViTv3_v1"
 
 LEARNING_RATE = 1e-3
 #LEARNING_RATE = 1e-4
@@ -84,8 +85,8 @@ THRES = 0.001
 MIN_LR = 1e-6
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 32 
-NUM_WORKERS = 4
+BATCH_SIZE = 64 
+NUM_WORKERS = 8
 PIN_MEMORY = True
 
 EPOCHS = 100

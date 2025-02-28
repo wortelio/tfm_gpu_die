@@ -1,0 +1,428 @@
+MY_MBLNET_V3 Classifier.
+	One Head.
+	Weighted for Precision.
+	Dataset images divided by 255.
+
+
+Datasets Length
+	Train and Val: 128
+	Add Clouds: False
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 5
+
+IMG DIMS:
+	Width: 224
+	Height: 224
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+********* Datasets Length *********
+Train Dataset Length: 640
+Test Dataset Length: 384
+
+Trainable parameters = 76858
+Total parameters = 76858
+
+
+Torch Summary
+====================================================================================================
+Layer (type:depth-idx)                             Output Shape              Param #
+====================================================================================================
+MobileNetV3_Small                                  [1, 2]                    --
+├─Conv2d: 1-1                                      [1, 16, 112, 112]         432
+├─BatchNorm2d: 1-2                                 [1, 16, 112, 112]         32
+├─Hardswish: 1-3                                   [1, 16, 112, 112]         --
+├─Sequential: 1-4                                  [1, 48, 14, 14]           --
+│    └─Block: 2-1                                  [1, 16, 56, 56]           --
+│    │    └─Conv2d: 3-1                            [1, 16, 112, 112]         256
+│    │    └─BatchNorm2d: 3-2                       [1, 16, 112, 112]         32
+│    │    └─ReLU: 3-3                              [1, 16, 112, 112]         --
+│    │    └─Conv2d: 3-4                            [1, 16, 56, 56]           144
+│    │    └─BatchNorm2d: 3-5                       [1, 16, 56, 56]           32
+│    │    └─ReLU: 3-6                              [1, 16, 56, 56]           --
+│    │    └─SeModule: 3-7                          [1, 16, 56, 56]           272
+│    │    └─Conv2d: 3-8                            [1, 16, 56, 56]           256
+│    │    └─BatchNorm2d: 3-9                       [1, 16, 56, 56]           32
+│    │    └─Sequential: 3-10                       [1, 16, 56, 56]           176
+│    │    └─ReLU: 3-11                             [1, 16, 56, 56]           --
+│    └─Block: 2-2                                  [1, 24, 28, 28]           --
+│    │    └─Conv2d: 3-12                           [1, 32, 56, 56]           512
+│    │    └─BatchNorm2d: 3-13                      [1, 32, 56, 56]           64
+│    │    └─ReLU: 3-14                             [1, 32, 56, 56]           --
+│    │    └─Conv2d: 3-15                           [1, 32, 28, 28]           288
+│    │    └─BatchNorm2d: 3-16                      [1, 32, 28, 28]           64
+│    │    └─ReLU: 3-17                             [1, 32, 28, 28]           --
+│    │    └─Identity: 3-18                         [1, 32, 28, 28]           --
+│    │    └─Conv2d: 3-19                           [1, 24, 28, 28]           768
+│    │    └─BatchNorm2d: 3-20                      [1, 24, 28, 28]           48
+│    │    └─Sequential: 3-21                       [1, 24, 28, 28]           632
+│    │    └─ReLU: 3-22                             [1, 24, 28, 28]           --
+│    └─Block: 2-3                                  [1, 24, 28, 28]           --
+│    │    └─Conv2d: 3-23                           [1, 48, 28, 28]           1,152
+│    │    └─BatchNorm2d: 3-24                      [1, 48, 28, 28]           96
+│    │    └─ReLU: 3-25                             [1, 48, 28, 28]           --
+│    │    └─Conv2d: 3-26                           [1, 48, 28, 28]           432
+│    │    └─BatchNorm2d: 3-27                      [1, 48, 28, 28]           96
+│    │    └─ReLU: 3-28                             [1, 48, 28, 28]           --
+│    │    └─Identity: 3-29                         [1, 48, 28, 28]           --
+│    │    └─Conv2d: 3-30                           [1, 24, 28, 28]           1,152
+│    │    └─BatchNorm2d: 3-31                      [1, 24, 28, 28]           48
+│    │    └─ReLU: 3-32                             [1, 24, 28, 28]           --
+│    └─Block: 2-4                                  [1, 32, 14, 14]           --
+│    │    └─Conv2d: 3-33                           [1, 64, 28, 28]           1,536
+│    │    └─BatchNorm2d: 3-34                      [1, 64, 28, 28]           128
+│    │    └─Hardswish: 3-35                        [1, 64, 28, 28]           --
+│    │    └─Conv2d: 3-36                           [1, 64, 14, 14]           1,600
+│    │    └─BatchNorm2d: 3-37                      [1, 64, 14, 14]           128
+│    │    └─Hardswish: 3-38                        [1, 64, 14, 14]           --
+│    │    └─SeModule: 3-39                         [1, 64, 14, 14]           1,040
+│    │    └─Conv2d: 3-40                           [1, 32, 14, 14]           2,048
+│    │    └─BatchNorm2d: 3-41                      [1, 32, 14, 14]           64
+│    │    └─Sequential: 3-42                       [1, 32, 14, 14]           1,128
+│    │    └─Hardswish: 3-43                        [1, 32, 14, 14]           --
+│    └─Block: 2-5                                  [1, 32, 14, 14]           --
+│    │    └─Conv2d: 3-44                           [1, 128, 14, 14]          4,096
+│    │    └─BatchNorm2d: 3-45                      [1, 128, 14, 14]          256
+│    │    └─Hardswish: 3-46                        [1, 128, 14, 14]          --
+│    │    └─Conv2d: 3-47                           [1, 128, 14, 14]          3,200
+│    │    └─BatchNorm2d: 3-48                      [1, 128, 14, 14]          256
+│    │    └─Hardswish: 3-49                        [1, 128, 14, 14]          --
+│    │    └─SeModule: 3-50                         [1, 128, 14, 14]          4,128
+│    │    └─Conv2d: 3-51                           [1, 32, 14, 14]           4,096
+│    │    └─BatchNorm2d: 3-52                      [1, 32, 14, 14]           64
+│    │    └─Hardswish: 3-53                        [1, 32, 14, 14]           --
+│    └─Block: 2-6                                  [1, 40, 14, 14]           --
+│    │    └─Conv2d: 3-54                           [1, 128, 14, 14]          4,096
+│    │    └─BatchNorm2d: 3-55                      [1, 128, 14, 14]          256
+│    │    └─Hardswish: 3-56                        [1, 128, 14, 14]          --
+│    │    └─Conv2d: 3-57                           [1, 128, 14, 14]          3,200
+│    │    └─BatchNorm2d: 3-58                      [1, 128, 14, 14]          256
+│    │    └─Hardswish: 3-59                        [1, 128, 14, 14]          --
+│    │    └─SeModule: 3-60                         [1, 128, 14, 14]          4,128
+│    │    └─Conv2d: 3-61                           [1, 40, 14, 14]           5,120
+│    │    └─BatchNorm2d: 3-62                      [1, 40, 14, 14]           80
+│    │    └─Sequential: 3-63                       [1, 40, 14, 14]           1,360
+│    │    └─Hardswish: 3-64                        [1, 40, 14, 14]           --
+│    └─Block: 2-7                                  [1, 48, 14, 14]           --
+│    │    └─Conv2d: 3-65                           [1, 96, 14, 14]           3,840
+│    │    └─BatchNorm2d: 3-66                      [1, 96, 14, 14]           192
+│    │    └─Hardswish: 3-67                        [1, 96, 14, 14]           --
+│    │    └─Conv2d: 3-68                           [1, 96, 14, 14]           2,400
+│    │    └─BatchNorm2d: 3-69                      [1, 96, 14, 14]           192
+│    │    └─Hardswish: 3-70                        [1, 96, 14, 14]           --
+│    │    └─SeModule: 3-71                         [1, 96, 14, 14]           2,328
+│    │    └─Conv2d: 3-72                           [1, 48, 14, 14]           4,608
+│    │    └─BatchNorm2d: 3-73                      [1, 48, 14, 14]           96
+│    │    └─Sequential: 3-74                       [1, 48, 14, 14]           2,016
+│    │    └─Hardswish: 3-75                        [1, 48, 14, 14]           --
+├─Conv2d: 1-5                                      [1, 64, 14, 14]           3,072
+├─BatchNorm2d: 1-6                                 [1, 64, 14, 14]           128
+├─Hardswish: 1-7                                   [1, 64, 14, 14]           --
+├─AdaptiveAvgPool2d: 1-8                           [1, 64, 1, 1]             --
+├─Linear: 1-9                                      [1, 128]                  8,192
+├─BatchNorm1d: 1-10                                [1, 128]                  256
+├─Hardswish: 1-11                                  [1, 128]                  --
+├─Dropout: 1-12                                    [1, 128]                  --
+├─Linear: 1-13                                     [1, 2]                    258
+====================================================================================================
+Total params: 76,858
+Trainable params: 76,858
+Non-trainable params: 0
+Total mult-adds (M): 25.51
+====================================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 17.49
+Params size (MB): 0.31
+Estimated Total Size (MB): 18.40
+====================================================================================================
+
+Torch Model
+MobileNetV3_Small(
+  (conv1): Conv2d(3, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+  (bn1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (hs1): Hardswish()
+  (bneck): Sequential(
+    (0): Block(
+      (conv1): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ReLU(inplace=True)
+      (conv2): Conv2d(16, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=16, bias=False)
+      (bn2): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+      (se): SeModule(
+        (se): Sequential(
+          (0): AdaptiveAvgPool2d(output_size=1)
+          (1): Conv2d(16, 8, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): BatchNorm2d(8, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Conv2d(8, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (5): Hardsigmoid()
+        )
+      )
+      (conv3): Conv2d(16, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): ReLU(inplace=True)
+      (skip): Sequential(
+        (0): Conv2d(16, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=16, bias=False)
+        (1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Block(
+      (conv1): Conv2d(16, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ReLU(inplace=True)
+      (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=32, bias=False)
+      (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+      (se): Identity()
+      (conv3): Conv2d(32, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): ReLU(inplace=True)
+      (skip): Sequential(
+        (0): Conv2d(16, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=16, bias=False)
+        (1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): Conv2d(16, 24, kernel_size=(1, 1), stride=(1, 1))
+        (3): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (2): Block(
+      (conv1): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ReLU(inplace=True)
+      (conv2): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+      (bn2): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+      (se): Identity()
+      (conv3): Conv2d(48, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): ReLU(inplace=True)
+    )
+    (3): Block(
+      (conv1): Conv2d(24, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): Hardswish()
+      (conv2): Conv2d(64, 64, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), groups=64, bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): Hardswish()
+      (se): SeModule(
+        (se): Sequential(
+          (0): AdaptiveAvgPool2d(output_size=1)
+          (1): Conv2d(64, 8, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): BatchNorm2d(8, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Conv2d(8, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (5): Hardsigmoid()
+        )
+      )
+      (conv3): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): Hardswish()
+      (skip): Sequential(
+        (0): Conv2d(24, 24, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=24, bias=False)
+        (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): Conv2d(24, 32, kernel_size=(1, 1), stride=(1, 1))
+        (3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (4): Block(
+      (conv1): Conv2d(32, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): Hardswish()
+      (conv2): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): Hardswish()
+      (se): SeModule(
+        (se): Sequential(
+          (0): AdaptiveAvgPool2d(output_size=1)
+          (1): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (5): Hardsigmoid()
+        )
+      )
+      (conv3): Conv2d(128, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): Hardswish()
+    )
+    (5): Block(
+      (conv1): Conv2d(32, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): Hardswish()
+      (conv2): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): Hardswish()
+      (se): SeModule(
+        (se): Sequential(
+          (0): AdaptiveAvgPool2d(output_size=1)
+          (1): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (5): Hardsigmoid()
+        )
+      )
+      (conv3): Conv2d(128, 40, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): Hardswish()
+      (skip): Sequential(
+        (0): Conv2d(32, 40, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (6): Block(
+      (conv1): Conv2d(40, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): Hardswish()
+      (conv2): Conv2d(96, 96, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=96, bias=False)
+      (bn2): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): Hardswish()
+      (se): SeModule(
+        (se): Sequential(
+          (0): AdaptiveAvgPool2d(output_size=1)
+          (1): Conv2d(96, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): BatchNorm2d(12, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Conv2d(12, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (5): Hardsigmoid()
+        )
+      )
+      (conv3): Conv2d(96, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act3): Hardswish()
+      (skip): Sequential(
+        (0): Conv2d(40, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv2): Conv2d(48, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (hs2): Hardswish()
+  (gap): AdaptiveAvgPool2d(output_size=1)
+  (linear3): Linear(in_features=64, out_features=128, bias=False)
+  (bn3): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (hs3): Hardswish()
+  (drop): Dropout(p=0.2, inplace=False)
+  (linear4): Linear(in_features=128, out_features=2, bias=True)
+)
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 19:39:05
+
+
+=== EPOCH 0/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5297   |0.5242   |0.4153   |0.4635   |
+81.97      |39.60     |42.38     |    Fire   |0.7312   |0.6226   |0.4692   |0.5351   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+84.13      |39.99     |44.14     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 84.1292
+
+=== EPOCH 1/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6078   |0.6020   |0.5847   |0.5932   |
+74.07      |37.84     |36.22     |    Fire   |0.7375   |0.5776   |0.7583   |0.6557   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+83.18      |39.94     |43.24     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 83.1793
+
+=== EPOCH 2/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5844   |0.5825   |0.5304   |0.5552   |
+67.91      |37.27     |30.64     |    Fire   |0.8016   |0.6628   |0.8104   |0.7292   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4870   |0.4882   |0.9894   |0.6538   |
+82.26      |40.15     |42.11     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 82.2559
+Saving model with best Mean F1: 0.3269
+
+=== EPOCH 3/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6203   |0.6151   |0.5974   |0.6062   |
+62.96      |35.87     |27.08     |    Fire   |0.8109   |0.6744   |0.8246   |0.7420   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5078   |0.4984   |0.8351   |0.6243   |
+76.58      |40.23     |36.34     |    Fire   |0.7891   |0.8302   |0.3793   |0.5207   |
+
+Saving model with new best validation loss: 76.5756
+Saving model with best Mean F1: 0.5725
+
+=== EPOCH 4/4 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6687   |0.6656   |0.6486   |0.6570   |
+59.65      |34.31     |25.34     |    Fire   |0.8344   |0.7160   |0.8246   |0.7665   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5625   |0.5316   |0.8936   |0.6667   |
+68.50      |39.51     |28.99     |    Fire   |0.8047   |0.7204   |0.5776   |0.6411   |
+
+Saving model with new best validation loss: 68.4959
+Saving model with best Mean F1: 0.6539
+Saving last model
+
+***Script finished: 19:39:31
+
+Time elapsed: 0:00:25.444940
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.5625, 0.8046875], 'Precision': [0.5316455960273743, 0.7204301357269287], 'Recall': [0.8936170339584351, 0.5775862336158752], 'F1': [0.6666666865348816, 0.6411483287811279]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.7099999785423279, 0.7900000214576721], 'Precision': [0.7674418687820435, 0.8500000238418579], 'Recall': [0.8799999952316284, 0.48571428656578064], 'F1': [0.8198757767677307, 0.6181818246841431]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.699999988079071, 0.7666666507720947], 'Precision': [0.7241379022598267, 0.75], 'Recall': [0.9545454382896423, 0.5454545617103577], 'F1': [0.8235294222831726, 0.6315789222717285]}

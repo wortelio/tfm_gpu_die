@@ -13,6 +13,7 @@ class CommonIntWeightPerTensorQuant(Int8WeightPerTensorFloat):
     specified by each layer.
     """
     scaling_min_val = 2e-16
+    # scaling_min_val = 2e-5
     bit_width = None
 
 
@@ -30,9 +31,10 @@ class CommonIntActQuant(Int8ActPerTensorFloat):
     each layer.
     """
     scaling_min_val = 2e-16
+    # scaling_min_val = 2e-5
     bit_width = None
     restrict_scaling_type = RestrictValueType.LOG_FP
-
+    # restrict_scaling_type = RestrictValueType.FP
 
 class CommonUintActQuant(Uint8ActPerTensorFloat):
     """
@@ -40,5 +42,7 @@ class CommonUintActQuant(Uint8ActPerTensorFloat):
     each layer.
     """
     scaling_min_val = 2e-16
+    # scaling_min_val = 2e-5
     bit_width = None
     restrict_scaling_type = RestrictValueType.LOG_FP
+    # restrict_scaling_type = RestrictValueType.FP

@@ -11,7 +11,7 @@ def eval_fn(loader, model, device):
         x, y = x.to(device), y.to(device)
         out = model(x)   
 
-        print(f'Label {y} - Pred {out}')
+        #print(f'Label {y} - Pred {out}')
         yhat = torch.sigmoid(out.detach())
         metrics.precision_metric_cpu.update(yhat, y)
         metrics.recall_metric_cpu.update(yhat, y)

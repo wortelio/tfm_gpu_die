@@ -16,15 +16,16 @@ class eca_layer(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
+        
         # feature descriptor on the global spatial information
         y = self.avg_pool(x)
-
+      
         # Two different branches of ECA module
         y = self.conv(y.squeeze(-1).transpose(-1, -2)).transpose(-1, -2).unsqueeze(-1)
 
         # Multi-scale information fusion
         y = self.sigmoid(y)
 
-        # return x * y.expand_as(x)
-        return x * y
+        return x * y.expand_as(x)
+        #return x * y
         

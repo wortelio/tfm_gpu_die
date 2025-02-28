@@ -38,30 +38,61 @@ def _make_divisible(v, divisor, min_value=None):
     return new_v
 
 
+###################################################################################################
+# This module changes depending on WMUL
+# If it is 1.0, the first conv does not feed a resnet
+# If it is 0.1, the first conv feeds a resnet and it has to return the quantizer to share the scale
+
+################ WMUL 1
 def conv_3x3_bn(inp, oup, stride, weight_bit_width, act_bit_width):
     # return nn.Sequential(
     #     nn.Conv2d(inp, oup, 3, stride, 1, bias=False),
     #     nn.BatchNorm2d(oup),
     #     nn.ReLU()
     # )
-    relu_out = QuantReLU(
-                act_quant=CommonUintActQuant,
-                bit_width=act_bit_width) 
-    return (
-        nn.Sequential(
-            QuantConv2d(
-                in_channels=inp,
-                out_channels=oup,
-                kernel_size=3,
-                stride=stride,
-                padding=1,
-                bias=False,
-                weight_quant=CommonIntWeightPerChannelQuant,
-                weight_bit_width=weight_bit_width),
-            nn.BatchNorm2d(oup),
-            relu_out,
-        ),
-        relu_out)
+    return nn.Sequential(
+        QuantConv2d(
+            in_channels=inp,
+            out_channels=oup,
+            kernel_size=3,
+            stride=stride,
+            padding=1,
+            bias=False,
+            weight_quant=CommonIntWeightPerChannelQuant,
+            weight_bit_width=weight_bit_width),
+        nn.BatchNorm2d(oup),
+        QuantReLU(
+            act_quant=CommonUintActQuant,
+            bit_width=act_bit_width),
+    )
+
+################ WMUL 0.1
+# def conv_3x3_bn(inp, oup, stride, weight_bit_width, act_bit_width):
+#     # return nn.Sequential(
+#     #     nn.Conv2d(inp, oup, 3, stride, 1, bias=False),
+#     #     nn.BatchNorm2d(oup),
+#     #     nn.ReLU()
+#     # )
+
+#     # This relu must be returned to share the quantizer, as a resnet connection is used from the beginning
+#     relu_out = QuantReLU(
+#                 act_quant=CommonUintActQuant,
+#                 bit_width=act_bit_width) 
+#     return (
+#         nn.Sequential(
+#             QuantConv2d(
+#                 in_channels=inp,
+#                 out_channels=oup,
+#                 kernel_size=3,
+#                 stride=stride,
+#                 padding=1,
+#                 bias=False,
+#                 weight_quant=CommonIntWeightPerChannelQuant,
+#                 weight_bit_width=weight_bit_width),
+#             nn.BatchNorm2d(oup),
+#             relu_out,
+#         ),
+#         relu_out)
         
             
         
@@ -100,7 +131,7 @@ class InvertedBlock(nn.Module):
         self.identity = stride == 1 and inp == oup
         if self.identity:
             self.pw_linear_quant = shared_quant.act_quant
-            # AddNode quantizer only needed if block is a Resnet one
+            # Add quantizer only needed if block is a Resnet one
             self.quant_identity_out = QuantIdentity(
                 act_quant=CommonIntActQuant,
                 bit_width=act_bit_width)
@@ -144,8 +175,7 @@ class InvertedBlock(nn.Module):
                     weight_quant=CommonIntWeightPerChannelQuant,
                     weight_bit_width=weight_bit_width),
                 nn.BatchNorm2d(oup),
-                #QuantIdentity( # Removed to use ReLU width_mult=0.1, as shared_quant is the one from first 3x3 conv, which is ReLU
-                QuantReLU(
+                QuantIdentity(
                     act_quant=self.pw_linear_quant,
                     bit_width=act_bit_width),
                 )
@@ -209,6 +239,8 @@ class InvertedBlock(nn.Module):
                     bit_width=act_bit_width),
                 )
 
+        
+
     def forward(self, x):
         if self.identity:
             x = x + self.conv(x)
@@ -260,13 +292,11 @@ class MobileNetV2_ORI_RESNET(nn.Module):
         
         # building first layer
         input_channel = _make_divisible(32 * width_mult, 4 if width_mult == 0.1 else 8)
-        initial_layer, shared_quant = conv_3x3_bn(3, input_channel, 2, weight_bit_width, act_bit_width)
-        #layers.append(conv_3x3_bn(3, input_channel, 2, weight_bit_width, act_bit_width))
-        layers.append(initial_layer)
+        layers.append(conv_3x3_bn(3, input_channel, 2, weight_bit_width, act_bit_width))
         
         # building inverted residual blocks
         block = InvertedBlock
-        #shared_quant = None # Removed due to resnet in second layer with width_mult = 0.1
+        shared_quant = None # Removed due to resnet in second layer with width_mult = 0.1
         for t, c, n, s in self.cfgs:
             output_channel = _make_divisible(c * width_mult, 4 if width_mult == 0.1 else 8)
             for i in range(n):

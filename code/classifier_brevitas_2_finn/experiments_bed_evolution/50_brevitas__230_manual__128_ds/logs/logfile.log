@@ -1,0 +1,324 @@
+BED Classifier.
+	One Head.
+	Weighted for Precision.
+	Brevitas Default.
+	Dataset images divided by 255.
+
+Training Brevitas Model = True
+
+Datasets Length
+	Train and Val: 128
+
+Load Model: False
+
+Device: cuda
+Optimizer:
+	Learning Rate: 0.001
+	Weight Decay: 0.001
+Scheduler:
+	Scheduler factor: 0.8
+	Scheduler patience: 2
+	Scheduler threshold: 0.001
+	Scheduler min learning rate: 1e-06
+
+Batch Size: 64
+Num Workers: 8
+Pin Memory: True
+Epochs: 3
+
+IMG DIMS:
+	Width: 230
+	Height: 230
+
+Brevitas Config:
+	Fixed Point: True
+	Weights Bit Width: 4
+	Big Layers Weights Bit Width: 4
+	Bias Bit Width: 4
+	Activations Bit Width: 4
+
+Trainable parameters = 59642
+Total parameters = 59642
+
+=============================================================================================================================
+Layer (type:depth-idx)                                                      Output Shape              Param #
+=============================================================================================================================
+BED_AIMET_FPGA_MANUAL                                                       [1, 2]                    --
+├─Sequential: 1-1                                                           [1, 64, 20, 20]           56,949
+│    └─QuantIdentity: 2-1                                                   [1, 3, 230, 230]          --
+│    │    └─ActQuantProxyFromInjector: 3-1                                  [1, 3, 230, 230]          --
+│    │    └─ActQuantProxyFromInjector: 3-2                                  [1, 3, 230, 230]          1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─QuantIdentity: 2-3                                                   --                        (recursive)
+│    │    └─ActQuantProxyFromInjector: 3-4                                  --                        (recursive)
+│    └─Sequential: 2-4                                                      [1, 12, 228, 228]         --
+│    │    └─QuantConv2d: 3-5                                                [1, 12, 228, 228]         324
+│    │    └─BatchNorm2d: 3-6                                                [1, 12, 228, 228]         24
+│    │    └─QuantReLU: 3-7                                                  [1, 12, 228, 228]         1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-6                                                      --                        (recursive)
+│    │    └─QuantReLU: 3-9                                                  --                        (recursive)
+│    └─MaxPool2d: 2-7                                                       [1, 12, 114, 114]         --
+│    └─Sequential: 2-8                                                      [1, 16, 112, 112]         993
+│    │    └─QuantConv2d: 3-10                                               [1, 20, 112, 114]         720
+│    │    └─BatchNorm2d: 3-11                                               [1, 20, 112, 114]         40
+│    │    └─QuantIdentity: 3-12                                             [1, 20, 112, 114]         1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-12                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-14                                             --                        (recursive)
+│    │    └─QuantConv2d: 3-15                                               [1, 16, 112, 112]         960
+│    │    └─BatchNorm2d: 3-16                                               [1, 16, 112, 112]         32
+│    │    └─QuantReLU: 3-17                                                 [1, 16, 112, 112]         1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-12                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-19                                                 --                        (recursive)
+│    └─MaxPool2d: 2-13                                                      [1, 16, 56, 56]           --
+│    └─Sequential: 2-14                                                     [1, 16, 56, 56]           --
+│    │    └─QuantConv2d: 3-20                                               [1, 16, 56, 56]           256
+│    │    └─BatchNorm2d: 3-21                                               [1, 16, 56, 56]           32
+│    │    └─QuantReLU: 3-22                                                 [1, 16, 56, 56]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-16                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-24                                                 --                        (recursive)
+│    └─Sequential: 2-17                                                     [1, 32, 54, 54]           1,985
+│    │    └─QuantConv2d: 3-25                                               [1, 20, 54, 56]           960
+│    │    └─BatchNorm2d: 3-26                                               [1, 20, 54, 56]           40
+│    │    └─QuantIdentity: 3-27                                             [1, 20, 54, 56]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-21                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-29                                             --                        (recursive)
+│    │    └─QuantConv2d: 3-30                                               [1, 32, 54, 54]           1,920
+│    │    └─BatchNorm2d: 3-31                                               [1, 32, 54, 54]           64
+│    │    └─QuantReLU: 3-32                                                 [1, 32, 54, 54]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-21                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-34                                                 --                        (recursive)
+│    └─Sequential: 2-22                                                     [1, 32, 54, 54]           --
+│    │    └─QuantConv2d: 3-35                                               [1, 32, 54, 54]           1,024
+│    │    └─BatchNorm2d: 3-36                                               [1, 32, 54, 54]           64
+│    │    └─QuantReLU: 3-37                                                 [1, 32, 54, 54]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-24                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-39                                                 --                        (recursive)
+│    └─Sequential: 2-25                                                     [1, 64, 52, 52]           7,809
+│    │    └─QuantConv2d: 3-40                                               [1, 40, 52, 54]           3,840
+│    │    └─BatchNorm2d: 3-41                                               [1, 40, 52, 54]           80
+│    │    └─QuantIdentity: 3-42                                             [1, 40, 52, 54]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-29                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-44                                             --                        (recursive)
+│    │    └─QuantConv2d: 3-45                                               [1, 64, 52, 52]           7,680
+│    │    └─BatchNorm2d: 3-46                                               [1, 64, 52, 52]           128
+│    │    └─QuantReLU: 3-47                                                 [1, 64, 52, 52]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-29                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-49                                                 --                        (recursive)
+│    └─MaxPool2d: 2-30                                                      [1, 64, 26, 26]           --
+│    └─Sequential: 2-31                                                     [1, 32, 26, 26]           --
+│    │    └─QuantConv2d: 3-50                                               [1, 32, 26, 26]           2,048
+│    │    └─BatchNorm2d: 3-51                                               [1, 32, 26, 26]           64
+│    │    └─QuantReLU: 3-52                                                 [1, 32, 26, 26]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-33                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-54                                                 --                        (recursive)
+│    └─Sequential: 2-34                                                     [1, 56, 24, 24]           --
+│    │    └─QuantConv2d: 3-55                                               [1, 56, 24, 24]           16,128
+│    │    └─BatchNorm2d: 3-56                                               [1, 56, 24, 24]           112
+│    │    └─QuantReLU: 3-57                                                 [1, 56, 24, 24]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-36                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-59                                                 --                        (recursive)
+│    └─Sequential: 2-37                                                     [1, 32, 24, 24]           --
+│    │    └─QuantConv2d: 3-60                                               [1, 32, 24, 24]           1,792
+│    │    └─BatchNorm2d: 3-61                                               [1, 32, 24, 24]           64
+│    │    └─QuantReLU: 3-62                                                 [1, 32, 24, 24]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-39                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-64                                                 --                        (recursive)
+│    └─Sequential: 2-40                                                     [1, 56, 22, 22]           6,833
+│    │    └─QuantConv2d: 3-65                                               [1, 40, 22, 24]           3,840
+│    │    └─BatchNorm2d: 3-66                                               [1, 40, 22, 24]           80
+│    │    └─QuantIdentity: 3-67                                             [1, 40, 22, 24]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-44                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-69                                             --                        (recursive)
+│    │    └─QuantConv2d: 3-70                                               [1, 56, 22, 22]           6,720
+│    │    └─BatchNorm2d: 3-71                                               [1, 56, 22, 22]           112
+│    │    └─QuantReLU: 3-72                                                 [1, 56, 22, 22]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-44                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-74                                                 --                        (recursive)
+│    └─Sequential: 2-45                                                     [1, 32, 22, 22]           --
+│    │    └─QuantConv2d: 3-75                                               [1, 32, 22, 22]           1,792
+│    │    └─BatchNorm2d: 3-76                                               [1, 32, 22, 22]           64
+│    │    └─QuantReLU: 3-77                                                 [1, 32, 22, 22]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-47                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-79                                                 --                        (recursive)
+│    └─Sequential: 2-48                                                     [1, 64, 20, 20]           3,969
+│    │    └─QuantConv2d: 3-80                                               [1, 20, 20, 22]           1,920
+│    │    └─BatchNorm2d: 3-81                                               [1, 20, 20, 22]           40
+│    │    └─QuantIdentity: 3-82                                             [1, 20, 20, 22]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-52                                                     --                        (recursive)
+│    │    └─QuantIdentity: 3-84                                             --                        (recursive)
+│    │    └─QuantConv2d: 3-85                                               [1, 64, 20, 20]           3,840
+│    │    └─BatchNorm2d: 3-86                                               [1, 64, 20, 20]           128
+│    │    └─QuantReLU: 3-87                                                 [1, 64, 20, 20]           1
+├─Sequential: 1-36                                                          --                        (recursive)
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+├─Sequential: 1-37                                                          --                        (recursive)
+│    └─Sequential: 2-52                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-89                                                 --                        (recursive)
+├─TruncAvgPool2d: 1-38                                                      [1, 64, 1, 1]             --
+│    └─TruncQuantProxyFromInjector: 2-53                                    [1, 64, 1, 1]             --
+│    │    └─TruncIntQuant: 3-90                                             [1, 64, 1, 1]             --
+├─Sequential: 1-39                                                          [1, 2]                    --
+│    └─Sequential: 2-54                                                     [1, 32]                   --
+│    │    └─QuantLinear: 3-91                                               [1, 32]                   2,048
+│    │    └─BatchNorm1d: 3-92                                               [1, 32]                   64
+│    │    └─QuantReLU: 3-93                                                 [1, 32]                   1
+│    └─Sequential: 2-55                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-94                                                 --                        (recursive)
+│    └─Sequential: 2-56                                                     --                        (recursive)
+│    │    └─QuantReLU: 3-95                                                 --                        (recursive)
+│    └─Sequential: 2-57                                                     [1, 16]                   --
+│    │    └─QuantLinear: 3-96                                               [1, 16]                   512
+│    │    └─BatchNorm1d: 3-97                                               [1, 16]                   32
+│    │    └─QuantReLU: 3-98                                                 [1, 16]                   1
+│    └─QuantLinear: 2-58                                                    [1, 2]                    --
+│    │    └─ActQuantProxyFromInjector: 3-99                                 [1, 16]                   --
+│    │    └─WeightQuantProxyFromInjector: 3-100                             [2, 16]                   32
+│    │    └─ActQuantProxyFromInjector: 3-101                                [1, 2]                    --
+│    └─TensorNorm: 2-59                                                     [1, 2]                    2
+=============================================================================================================================
+Total params: 138,180
+Trainable params: 138,180
+Non-trainable params: 0
+Total mult-adds (M): 0.00
+=============================================================================================================================
+Input size (MB): 0.63
+Forward/backward pass size (MB): 14.66
+Params size (MB): 0.01
+Estimated Total Size (MB): 15.30
+=============================================================================================================================
+
+Loss Function: BCE
+Smoke Precision Weight: 0.8
+Starting script
+
+
+***Start Training: 16:55:35
+
+
+=== EPOCH 0/2 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5406   |0.5543   |0.3099   |0.3975   |
+80.22      |39.97     |40.25     |    Fire   |0.7203   |0.5556   |0.7583   |0.6413   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5104   |0.0000   |0.0000   |0.0000   |
+82.10      |39.60     |42.50     |    Fire   |0.6979   |0.0000   |0.0000   |0.0000   |
+
+Saving model with new best validation loss: 82.0984
+
+=== EPOCH 1/2 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6219   |0.6821   |0.4249   |0.5236   |
+71.33      |36.81     |34.52     |    Fire   |0.7766   |0.6259   |0.8009   |0.7027   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.5000   |0.4894   |0.4894   |0.4894   |
+84.03      |39.95     |44.08     |    Fire   |0.5000   |0.2397   |0.3017   |0.2672   |
+
+Saving model with best Mean F1: 0.3783
+
+=== EPOCH 2/2 ===
+Learning Rate = 0.001
+
+TRAIN Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.6750   |0.7273   |0.5367   |0.6176   |
+68.03      |36.12     |31.91     |    Fire   |0.7828   |0.6440   |0.7630   |0.6985   |
+
+VAL Stats
+Total Loss |Smoke Loss|Fire Loss |    _______|Accuracy |Precision|Recall   |F1       |
+-----------|----------|----------|    Smoke  |0.4870   |0.4875   |0.9362   |0.6412   |
+78.36      |41.61     |36.75     |    Fire   |0.7396   |0.5588   |0.6552   |0.6032   |
+
+Saving model with new best validation loss: 78.3597
+Saving model with best Mean F1: 0.6222
+Saving last model
+
+***Script finished: 16:56:08
+
+Time elapsed: 0:00:32.880607
+
+Testing with FULL TEST LOADER
+{'Accuracy': [0.4869791567325592, 0.7395833134651184], 'Precision': [0.48753461241722107, 0.5588235259056091], 'Recall': [0.936170220375061, 0.6551724076271057], 'F1': [0.6411657333374023, 0.60317462682724]}
+
+Testing with DFire MINI TRAIN after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.7200000286102295, 0.7799999713897705], 'Precision': [0.7526881694793701, 0.7241379022598267], 'Recall': [0.9333333373069763, 0.6000000238418579], 'F1': [0.8333333134651184, 0.65625]}
+
+Testing with DFire MINI TEST after LOADING F1 Best Mean CHECKPOINT
+{'Accuracy': [0.699999988079071, 0.699999988079071], 'Precision': [0.7241379022598267, 0.5833333134651184], 'Recall': [0.9545454382896423, 0.6363636255264282], 'F1': [0.8235294222831726, 0.6086956262588501]}

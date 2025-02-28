@@ -4,7 +4,7 @@ import torch
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-RUN_FOLDER = 'experiments_brevitas/' + 'test_v052_mini_resnet_70k_CLOUDS_full_ds_50EpochsMore/'
+RUN_FOLDER = 'experiments_brevitas/' + 'test_v23_mini_resnet_70k_112_full_ds/'
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
 LOGS_FOLDER = RUN_FOLDER + 'logs/'
@@ -71,13 +71,15 @@ DFIRE_MINI_TEST_LABEL_DIR = dfire_mini_dir + 'test/labels/'
 #                   Hyperparameters and More                             #
 # ______________________________________________________________________ #
 BREVITAS_MODEL = True
-MODEL = "MY_MBLNET_V2_Resnet"
+MODEL = "Mobilenetv2_Mini_Resnet_112"
+WIDTH_MULT = 1.0
 
 LEARNING_RATE = 1e-3
 #LEARNING_RATE = 1e-4
 # Optimizer
-#WEIGHT_DECAY = 1e-4
-WEIGHT_DECAY = 1e-3
+WEIGHT_DECAY = 0.0
+# WEIGHT_DECAY = 1e-5
+# WEIGHT_DECAY = 1e-3
 FACTOR = 0.8
 PATIENCE = 2
 THRES = 0.001
@@ -88,11 +90,11 @@ BATCH_SIZE = 64
 NUM_WORKERS = 8
 PIN_MEMORY = True
 
-EPOCHS = 50
+EPOCHS = 150
 
-LOAD_MODEL = True
-LOAD_MODEL_DIR = './experiments_brevitas/test_v051_mini_resnet_70k_CLOUDS_full_ds/weights/'
-LOAD_MODEL_FILE = LOAD_MODEL_DIR + "MY_MBLNET_V2_Resnet_classifier__best_mean_F1.pt"
+LOAD_MODEL = False
+LOAD_MODEL_DIR = './experiments_brevitas/test_v05_mini_resnet_70k_full_ds/weights/'
+LOAD_MODEL_FILE = LOAD_MODEL_DIR + "MY_MBLNET_V2_RESNET_classifier__best_mean_F1.pt"
 
 
 LOSS_FN = "BCE"
