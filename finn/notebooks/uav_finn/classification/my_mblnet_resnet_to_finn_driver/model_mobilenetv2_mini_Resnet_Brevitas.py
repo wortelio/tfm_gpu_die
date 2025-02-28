@@ -96,6 +96,9 @@ class InvertedBlock(nn.Module):
         self.identity = stride == 1 and inp == oup
         if self.identity:
             self.pw_linear_quant = shared_quant.act_quant
+            self.quant_identity_out = QuantIdentity(
+                act_quant=CommonIntActQuant,
+                bit_width=act_bit_width)
         else:
             self.pw_linear_quant = CommonIntActQuant    
 
@@ -200,9 +203,9 @@ class InvertedBlock(nn.Module):
                     bit_width=act_bit_width),
                 )
 
-        self.quant_identity_out = QuantIdentity(
-                    act_quant=CommonIntActQuant,
-                    bit_width=act_bit_width)
+        # self.quant_identity_out = QuantIdentity(
+        #             act_quant=CommonIntActQuant,
+        #             bit_width=act_bit_width)
         
 
     def forward(self, x):
@@ -216,9 +219,11 @@ class InvertedBlock(nn.Module):
     # Return the Quantizer of the Output, to use it in next block if Resnet Connection is applied
     def get_shared_quant(self):
         if self.identity:
-            return self.conv[-1] 
-        else:
+            #return self.conv[-1] 
             return self.quant_identity_out
+        else:
+            #return self.quant_identity_out
+            return self.conv[-1] 
 
 
 

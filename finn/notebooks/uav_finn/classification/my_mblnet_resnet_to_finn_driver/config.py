@@ -2,13 +2,18 @@ import os
 # ______________________________________________________________________ #
 #                                Logs                                    #
 # ______________________________________________________________________ #
-EXPERIMENTS_FOLDER = 'experiments_CLK/'
-EXPERIMENTS_FOLDER += '30_FPS_CLK_200ns/'
+# EXPERIMENTS_FOLDER = 'experiments_CLK/'
+# EXPERIMENTS_FOLDER += 'NEW_30_FPS_CLK_250ns/'
+
+EXPERIMENTS_FOLDER = 'experiments/'
+EXPERIMENTS_FOLDER += '750_FPS/'
 if not os.path.isdir(EXPERIMENTS_FOLDER):
     os.mkdir(EXPERIMENTS_FOLDER)
 
-# RUN_FOLDER = '02_full_build_vvau_lut_hls_final_mvau_hls/'
-RUN_FOLDER = '03_full_build_final_mvau_hls/'
+# RUN_FOLDER = '40_estimates_mvau_rtl_mvau_wwidth_max_16_manual_folding/'
+# RUN_FOLDER = '25_full_build_final_mvau_rtl_mvau_wwidth_max_16/'
+RUN_FOLDER = '41_full_build_json_mvau_rtl_mvau_wwidth_max_16_manual_folding/'
+
 RUN_FOLDER = EXPERIMENTS_FOLDER + RUN_FOLDER
 if not os.path.isdir(RUN_FOLDER):
     os.mkdir(RUN_FOLDER)
